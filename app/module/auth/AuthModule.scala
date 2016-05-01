@@ -71,6 +71,14 @@ object AuthModule {
           case _ => ErrorCode.errorToJson("unknown error")
         }
     }
+   
+    def adminAuthCheck(user_id : String) : Boolean = {
+        (from db() in "users" where ("user_id" -> user_id) select (x => x.getAs[String]("email").get)).toList match {
+          case Nil => false
+          case head :: Nil => head.equals("admin")
+          case _ => false
+        }
+    }
     
     def authCheck(token : String) : Option[String] = {
        

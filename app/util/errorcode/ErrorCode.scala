@@ -13,6 +13,9 @@ object ErrorCode {
   		new ErrorNode("email not exist", -3, "用户不存在"),
   		new ErrorNode("pwd error", -4, "密码错误"),
   		new ErrorNode("report not exist", -5, "官方公告不存在"),
+  		new ErrorNode("application not exist", -6, "申请不存在"),
+  		new ErrorNode("not have enough mana", -7, "只有管理员能做这个操作"),
+  		new ErrorNode("not have enough money", -8, "余额不足"),
 
   		new ErrorNode("unknown error", -999, "unknown error")
   	)

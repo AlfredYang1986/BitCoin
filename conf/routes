@@ -3,19 +3,36 @@
 # ~~~~
 
 # Home page
-GET     /landing                    controllers.BitCode.landing
-GET     /sign                       controllers.BitCode.sign
-GET     /home	            		controllers.BitCode.home
+GET     /								controllers.BitCode.landing
+GET     /landing                    	controllers.BitCode.landing
+GET     /sign                       	controllers.BitCode.sign
+GET     /home	            			controllers.BitCode.home
 
-POST	/auth/register				controllers.AuthController.register
-POST	/auth/login					controllers.AuthController.login
+# Auth 
+POST	/auth/register					controllers.AuthController.register
+POST	/auth/login						controllers.AuthController.login
 
-GET		/market/btc					controllers.MarketController.BTCMarket
-GET		/market/ltc					controllers.MarketController.LTCMarket
-GET		/market/current				controllers.MarketController.CurrentMarket
+# Market Data
+POST	/market/btc						controllers.MarketController.BTCMarket
+POST	/market/ltc						controllers.MarketController.LTCMarket
+POST	/market/current					controllers.MarketController.CurrentMarket
 
-GET		/market/trade/btc			controllers.MarketController.BTCTrade
-GET		/market/trade/ltc 			controllers.MarketController.LTCTrade
+POST	/market/trade/btc				controllers.MarketController.BTCTrade
+POST	/market/trade/ltc 				controllers.MarketController.LTCTrade
+
+# Account 
+POST	/account/queryaccount			controllers.AccountController.queryAccountInfo
+POST	/account/pushmoney				controllers.AccountController.pushMoney
+POST	/account/popmoney				controllers.AccountController.popMoney
+
+# Applications
+POST	/apply/pushapp					controllers.ApplyController.pushApp
+POST	/apply/reverapp					controllers.ApplyController.revertApp
+POST	/apply/rejectapp				controllers.ApplyController.rejectApp
+POST	/apply/approveapp				controllers.ApplyController.approveApp
+
+POST	/apply/query/all				controllers.ApplyController.queryAllApps
+POST	/apply/query/mine				controllers.ApplyController.queryMyApps
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
