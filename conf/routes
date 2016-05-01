@@ -1,0 +1,21 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /landing                    controllers.BitCode.landing
+GET     /sign                       controllers.BitCode.sign
+GET     /home	            		controllers.BitCode.home
+
+POST	/auth/register				controllers.AuthController.register
+POST	/auth/login					controllers.AuthController.login
+
+GET		/market/btc					controllers.MarketController.BTCMarket
+GET		/market/ltc					controllers.MarketController.LTCMarket
+GET		/market/current				controllers.MarketController.CurrentMarket
+
+GET		/market/trade/btc			controllers.MarketController.BTCTrade
+GET		/market/trade/ltc 			controllers.MarketController.LTCTrade
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,0 +1,35 @@
+@(title: String)(include: Html)(content: Html)(scripts: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+       
+       	<!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+		<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<!-- Custom CSS -->
+		<link href="@routes.Assets.at("css/style.css")" rel='stylesheet' type='text/css' />
+		<!-- Graph CSS -->
+		<link href="@routes.Assets.at("css/font-awesome.css")" rel="stylesheet"> 
+		<!-- jQuery -->
+		<link href='http://fonts.useso.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
+		<!-- lined-icons -->
+		<link rel="stylesheet" href="@routes.Assets.at("css/icon-font.min.css")" type='text/css' />
+        
+        @include
+    </head>
+    <body>
+        @content
+        	
+        <script src="@routes.Assets.at("js/jquery.nicescroll.js")"></script>
+		<script src="@routes.Assets.at("js/scripts.js")"></script>
+
+        @scripts
+    </body>
+</html>
