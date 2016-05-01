@@ -37,7 +37,7 @@ object requestArgsQuery extends Controller {
   	     request.body.asJson.map { x => 
   	         request.headers.get("Authorization").map (auth(_)).getOrElse(None) match {
   	           case Some(user_id) => Ok(authCheckUser(user_id)(x)(func))
-  	           case None => BadRequest
+  	           case None => Ok(ErrorCode.errorToJson("email not exist"))
   	         }
   	     }.getOrElse(BadRequest)
   	   } catch {

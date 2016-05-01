@@ -35,7 +35,8 @@ object AppliesModule {
         val app_type = (data \ "type").asOpt[Int].map (x => x).getOrElse(ApplyTypes.pushMoney.t)
         val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.floatValue)
         val message = (data \ "message").asOpt[String].map (x => x).getOrElse("")
-  
+        val apply_id = Sercurity.md5Hash(user_id + Sercurity.getTimeSpanWithMillSeconds)
+        
         val builder = MongoDBObject.newBuilder
         builder += "message" -> message
         builder += "amount" -> amount
@@ -43,16 +44,16 @@ object AppliesModule {
         builder += "status" -> ApplyStatus.add.s
         builder += "apply_user_id" -> user_id
         builder += "date" -> new Date().getTime
-        builder += "apply_id" -> Sercurity.md5Hash(user_id + Sercurity.getTimeSpanWithMillSeconds)
+        builder += "apply_id" -> apply_id
         
         _data_connection.getCollection("apply") += builder.result
         
-        toJson(Map("status" -> "ok", "result" -> "push apply success"))
+        toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
     }
     
     def revertApplications(user_id : String, data : JsValue) : JsValue = {
         val apply_id = (data \ "apply_id").asOpt[String].map (x => x).getOrElse("")
-        
+       
         if (apply_id.isEmpty) ErrorCode.errorToJson("application not exist")
         else {
             (from db() in "apply" where ("apply_id" -> apply_id) select (x => x)).toList match {
@@ -78,7 +79,8 @@ object AppliesModule {
                   case Nil => ErrorCode.errorToJson("application not exist")
                   case head :: Nil => {
                       head += "status" -> ApplyStatus.approve.s.asInstanceOf[Number]
-                      toJson(Map("status" -> "ok", "result" -> "revert application success"))
+                      _data_connection.getCollection("apply").update(DBObject("apply_id" -> apply_id), head)
+                      toJson(Map("status" -> "ok", "result" -> "approve application success"))
                   }
                   case _ => ErrorCode.errorToJson("application not exist")
                 }
@@ -95,7 +97,8 @@ object AppliesModule {
                   case Nil => ErrorCode.errorToJson("application not exist")
                   case head :: Nil => {
                       head += "status" -> ApplyStatus.reject.s.asInstanceOf[Number]
-                      toJson(Map("status" -> "ok", "result" -> "revert application success"))
+                  _data_connection.getCollection("apply").update(DBObject("apply_id" -> apply_id), head)
+                      toJson(Map("status" -> "ok", "result" -> "reject application success"))
                   }
                   case _ => ErrorCode.errorToJson("application not exist")
                 }
@@ -104,24 +107,20 @@ object AppliesModule {
     
     def DB2JsValue(x : MongoDBObject) : JsValue = 
         toJson(Map("apply_id" -> toJson(x.getAs[String]("apply_id").get),
-                   "apply_type" -> toJson(x.getAs[Int]("type").get),
-                   "date" -> toJson(x.getAs[Float]("date").get),
-                   "amount" -> toJson(x.getAs[Float]("amount").get),
+                   "apply_type" -> toJson(x.getAs[Number]("type").get.intValue),
+                   "date" -> toJson(x.getAs[Number]("date").get.floatValue),
+                   "amount" -> toJson(x.getAs[Number]("amount").get.floatValue),
                    "apply_user_id" -> toJson(x.getAs[String]("apply_user_id").get)))
     
     def queryAllApplications(user_id : String, data : JsValue) : JsValue = 
         if (AuthModule.adminAuthCheck(user_id)) {
-            val apply_id = (data \ "apply_id").asOpt[String].map (x => x).getOrElse("")
             val take = (data \ "take").asOpt[Int].map (x => x).getOrElse(20)
             val skip = (data \ "skip").asOpt[Int].map (x => x).getOrElse(0)
             
-            if (apply_id.isEmpty) ErrorCode.errorToJson("application not exist")
-            else {
-                toJson(Map("status" -> toJson("ok"), "result" -> toJson(
-                    ((from db() in "apply" where ("status" -> ApplyStatus.add.s.asInstanceOf[Number])).selectSkipTop(skip)(take)("date")(x => 
-                      DB2JsValue(x)
-                    )).toList))) 
-                }
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(
+                ((from db() in "apply" where ("status" -> ApplyStatus.add.s.asInstanceOf[Number])).selectSkipTop(skip)(take)("date")(x => 
+                    DB2JsValue(x)
+                )).toList))) 
         } else ErrorCode.errorToJson("not have enough mana")
     
     def queryMyApplications(user_id :String, data : JsValue) : JsValue = 

@@ -27,7 +27,7 @@ POST	/account/popmoney				controllers.AccountController.popMoney
 
 # Applications
 POST	/apply/pushapp					controllers.ApplyController.pushApp
-POST	/apply/reverapp					controllers.ApplyController.revertApp
+POST	/apply/revertapp				controllers.ApplyController.revertApp
 POST	/apply/rejectapp				controllers.ApplyController.rejectApp
 POST	/apply/approveapp				controllers.ApplyController.approveApp
 

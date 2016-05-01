@@ -15,17 +15,6 @@ import util.errorcode.ErrorCode
 import com.mongodb.casbah.Imports._
 import module.sercurity.Sercurity
 
-//import scala.concurrent.Await
-//import scala.concurrent.Future
-//import scala.concurrent.ExecutionContext.Implicits._
-//import scala.concurrent.duration._
-//
-//import akka.actor.Actor
-//import akka.actor.Props
-//import akka.pattern.ask
-//import akka.util.Timeout
-//import akka.actor.ActorRef
-
 object AuthModule {
     def register(data : JsValue) : JsValue = {
         val email = (data \ "email").asOpt[String].map (x => x).getOrElse("")
@@ -40,7 +29,6 @@ object AuthModule {
                   builder += "pwd" -> pwd
                   val user_id = Sercurity.md5Hash(email)
                   builder += "user_id" -> user_id
-//                  val token = Sercurity.md5Hash(email + pwd + Sercurity.getTimeSpanWithDay)
                   val token = Sercurity.md5Hash(email + pwd)
                   builder += "token" -> token
                   
