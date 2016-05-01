@@ -8,3 +8,7 @@
 /logs
 /public/images
 /public/fonts
+/.classpath
+/.project
+/.settings
+*.swp
