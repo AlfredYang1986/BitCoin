@@ -16,6 +16,9 @@ object ErrorCode {
   		new ErrorNode("application not exist", -6, "申请不存在"),
   		new ErrorNode("not have enough mana", -7, "只有管理员能做这个操作"),
   		new ErrorNode("not have enough money", -8, "余额不足"),
+  		new ErrorNode("not support coin", -9, "不支持当前币种"),
+  		new ErrorNode("not enough coin", -10, "货存不足"),
+  		new ErrorNode("not enough money", -11, "钱不够"),
 
   		new ErrorNode("unknown error", -999, "unknown error")
   	)
