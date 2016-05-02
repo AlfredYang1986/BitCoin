@@ -19,6 +19,7 @@ object ErrorCode {
   		new ErrorNode("not support coin", -9, "不支持当前币种"),
   		new ErrorNode("not enough coin", -10, "货存不足"),
   		new ErrorNode("not enough money", -11, "钱不够"),
+  		new ErrorNode("user not approved", -12, "用户需要验证才有这个功能"),
 
   		new ErrorNode("unknown error", -999, "unknown error")
   	)

@@ -12,6 +12,10 @@ GET     /home	            			controllers.BitCode.home
 POST	/auth/register					controllers.AuthController.register
 POST	/auth/login						controllers.AuthController.login
 
+# Profile
+POST	/profile/query					controllers.ProfileController.queryProfile
+POST	/profile/update				 	controllers.ProfileController.updateProfile
+
 # Market Data
 POST	/market/btc						controllers.MarketController.BTCMarket
 POST	/market/ltc						controllers.MarketController.LTCMarket

@@ -15,10 +15,10 @@ import module.auth.AuthModule
 import module.stoke.StokeModule
 
 object StokeController extends Controller {
-    def pushStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.pushStoke))
-    def popStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.popStoke))
+    def pushStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.pushStoke)(true))
+    def popStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.popStoke)(true))
     
-    def queryStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.queryAllStoke))
-    def purchaseStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.purchaseStoke))
-    def sellStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.sellMyStoke))
+    def queryStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.queryAllStoke)(false))
+    def purchaseStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.purchaseStoke)(true))
+    def sellStoke = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(StokeModule.sellMyStoke)(true))
 }

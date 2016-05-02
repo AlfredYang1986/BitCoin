@@ -13,8 +13,8 @@ import module.trade.TradeModule
 import module.auth.AuthModule
 
 object TradeController extends Controller {
-  	def queryTradeRecords = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(TradeModule.queryTradeRecords))
-  	def queryMyTradeRecords = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(TradeModule.queryUserTradeRecords))
+  	def queryTradeRecords = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(TradeModule.queryTradeRecords)(false))
+  	def queryMyTradeRecords = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(TradeModule.queryUserTradeRecords)(false))
   	def queryBTCTradeRecords = Action (request => requestArgs(request)(TradeModule.queryBTCTradeRecords))
   	def queryLTCTradeRecords = Action (request => requestArgs(request)(TradeModule.queryLTCTradeRecords))
 }
