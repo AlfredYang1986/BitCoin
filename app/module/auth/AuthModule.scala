@@ -93,6 +93,7 @@ object AuthModule {
    
     def DB2JsValue(x : MongoDBObject) : JsValue = 
         toJson(Map("user_id" -> toJson(x.getAs[String]("user_id").get),
+                   "token" -> toJson(x.getAs[String]("token").get),
                    "name" -> toJson(x.getAs[String]("name").get),
                    "type" -> toJson(x.getAs[Number]("id_type").get.intValue),
                    "register_id"-> toJson(x.getAs[String]("register_id").get),
@@ -104,16 +105,27 @@ object AuthModule {
             (from db() in "users" where ("user_id" -> user_id) select (DB2JsValue(_))).toList.head)))
     }
     
+    def queryProfileWithToken(token : String) : JsValue = {
+        toJson(Map("status" -> toJson("ok"), "result" -> toJson(
+            (from db() in "users" where ("token" -> token) select (DB2JsValue(_))).toList.head)))
+    }
+    
     def updateProfile(user_id : String, data : JsValue) : JsValue = {
         (from db() in "users" where ("user_id" -> user_id) select (x => x)).toList match {
           case head :: Nil => {
+              (data \ "pwd").asOpt[String].map { x => 
+                 head += "pwd" -> x 
+                 val email = head.getAs[String]("email").get
+                 head += "token" -> Sercurity.md5Hash(email + x) 
+              }.getOrElse(Unit)
               (data \ "name").asOpt[String].map (x => head += "name" -> x).getOrElse(Unit)
               (data \ "register_id").asOpt[String].map (x => head += "register_id" -> x).getOrElse(Unit)
               (data \ "id_type").asOpt[Int].map (x => head += "id_type" -> x.asInstanceOf[Number]).getOrElse(Unit)
               (data \ "status").asOpt[Int].map (x => head += "status" -> x.asInstanceOf[Number]).getOrElse(Unit)
               
               _data_connection.getCollection("users").update(DBObject("user_id" -> user_id), head)
-              DB2JsValue(head)
+
+              toJson(Map("status" -> toJson("ok"), "result" -> toJson(DB2JsValue(head))))
           }
           case Nil => ErrorCode.errorToJson("email not exist") 
           case _ => ErrorCode.errorToJson("email not exist") 

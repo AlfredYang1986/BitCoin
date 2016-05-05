@@ -1,0 +1,165 @@
+@(token: String)(profile: play.api.libs.json.JsValue)
+
+@main("修改密码")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">修改登录密码</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_safe">
+                        <a href="index.html"><i class="coin_menu_op_14"></i><span class="pl10">个人中心</span></a>
+                    </li>
+                    <li id="nav_auth">
+                        <a href="/profile/auth"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
+                    </li>
+                    <li id="nav_editpw" class="active">
+                        <a href="/profile/changePwd"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
+                    </li>
+                    <li id="nav_phone">
+                        <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
+                    </li>
+                </ul>
+            </div>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont-tit">
+                    <h2>修改登录密码</h2>
+                </div>
+                <div class="cont-detail">
+                    <div class="changepw_warning pt20">
+                        <p><i></i><span class="fRed">为确保您的顺利交易，请牢记登录密码!</span></p>
+                    </div>
+                    <div class="pwtrade">
+                        <form method="post" id="form" action="">
+                            <dl>
+                                <dt>登录密码：</dt>
+                                <dd>
+                                    <input type="password" name="oldpw">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>新登录密码：</dt>
+                                <dd>
+                                    <input type="password" name="pw">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>再次输入新密码：</dt>
+                                <dd>
+                                    <input type="password" name="repw">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt></dt>
+                                <dd>
+                                    <!-- <input type="submit" value="保存"> -->
+                                    <button id='save_btn' class='btn'></button>
+                                </dd>
+                            </dl>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+    <script type="text/javascript">
+    $("#form").submit(function() {
+        var oldpw = $('input[name="oldpw"]').val();
+        var pw = $('input[name="pw"]').val();
+        var repw = $('input[name="repw"]').val();
+
+        if (!oldpw || !pw) {
+            alert("必填项不能为空");
+            return false;
+        }
+        if (pw != repw) {
+            alert(pw);
+            alert(repw);
+            alert('密码两次输入不一致');
+            return false;
+        }
+        return true;
+    });
+
+    $('#save_btn').click(function(){
+        var oldpw = $('input[name="oldpw"]').val();
+        var pw = $('input[name="pw"]').val();
+        var repw = $('input[name="repw"]').val();
+
+        if (!oldpw || !pw) {
+            alert("必填项不能为空");
+            return;
+        }
+
+        if (pw != repw) {
+            alert(pw);
+            alert(repw);
+            alert('密码两次输入不一致');
+            return;
+        }
+
+        var query_object = new Object();
+        query_object['pw'] = pw;
+
+        $.ajax({
+            url: "/auth/changePwd",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            success: function (data) {
+                if (data.status == "ok") {
+                     setCookie('user_id', data.result.user_id, 1);
+                     setCookie('token', data.result.token, 1);
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("发布失败，请检查您的输入");
+            }
+        });
+
+        return;
+    });
+
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+    </script>
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+}

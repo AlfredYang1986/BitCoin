@@ -16,10 +16,10 @@
                         <a href="index.html"><i class="coin_menu_op_14"></i><span class="pl10">个人中心</span></a>
                     </li>
                     <li id="nav_auth" class="active">
-                        <a href="auth.html"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
+                        <a href="/profile/auth"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
                     </li>
                     <li id="nav_editpw">
-                        <a href="change_pwd.html"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
+                        <a href="/profile/changePwd"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
                     </li>
                     <li id="nav_phone" >
                         <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
@@ -139,8 +139,15 @@
             });
 
         });
+
+        $('#logout_btn').click(function(){
+            clearCookie('user_id');
+            clearCookie('token');
+            alert("登出成果");
+            location.reload();   
+        });
     </script>
 
 }  {
-	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <a href="#">退出</a>
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
 }

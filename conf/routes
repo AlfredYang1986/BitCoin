@@ -2,14 +2,17 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
+# pages
 GET     /register						controllers.BitCode.register				
-GET     /safe/auth/:t					controllers.BitCode.safe_auth(t)		
-GET     /safe/auth		 				controllers.BitCode.safe_auth(t="")	
+GET     /profile/auth/:t					controllers.BitCode.safe_auth(t)		
+GET     /profile/auth		 				controllers.BitCode.safe_auth(t="")	
+GET     /profile/changePwd/:t				controllers.BitCode.changePwd(t)		
+GET     /profile/changePwd		 			controllers.BitCode.changePwd(t="")	
 
 # Auth 
 POST	/auth/register					controllers.AuthController.register
 POST	/auth/login						controllers.AuthController.login
+POST	/auth/changePwd		 			controllers.AuthController.changePwd
 
 # Profile
 POST	/profile/query					controllers.ProfileController.queryProfile

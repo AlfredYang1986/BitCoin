@@ -173,25 +173,30 @@
     </div>
     <script type="text/javascript">
     function login() {
-        var username = $('input[name="log_name"]').last().val();
-        var password = $('input[name="log_pwd"]').last().val();
-        var autologin = $('input[name="autologin"]').last().is(":checked");
+        var email = $('input[name="log_name"]').last().val();
+        var query_object = new Object();
+        query_object['email'] = email;
+        query_object['token'] = hex_md5(email + $('input[name="log_pwd"]').last().val());
 
-        var url = "https://www.gobiw.com/user/login/";
-        var param = {
-            'user': username,
-            'password': password,
-            'autologin': autologin
-        }
-        $.post(url, param,
-            function(data) {
-                if (data.flag) {
-                    location.reload();
+        $.ajax({
+            url: "/auth/login",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            success: function (data) {
+                if (data.status == "ok") {
+                     setCookie('user_id', data.result.user_id, 1);
+                     setCookie('token', data.result.token, 1);
                 } else {
-                    $('.login_warning').last().attr('style', '');
-                    $('.login_warning').last().html('<span>' + data.data + '</span>')
+                    alert(data.error.message);
                 }
-            }, "json");
+            },
+            error: function (xhr, status, error) {
+                alert("发布失败，请检查您的输入");
+            }
+        });
     }
     </script>
     <!-- /头部 -->
@@ -276,6 +281,21 @@
 	    <script src="@routes.Assets.at("js/common.js")"></script>
         <script src="@routes.Assets.at("js/jquery.nicescroll.js")"></script>
 		<script src="@routes.Assets.at("js/scripts.js")"></script>
+        <script src="@routes.Assets.at("js/JQuery.md5.js")"></script>
+
+        <script type="text/javascript">
+        function setCookie(cname,cvalue,expiredays) {
+            var exp  = new Date();
+            exp.setTime(exp.getTime() + expiredays*24*60*60*1000);
+            document.cookie = name + "="+ escape(cvalue) + ";expires=" + exp.toGMTString()+";path="+"/";
+        }
+
+        function clearCookie(name) {  
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 1);
+            document.cookie= name + "=''"+";expires="+exp.toGMTString()+";path="+"/";
+        }  
+        </script>
 
         @scripts
     </body>
