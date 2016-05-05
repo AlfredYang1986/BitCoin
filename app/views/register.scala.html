@@ -1,0 +1,333 @@
+
+@main("注册")("") {
+
+} {
+    <!-- 注册 -->
+    <div class="minbox" id="reg-step1">
+        <div class="login_step">
+            <ul class="order clearfix step-1 pt10">
+                <li class="active"><i>1</i>邮箱注册
+                    <div class="order_line"></div>
+                </li>
+                <li id="step2"><i class="">2</i>设置交易密码
+                    <div class="order_line"></div>
+                </li>
+                <li id="step3"><i class="">3</i>实名认证
+                    <div class="order_line"></div>
+                </li>
+                <li id="step4"><i class="">4</i>成功</li>
+            </ul>
+        </div>
+        <div class="reg_box">
+            <div class="reg_wrap pt60">
+                <div id="qqlogin" style="margin:0 0 30px -50px"></div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">电子邮箱：</div>
+                    <input type="text" id="email" value="">
+                    <div id="email-msg" class="form_explain" data-explain="请输入电子邮箱，用于登录和找回密码<em></em>" style="display: none;">请输入有效的电子邮箱，用于登录和找回密码<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">登录密码：</div>
+                    <input type="password" id="pw" value="">
+                    <div id="pw-msg" class="form_explain" data-explain="密码六位以上<em></em>" style="display: none;">密码六位以上<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">重复密码：</div>
+                    <input type="password" id="repw" value="">
+                    <div id="repw-msg" class="form_explain" data-explain="重复输入密码，两次需要一致<em></em>" style="display: none;">重复输入密码，两次需要一致<em></em></div>
+                </div>
+                <div class="reg_radio_box">
+                    <label>
+                        <input type="checkbox" id="log_agree" checked="">　我同意 <a href="/article/help/id/6">注册协议</a></label>
+                </div>
+                <div class="reg_button_box">
+                    <input type="button" onclick="getStep(2)" value="下一步">
+                </div>
+            </div>
+        </div>
+        <div class="reg_box" id="step2_div" style="display: none">
+            <div class="reg_wrap pt60">
+                <div class="reg_warning"><span class="fRed">为保障您的资金安全，请设置交易密码，请务必牢记</span></div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">交易密码：</div>
+                    <input type="password" id="pwtrade" value="">
+                    <div id="pwtrade-msg" style="display: none;" class="form_explain" data-explain="请输入交易密码，不能与登录密码相同<em></em>">请输入交易密码，不能与登录密码相同<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">重复交易密码：</div>
+                    <input type="password" id="repwtrade" value="">
+                    <div id="repwtrade-msg" class="form_explain" style="display: none;" data-explain="重复输入交易密码，两次需要一致<em></em>">重复输入交易密码，两次需要一致<em></em></div>
+                </div>
+                <br>
+                <div class="reg_button_box">
+                    <input type="button" value="下一步" onclick="getStep(3)">
+                </div>
+            </div>
+        </div>
+        <div class="reg_box" id="step3_div" style="display: none">
+            <div class="reg_wrap pt60">
+                <div class="reg_warning"><span class="fRed">根据 国家相关规定，请填写您的真实身份信息，完成实名认证</span></div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">证件类型：</div>
+                    <select id="id_type">
+                        <option value="1">身份证</option>
+                        <option value="2">军官证</option>
+                        <option value="3">护照</option>
+                    </select>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">真实姓名：</div>
+                    <input type="text" id="realname" value="">
+                    <div id="name-msg" class="form_explain" style="display: none" data-explain="真实姓名设置后不能修改，并且与提现账户名相同,2-4个汉字<em></em>">真实姓名设置后不能修改，并且与提现账户名相同,2-4个汉字<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">证件号码：</div>
+                    <input type="text" id="id_number" value="">
+                    <div id="id_number-msg" class="form_explain" style="display: none" data-explain="真实姓名设置后不能修改，并且与提现账户名相同<em></em>">证件号码注册后不能修改<em></em></div>
+                </div>
+                <!-- <div class="reg_input_box reg-fb">
+                <div class="reg_title">验证码：</div>
+                <input type="text" id="captcha" value="">
+                <div id="captcha-msg"></div>
+            </div>
+            <div class="reg_input_box reg-fb">
+                <div class="reg_title"></div>
+                <img id="img-captcha" src="" >
+                <a onclick="">看不清，换一张</a>
+            </div> -->
+                <div class="reg_button_box">
+                    <input type="button" value="下一步" onclick="getStep(4)">
+                </div>
+            </div>
+        </div>
+        <div class="reg_box" id="step4_div" style="display: none">
+            <div class="reg_su">
+                <div class="reg_su_title">恭喜您，已经注册成功！</div>
+                <div class="reg_info">
+                    <ul>
+                        <li>注册邮箱：<span id="reg-email"></span></li>
+                        <li class="mt-10">认证姓名：<span id="reg-name"></span></li>
+                        <li class="mt-10">证件类型：<span id="reg-id_type"></span></li>
+                        <li class="mt-10">证件号码：<span id="reg-id_number"></span></li>
+                    </ul>
+                    <div class="auto_btn marb15">
+                        <a href="#" class="tojy">去交易</a>
+                        <div class="right_side"></div>
+                    </div>
+                    <div class="reg_otherlink pt20">
+                        您还可以：
+                        <a class="fRed" href="/safe/auth" target="_blank">实名认证</a>
+                        <!-- <a class="fRed" href="/my/email" target="_blank">绑定邮箱</a> -->
+                        <a class="fRed" href="safe_phone.html" target="_blank">绑定手机</a>
+                        <a class="fRed" href="finance_people_pay.html" target="_blank">充值</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /注册 -->
+
+} {
+    <script type="text/javascript">
+
+    var user_id = "";
+    var token = "";
+
+    function getStep(step) {
+        var email = $('#email').val();
+        var repw = $('#repw').val();
+        var pw = $('#pw').val();
+        var pwtrade = $('#pwtrade').val();
+        var repwtrade = $('#repwtrade').val();
+        var id_type = $('#id_type').val();
+        var realname = $('#realname').val();
+        var id_number = $('#id_number').val();
+        if (step == 2) {
+            if (!email) {
+                $('#email-msg').show();
+                return false;
+            } else {
+                var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                if (!reg.test(email)) {
+                    $('#email-msg').show();
+                    return false;
+                }
+                $('#email-msg').hide();
+            }
+            if (!pw || pw.length < 6) {
+                $('#pw-msg').show();
+                return false;
+            } else {
+                $('#pw-msg').hide();
+            }
+            if (repw != pw) {
+                $('#repw-msg').show();
+                return false;
+            } else {
+                $('#repw-msg').hide();
+            }
+
+            if (!$('#log_agree').is(':checked')) {
+                alert('请勾选注册协议');
+                return false;
+            }
+        }
+
+        if (step == 3) {
+            if (!pwtrade || pwtrade.length < 6) {
+                $('#pwtrade-msg').show();
+                return false;
+            } else {
+                $('#pwtrade-msg').hide();
+            }
+            if (repwtrade != pwtrade) {
+                $('#repwtrade-msg').show();
+                return false;
+            } else {
+                $('#repwtrade-msg').hide();
+            }
+        }
+
+        if (step == 4) {
+            if (!realname) {
+                $('#name-msg').show();
+                return false;
+            } else {
+                var check = /^[\u4e00-\u9fa5]+$/.test(realname)
+                if (!check || realname.length < 2 || realname.length > 4) {
+                    $('#name-msg').show();
+                    return false;
+                }
+                $('#name-msg').hide();
+            }
+
+            if (!id_number) {
+                $('#id_number-msg').show();
+                return false;
+            } else {
+                $('#id_number-msg').hide();
+            }
+
+            var query_object = new Object();
+            query_object['email'] = email;
+            query_object['pwd'] = pw;
+            query_object['pwd_trade'] = pwtrade;
+            query_object['name'] = realname;
+            query_object['id_type'] = id_type;
+            query_object['register_id'] = id_number;
+            //query_object['token'] = hex_md5($('#email').val() + $('#pwd').val());
+
+            $.ajax({
+                url: "/auth/register",
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json, charset=utf-8',
+                data: JSON.stringify(query_object),
+                cache: false,
+                success: function (data) {
+                    if (data.status == "ok") {
+                        //填充用户信息
+                        $('#reg-email').html(email);
+                        $('#reg-name').html(realname);
+                        var str = '';
+                        if (id_type == 1) {
+                            str = '身份证';
+                        } else if (id_type == 2) {
+                            str = '军官证';
+                        } else {
+                            str = '护照';
+                        }
+                        $('#reg-id_type').html(str);
+                        $('#reg-id_number').html(id_number);
+
+                        $('.reg_box').hide();
+                        $('#step' + step + '_div').show();
+                        $('.order li').removeClass('active');
+                        $('#step' + step).addClass('active');
+
+                        setCookie('user_id', data.result.user_id, 1);
+                        setCookie('token', data.result.token, 1);
+                    } else {
+                        alert(data.error.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("发布失败，请检查您的输入");
+                }
+            });
+        } else {
+            $('.reg_box').hide();
+            $('#step' + step + '_div').show();
+            $('.order li').removeClass('active');
+            $('#step' + step).addClass('active');
+        }
+    }
+
+    function checkRealname() {
+        var realname = $('#realname').val();
+        var check = /^[\u4e00-\u9fa5]+$/.test(realname)
+        if (!realname || !check || realname.length < 2 || realname.length > 4) {
+
+            $('#realname_notice').html('真实姓名必须为2-4汉字字符');
+            return false;
+        } else {
+            $('#realname_group').removeClass('error');
+            $('#realname_notice').html('');
+            return true;
+        }
+    }
+    var pageSet = {};
+    pageSet.bn = function() {
+        $(".btn-prev,.btn-next").hover(function() {
+            $(this).stop(true, false).fadeTo("show", 0.9);
+        }, function() {
+            $(this).stop(true, false).fadeTo("show", 0.2);
+        });
+
+        $(".main-visual").slide({
+            mainCell: ".main-image ul",
+            titCell: ".flicking-inner",
+            effect: "fold",
+            interTime: 3500,
+            delayTime: 500,
+            autoPlay: true,
+            autoPage: true,
+            trigger: "click"
+        });
+    }
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+        pageSet.bn();
+    };
+    $(function() {
+        pageSet.init();
+    })
+    
+    function setCookie(c_name,value,expiredays) {
+        var exdate=new Date()
+        exdate.setDate(exdate.getDate()+expiredays)
+        document.cookie=c_name+ "=" +escape(value)+
+        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+    }
+    </script>
+} {
+	<a rel="nofollow" onclick="common.login()" class="pop-login">登录</a><a rel="nofollow" href="/register">注册</a>
+} 

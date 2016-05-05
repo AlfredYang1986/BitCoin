@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>新币投票</title>
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="keywords">
+    <meta name="description" content="description">
+    <!-- <link rel="shortcut icon" href="https://www.gobiw.com/asset/images/favicon.ico" type="image/x-icon"> -->
+    <link rel="stylesheet" href="css/common.css">
+    <!--[if lt IE 9]>
+<script src="https://www.gobiw.com/asset/js/html5.js"></script>
+<![endif]-->
+    <style type="text/css" adt="123"></style>
+    <style type="text/css">
+    object,
+    embed {
+        -webkit-animation-duration: .001s;
+        -webkit-animation-name: playerInserted;
+        -ms-animation-duration: .001s;
+        -ms-animation-name: playerInserted;
+        -o-animation-duration: .001s;
+        -o-animation-name: playerInserted;
+        animation-duration: .001s;
+        animation-name: playerInserted;
+    }
+    
+    @-webkit-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-ms-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-o-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="login-top">
+        <div class="login-top-head">
+            <div class="minbox">
+                <div class="h-l">
+                    <em class="contact pl10">客服电话：400-123-1234<i class="pl15">服务时间 9:00-21:00</i></em>
+                    <a href="javascript:void(0)" class="wx pop-wx" title="微信"></a>
+                    <a href="http://weibo.com/gobiw" target="_blank" class="wb" title="微博" rel="nofollow"></a>
+                    <a href="tencent://message/?uin=22645950&amp;Site=Gobiw.com购币网 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="qq" title="QQ"></a>
+                </div>
+                <div class="h-r pr30">
+                    您好，<a href="#">12345678@qq.com</a> ID：
+                    <a href="#">15698</a>
+                    <a href="#">退出</a>
+                </div>
+                <!--  <script src="//hm.baidu.com/hm.js?dc59d43ba314be9e7a66f9bc2a416c7d"></script>
+                <script type="text/javascript">
+                var islogin = 1;
+                </script> -->
+            </div>
+        </div>
+    </div>
+    <div class="logo-menu">
+        <div class="minbox clearfix">
+            <div class="k-logo pl10">
+                <a href="/?5196575" title="首页"><img alt="" src="images/logo.jpg"></a>
+            </div>
+            <div class="k-menu pl70">
+                <ul class="clearfix pt10">
+                    <li><a href="index.html">首页</a></li>
+                    <li>
+                        <a class="deal-center">
+                            <span>交易中心</span><img class="jt" src="images/down.png">
+                        </a>
+                        <div class="deal-list">
+                            <dl>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                            </dl>
+                            <div class="sj"></div>
+                            <div class="nocontent"></div>
+                        </div>
+                    </li>
+                    <li><a href="finance_index.html">财务中心</a></li>
+                    <li><a href="safe_index.html">安全中心</a></li>
+                    <li><a href="vote_index">投票中心</a></li>
+                    <li><a href="store.html">投票中心</a></li>
+                    <li><a href="help_index.html">帮助中心</a></li>
+                </ul>
+            </div>
+            <div class="hphone">
+                <a class="qqkefu" target="_blank" href="tencent://message/?uin=22645950&amp;Site=Gobiw.com购币网 | 网购最具投资价值的虚拟货币&amp;Menu=yes"></a>
+                <span class="iphone">400-123-1234</span>
+            </div>
+        </div>
+    </div>
+    <div id="diyou_dialog" style="display: none">
+        <div class="dialog_main">
+            <div class="dialog_tit">
+                <h2 style="cursor: move;">登录</h2><i class="close CLOSE" data-url=""></i></div>
+            <div class="dialog_con">
+                <div class="login_div">
+                    <div class="login_content">
+                        <div class="login_reg">还没账号？<a href="/user/reg" target="_blank">免费注册</a></div>
+                        <div class="login_warning" name="login_warning" style="display:none;">
+                        </div>
+                        <div class="login_username">
+                            <input name="log_name" type="text" placeholder="电子邮箱" value="" class="login_input">
+                        </div>
+                        <div class="login_password">
+                            <input name="log_pwd" type="password" placeholder="密码" value="" class="login_input">
+                        </div>
+                        <div class="log_status">
+                            <input type="checkbox" name="autologin" value="123123"> 下次自动登录</div>
+                        <div class="login_submit">
+                            <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
+                        </div>
+                        <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /头部 -->
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <div class="tp_banner"><img src="images/vote.png" width="1100" height="180"></div>
+        <div class="minbox pt10 clearfix">
+            <div class="maintain-content">
+                <div class="tp_tit">
+                    <h4 class="intro-hd" style="margin-top:0;">新币投票规则</h4>
+                </div>
+                <div class="tp_gz">
+                    <p>购币网上线以来承蒙业内众多新币开发团队的认可。购币网创立之初，立足于以公平公正公开为原则服务于广大用户。对于国内币市乱象，为广大会员提供良好的交易体验,现征求各实力团队币种上线投票。请为您所喜欢的币种投上宝贵的一票，选出您心中最具投资价值的虚拟货币。币种总得分数大于2000以上将有机会上线购币网交易，感谢您对购币网一直以来的支持和关注，祝您购币愉快。投票时间：3月25日至3月30日</p>
+                    <font color="grey">
+                        <p>只有拥有10比特币以上的用户才有投票资格 ,同一币种每个用户每日只能投5次票，每次消耗1凯特币。</p>
+                    </font>
+                </div>
+                <div class="tp_tit">
+                    <h4 class="intro-hd" style="margin-top:0;">新币投票</h4>
+                </div>
+                <!-- 赞同和反对 -->
+                <div class="tp_list">
+                    <ul class="tp_ul">
+                        <li class="bzw">币种</li>
+                        <li class="tp_zcb">赞成</li>
+                        <li class="tp_df">得分</li>
+                        <li class="tp_act">投票</li>
+                    </ul>
+                    <ul class="tp_list_ul">
+                        <li>
+                            <dl>
+                                <dt class="bzname">
+                                    <a href="#"><img src="images/fhb.png" class="coin-it">
+                                        <p>凤凰币(HFC)</p>
+                                    </a>
+                                </dt>
+                                <dd class="tp_zcb">
+                                    <div class="progress w600">
+                                        <span class="red" style="width: 69%;"><span>5012票</span></span>
+                                    </div>
+                                </dd>
+                                <li class="list_df">
+                                    5012 </li>
+                                <li class="tp_act">
+                                    <input type="button" onclick="voted(1,1)" value="赞成" class="tp-zcbtn" style="cursor: pointer;">
+                                </li>
+                            </dl>
+                        </li>
+                        <li>
+                            <dl>
+                                <dt class="bzname">
+                                    <a href="#"><img src="images/fhb.png" class="coin-it">
+                                        <p>凤凰币(HFC)</p>
+                                    </a>
+                                </dt>
+                                <dd class="tp_zcb">
+                                    <div class="progress w600">
+                                        <span class="red" style="width: 69%;"><span>5012票</span></span>
+                                    </div>
+                                </dd>
+                                <li class="list_df">
+                                    5012 </li>
+                                <li class="tp_act">
+                                    <input type="button" onclick="voted(1,1)" value="赞成" class="tp-zcbtn" style="cursor: pointer;">
+                                </li>
+                            </dl>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /主体内容 -->
+    <!-- 底部 -->
+    <div id="ft" class="ft clearfix">
+        <div class="ft-inner clearfix">
+            <div class="help_service clearfix">
+                <div class="ft-helper clearfix">
+                    <dl>
+                        <dt><a href="javascript:;" title="">关于我们</a></dt>
+                        <dd>
+                            <a href="#>公司简介 </a>
+                            <a href=" #>联系我们 </a>
+                            <a href="#">法律声明 </a>
+                            <a href="#">费用说明 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">新手帮助</a></dt>
+                        <dd>
+                            <a href="#">注册指南 </a>
+                            <a href="#">充值指南 </a>
+                            <a href="#">交易指南 </a>
+                            <a href="#">虚拟币提现指南 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">下载中心</a></dt>
+                        <dd>
+                            <a href="#">虚拟币钱包下载 </a>
+                            <a href="#">浏览器下载 </a>
+                            <a href="#">新币上线申请条例 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ft-service">
+                    <dl>
+                        <dt><span class="icon-hdSprite icon-ft-tishi"></span>
+                            <a href="#" class="fl fb" target="_blank">在线客服</a></dt>
+                        <dd>
+                            <p>
+                                <strong>400-123-1234</strong>
+                            </p>
+                            <p>工作9:00-21:00 / 节假日9:00-18:00</p>
+                            <p>
+                                <a id="a-cs_email" href="mailto:admin@gobiw.com" class="serviceLink sLk1">客服邮箱</a>
+                                <a id="a-cs_ online" href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="serviceLink sLk2">在线客服</a>
+                            </p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="ft-wap clearfix">
+                <ul class="mobile-client">
+                    <li>
+                        <p>关注微信</p>
+                        <p class="mt-10"><img width="110" src="images/code.png"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ft-record">
+            <div class="ft-identity">
+                <em>CopyRight©</em>
+                <span>2016 凤凰币 | 网购最具投资价值的虚拟货币 All rights reserved</span>
+                <span class="color-e6">|</span>
+                <span>福建中泰网络科技有限公司</span>
+                <span class="color-e6">|</span>
+                <span>闽ICP备14013060号</span>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+
+    function voted(vom_id, type) {
+        var voe_id = "1";
+        var url = '/ajax/vote/id/' + voe_id;
+        var param = {
+            "vom_id": vom_id,
+            'type': type
+        }
+        $.post(url, param,
+            function(data) {
+                if (data.flag) {
+                    alert('投票成功');
+                    location.reload();
+                } else {
+                    alert(data.data);
+                }
+            }, "json");
+    }
+    </script>
+</body>
+
+</html>

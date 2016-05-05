@@ -1,32 +1,279 @@
-@(title: String)(include: Html)(content: Html)(scripts: Html)
+@(title: String)(token: String)(include: Html)(content: Html)(scripts: Html)(loginpart: Html)
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>@title</title>
+        <title>@title</title>    
+	    <meta charset="utf-8">
+        <meta http-equiv="pragma" content="no-cache">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="keywords" content="keywords">
+	    <meta name="description" content="description">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
        
-       	<!-- Bootstrap Core CSS -->
-		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-		<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-		<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<!-- Custom CSS -->
-		<link href="@routes.Assets.at("css/style.css")" rel='stylesheet' type='text/css' />
-		<!-- Graph CSS -->
-		<link href="@routes.Assets.at("css/font-awesome.css")" rel="stylesheet"> 
-		<!-- jQuery -->
-		<link href='http://fonts.useso.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
-		<!-- lined-icons -->
-		<link rel="stylesheet" href="@routes.Assets.at("css/icon-font.min.css")" type='text/css' />
+		<link href="@routes.Assets.at("css/common.css")" rel='stylesheet' type='text/css' />
         
+        <style type="text/css">
+        object,
+        embed {
+            -webkit-animation-duration: .001s;
+            -webkit-animation-name: playerInserted;
+            -ms-animation-duration: .001s;
+            -ms-animation-name: playerInserted;
+            -o-animation-duration: .001s;
+            -o-animation-name: playerInserted;
+            animation-duration: .001s;
+            animation-name: playerInserted;
+        }
+        
+        -webkit-keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        -ms-keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        -o-keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        </style>
+
         @include
     </head>
-    <body>
+<body>
+    <!-- 头部 -->
+    <div class="login-top">
+        <div class="login-top-head">
+            <div class="minbox">
+                <div class="h-l">
+                    <em class="contact pl10">客服电话：400-123-1234<i class="pl15">服务时间 9:00-21:00</i></em>
+                    <a href="javascript:void(0)" class="wx pop-wx" title="微信"></a>
+                    <a href="http://weibo.com/gobiw" target="_blank" class="wb" title="微博" rel="nofollow"></a>
+                    <a href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="qq" title="QQ"></a>
+                </div>
+                <div class="h-r pr30">
+                	@loginpart
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="logo-menu">
+        <div class="minbox clearfix">
+            <div class="k-logo pl10">
+                <a href="#" title="首页"><img alt="" src="@routes.Assets.at("images/logo.jpg")"></a>
+            </div>
+            <div class="k-menu pl70">
+                <ul class="clearfix pt10">
+                    <li><a href="index.html">首页</a></li>
+                    <li>
+                        <a class="deal-center">
+                            <span>交易中心</span><img class="jt" src="@routes.Assets.at("images/down.png")">
+                        </a>
+                        <div class="deal-list">
+                            <dl>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                </dd>
+                            </dl>
+                            <div class="sj"></div>
+                            <div class="nocontent"></div>
+                        </div>
+                    </li>
+                    <li><a href="finance_index.html">财务中心</a></li>
+                    <li><a href="safe_index.html">安全中心</a></li>
+                    <li><a href="vote_index">投票中心</a></li>
+                    <li><a href="store.html">投票中心</a></li>
+                    <li><a href="help_index.html">帮助中心</a></li>
+                </ul>
+            </div>
+            <div class="hphone">
+                <a class="qqkefu" target="_blank" href="tencent://message/?uin=123456789&amp;Site=xxx.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes"></a>
+                <span class="iphone">400-123-1234</span>
+            </div>
+        </div>
+    </div>
+    <div id="diyou_dialog" style="display: none">
+        <div class="dialog_main">
+            <div class="dialog_tit">
+                <h2 style="cursor: move;">登录</h2><i class="close CLOSE" data-url=""></i></div>
+            <div class="dialog_con">
+                <div class="login_div">
+                    <div class="login_content">
+                        <div class="login_reg">还没账号？<a href="register" target="_blank">免费注册</a></div>
+                        <div class="login_warning" name="login_warning" style="display:none;">
+                        </div>
+                        <div class="login_username">
+                            <input name="log_name" type="text" placeholder="电子邮箱" value="" class="login_input">
+                        </div>
+                        <div class="login_password">
+                            <input name="log_pwd" type="password" placeholder="密码" value="" class="login_input">
+                        </div>
+                        <!-- <div class="login_verify_code">
+        <input id="log_vericode" name="vericode" type="text" class="login_input_vericode" placeholder="输入验证码" maxlength="4" value=""> <img class="check-code" width="100" src="images/checkcode.jpg"> 
+        </div> -->
+                        <div class="log_status">
+                            <input type="checkbox" name="autologin" value="123123"> 下次自动登录</div>
+                        <div class="login_submit">
+                            <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
+                        </div>
+                        <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function login() {
+        var username = $('input[name="log_name"]').last().val();
+        var password = $('input[name="log_pwd"]').last().val();
+        var autologin = $('input[name="autologin"]').last().is(":checked");
+
+        var url = "https://www.gobiw.com/user/login/";
+        var param = {
+            'user': username,
+            'password': password,
+            'autologin': autologin
+        }
+        $.post(url, param,
+            function(data) {
+                if (data.flag) {
+                    location.reload();
+                } else {
+                    $('.login_warning').last().attr('style', '');
+                    $('.login_warning').last().html('<span>' + data.data + '</span>')
+                }
+            }, "json");
+    }
+    </script>
+    <!-- /头部 -->
+    
         @content
+
+    <!-- 底部 -->
+    <div id="ft" class="ft clearfix">
+        <div class="ft-inner clearfix">
+            <div class="help_service clearfix">
+                <div class="ft-helper clearfix">
+                    <dl>
+                        <dt><a href="javascript:;" title="">关于我们</a></dt>
+                        <dd>
+                            <a href="#>公司简介 </a>
+                            <a href=" #>联系我们 </a>
+                            <a href="#">法律声明 </a>
+                            <a href="#">费用说明 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">新手帮助</a></dt>
+                        <dd>
+                            <a href="#">注册指南 </a>
+                            <a href="#">充值指南 </a>
+                            <a href="#">交易指南 </a>
+                            <a href="#">虚拟币提现指南 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">下载中心</a></dt>
+                        <dd>
+                            <a href="#">虚拟币钱包下载 </a>
+                            <a href="#">浏览器下载 </a>
+                            <a href="#">新币上线申请条例 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ft-service">
+                    <dl>
+                        <dt><span class="icon-hdSprite icon-ft-tishi"></span>
+                            <a href="#" class="fl fb" target="_blank">在线客服</a></dt>
+                        <dd>
+                            <p>
+                                <strong>400-123-1234</strong>
+                            </p>
+                            <p>工作9:00-21:00 / 节假日9:00-18:00</p>
+                            <p>
+                                <a id="a-cs_email" href="" class="serviceLink sLk1">客服邮箱</a>
+                                <a id="a-cs_ online" href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="serviceLink sLk2">在线客服</a>
+                            </p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="ft-wap clearfix">
+                <ul class="mobile-client">
+                    <li>
+                        <p>关注</p>
+                        <p class="mt-10"><img width="110" src="@routes.Assets.at("images/code.png")"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ft-record">
+            <div class="ft-identity">
+                <em>CopyRight©</em>
+                <span>2016 凤凰币 | 网购最具投资价值的虚拟货币 All rights reserved</span>
+                <span class="color-e6">|</span>
+                <span>福建中泰网络科技有限公司</span>
+                <span class="color-e6">|</span>
+                <span>闽ICP备14013060号</span>
+            </div>
+        </div>
+    </div>
         	
+	    <script src="@routes.Assets.at("js/jquery-1.10.2.min.js")"></script>
+	    <script src="@routes.Assets.at("js/jquery.SuperSlide.2.1.1.js")"></script>
+	    <script src="@routes.Assets.at("js/common.js")"></script>
         <script src="@routes.Assets.at("js/jquery.nicescroll.js")"></script>
 		<script src="@routes.Assets.at("js/scripts.js")"></script>
 

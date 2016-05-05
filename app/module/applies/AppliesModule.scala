@@ -17,6 +17,7 @@ import module.auth.AuthModule
 object ApplyTypes {
   case object pushMoney extends ApplyTypesDefines(0, "push money")
   case object popMoney extends ApplyTypesDefines(1, "pop money")
+  case object accountApp extends ApplyTypesDefines(2, "upgrade account")
 }
 
 sealed abstract class ApplyTypesDefines(val t : Int, val des : String)
@@ -47,6 +48,11 @@ object AppliesModule {
         builder += "apply_id" -> apply_id
         
         _data_connection.getCollection("apply") += builder.result
+       
+        import module.applies.ApplyTypes._
+        if (app_type == accountApp.t) {
+            module.auth.AuthModule.updateProfile(user_id, toJson(Map("status" -> 2)))
+        }
         
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
     }

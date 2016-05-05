@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>忘记密码</title>
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="keywords">
+    <meta name="description" content="description">
+    <link rel="stylesheet" href="css/common.css">
+  
+    <style type="text/css">
+    object,
+    embed {
+        -webkit-animation-duration: .001s;
+        -webkit-animation-name: playerInserted;
+        -ms-animation-duration: .001s;
+        -ms-animation-name: playerInserted;
+        -o-animation-duration: .001s;
+        -o-animation-name: playerInserted;
+        animation-duration: .001s;
+        animation-name: playerInserted;
+    }
+    
+    @-webkit-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-ms-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-o-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    </style>
+</head>
+<!-- 头部 -->
+
+<body>
+    <div class="login-top">
+        <div class="login-top-head">
+            <div class="minbox">
+                <div class="h-l">
+                    <em class="contact pl10">客服电话：400-123-1234<i class="pl15">服务时间 9:00-21:00</i></em>
+                    <a href="javascript:void(0)" class="wx pop-wx" title="微信"></a>
+                    <a href="http://weibo.com/gobiw" target="_blank" class="wb" title="微博" rel="nofollow"></a>
+                    <a href="tencent://message/?uin=123456789&amp;Site=xxx.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="qq" title="QQ"></a>
+                </div>
+                <div class="h-r pr30">
+                    您好，<a href="#">12345678@qq.com</a> ID：
+                    <a href="#">15698</a>
+                    <a href="#">退出</a>
+                </div>
+                <!--  <script src="//hm.baidu.com/hm.js?dc59d43ba314be9e7a66f9bc2a416c7d"></script>
+                <script type="text/javascript">
+                var islogin = 1;
+                </script> -->
+            </div>
+        </div>
+    </div>
+    <div class="logo-menu">
+        <div class="minbox clearfix">
+            <div class="k-logo pl10">
+                <a href="#" title="首页"><img alt="" src="images/logo.jpg"></a>
+            </div>
+            <div class="k-menu pl70">
+                <ul class="clearfix pt10">
+                    <li><a href="index.html">首页</a></li>
+                    <li>
+                        <a class="deal-center">
+                            <span>交易中心</span><img class="jt" src="images/down.png">
+                        </a>
+                        <div class="deal-list">
+                            <dl>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                            </dl>
+                            <div class="sj"></div>
+                            <div class="nocontent"></div>
+                        </div>
+                    </li>
+                    <li><a href="finance_index.html">财务中心</a></li>
+                    <li><a href="safe_index.html">安全中心</a></li>
+                    <li><a href="vote_index">投票中心</a></li>
+                    <li><a href="store.html">投票中心</a></li>
+                    <li><a href="help_index.html">帮助中心</a></li>
+                </ul>
+            </div>
+            <div class="hphone">
+                <a class="qqkefu" target="_blank" href="tencent://message/?uin=123456789&amp;Site=xxx.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes"></a>
+                <span class="iphone">400-123-1234</span>
+            </div>
+        </div>
+    </div>
+    <div id="diyou_dialog" style="display: none">
+        <div class="dialog_main">
+            <div class="dialog_tit">
+                <h2 style="cursor: move;">登录</h2><i class="close CLOSE" data-url=""></i></div>
+            <div class="dialog_con">
+                <div class="login_div">
+                    <div class="login_content">
+                        <div class="login_reg">还没账号？<a href="/user/reg" target="_blank">免费注册</a></div>
+                        <div class="login_warning" name="login_warning" style="display:none;">
+                        </div>
+                        <div class="login_username">
+                            <input name="log_name" type="text" placeholder="电子邮箱" value="" class="login_input">
+                        </div>
+                        <div class="login_password">
+                            <input name="log_pwd" type="password" placeholder="密码" value="" class="login_input">
+                        </div>
+                        <!-- <div class="login_verify_code">
+        <input id="log_vericode" name="vericode" type="text" class="login_input_vericode" placeholder="输入验证码" maxlength="4" value=""> <img class="check-code" width="100" src="images/checkcode.jpg"> 
+        </div> -->
+                        <div class="log_status">
+                            <input type="checkbox" name="autologin" value="123123"> 下次自动登录</div>
+                        <div class="login_submit">
+                            <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
+                        </div>
+                        <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function login() {
+        var username = $('input[name="log_name"]').last().val();
+        var password = $('input[name="log_pwd"]').last().val();
+        var autologin = $('input[name="autologin"]').last().is(":checked");
+
+        var url = "https://www.gobiw.com/user/login/";
+        var param = {
+            'user': username,
+            'password': password,
+            'autologin': autologin
+        }
+        $.post(url, param,
+            function(data) {
+                if (data.flag) {
+                    location.reload();
+                } else {
+                    $('.login_warning').last().attr('style', '');
+                    $('.login_warning').last().html('<span>' + data.data + '</span>')
+                }
+            }, "json");
+    }
+    </script>
+    <!-- /头部 -->
+    <!-- 注册 -->
+    <div class="minbox" id="reg-step1">
+        <div class="login_step">
+            <ul class="order clearfix step-1 pt10">
+                <li class="active"><i>1</i>确认账号
+                    <div class="order_line"></div>
+                </li>
+                <li id="step2"><i class="">2</i>验证身份
+                    <div class="order_line"></div>
+                </li>
+                <li id="step3"><i class="">3</i>重置密码
+                    <div class="order_line"></div>
+                </li>
+                <li id="step4"><i class="">4</i>成功</li>
+            </ul>
+        </div>
+        <div class="reg_box">
+            <div class="reg_wrap pt60">
+                <div id="qqlogin" style="margin:0 0 30px -50px"></div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">电子邮箱：</div>
+                    <input type="text" id="email" value="" onblur="checkEmail()">
+                    <div id="email-msg" class="form_explain" data-explain="请输入有效的电子邮箱<em></em>" style="display: none;">请输入有效的电子邮箱<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">验证码：</div>
+                    <input type="text" id="captcha" value="">
+                    <div id="captcha-msg" style="display: none;">请输入有效的验证码<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title"></div>
+                    <img class="check-code" width="100" height="35" id="rcode" src="https://www.gobiw.com/user/generate/">
+                    <a href="javascript:;" onclick="refresh()">看不清，换一张</a>
+                </div>
+                <div class="reg_button_box">
+                    <input type="button" onclick="getStep(2)" value="下一步">
+                </div>
+            </div>
+        </div>
+        <div class="reg_box" id="step2_div" style="display: none">
+            <div class="reg_wrap pt60">
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">邮箱：</div>
+                    <span style=" line-height:40px;" id="emailshow"></span>
+                    <div id="send-msg" style="display: none;">邮件已发送，请查收邮箱<em></em></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /注册 -->
+    <!-- 底部 -->
+    <div id="ft" class="ft clearfix">
+        <div class="ft-inner clearfix">
+            <div class="help_service clearfix">
+                <div class="ft-helper clearfix">
+                    <dl>
+                        <dt><a href="javascript:;" title="">关于我们</a></dt>
+                        <dd>
+                            <a href="#>公司简介 </a>
+                            <a href=" #>联系我们 </a>
+                            <a href="#">法律声明 </a>
+                            <a href="#">费用说明 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">新手帮助</a></dt>
+                        <dd>
+                            <a href="#">注册指南 </a>
+                            <a href="#">充值指南 </a>
+                            <a href="#">交易指南 </a>
+                            <a href="#">虚拟币提现指南 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">下载中心</a></dt>
+                        <dd>
+                            <a href="#">虚拟币钱包下载 </a>
+                            <a href="#">浏览器下载 </a>
+                            <a href="#">新币上线申请条例 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ft-service">
+                    <dl>
+                        <dt><span class="icon-hdSprite icon-ft-tishi"></span>
+                            <a href="#" class="fl fb" target="_blank">在线客服</a></dt>
+                        <dd>
+                            <p>
+                                <strong>400-123-1234</strong>
+                            </p>
+                            <p>工作9:00-21:00 / 节假日9:00-18:00</p>
+                            <p>
+                                <a id="a-cs_email" href="mailto:admin@gobiw.com" class="serviceLink sLk1">客服邮箱</a>
+                                <a id="a-cs_ online" href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="serviceLink sLk2">在线客服</a>
+                            </p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="ft-wap clearfix">
+                <ul class="mobile-client">
+                    <li>
+                        <p>关注微信</p>
+                        <p class="mt-10"><img width="110" src="images/code.png"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ft-record">
+            <div class="ft-identity">
+                <em>CopyRight©</em>
+                <span>2016 凤凰币 | 网购最具投资价值的虚拟货币 All rights reserved</span>
+                <span class="color-e6">|</span>
+                <span>福建中泰网络科技有限公司</span>
+                <span class="color-e6">|</span>
+                <span>闽ICP备14013060号</span>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="js/common.js"></script>
+    <script type="text/javascript">
+    function getStep(step) {
+        var email = $('#email').val();
+        var captcha = $('#captcha').val();
+        if (step == 2) {
+            if (!checkEmail()) {
+                return false;
+            }
+            $('#emailshow').html(email);
+            sendEmail();
+        }
+
+        $('.reg_box').hide();
+        $('#step' + step + '_div').show();
+        $('#step' + step).addClass('active');
+    }
+
+    function refresh() {
+        var url = "https://www.gobiw.com/user/generate/r/" + Math.random();
+        $('#rcode').attr('src', url);
+    }
+
+    function checkEmail() {
+        var email = $('#email').val();
+        if (!email) {
+            $('#email-msg').show();
+            return false;
+        } else {
+            var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if (!reg.test(email)) {
+                $('#email-msg').show();
+                return false;
+            }
+            $('#email-msg').hide();
+        }
+        return true;
+    }
+
+    function sendEmail() {
+        var email = $('#email').val();
+        var captcha = $('#captcha').val();
+        $.ajax({
+            type: "POST",
+            url: "https://www.gobiw.com/user/sendemail/",
+            data: "captcha=" + captcha + "&email=" + email,
+            dataType: 'json',
+            success: function(s) {
+                $('#send-msg').show();
+                $('#send-msg').html(s.data + '<em></em>');
+            }
+        });
+    }
+    </script>
+</body>
+
+</html>

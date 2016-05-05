@@ -1,0 +1,146 @@
+@(token: String)(app: module.auth.RegisterApprovedDefines)(profile: play.api.libs.json.JsValue)
+
+@main("手机认证")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">手机绑定</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_safe">
+                        <a href="index.html"><i class="coin_menu_op_14"></i><span class="pl10">个人中心</span></a>
+                    </li>
+                    <li id="nav_auth" class="active">
+                        <a href="auth.html"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
+                    </li>
+                    <li id="nav_editpw">
+                        <a href="change_pwd.html"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
+                    </li>
+                    <li id="nav_phone" >
+                        <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
+                    </li>
+                </ul>
+            </div>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont-tit">
+                    <h2>实名认证</h2>
+                </div>
+                <div class="cont-detail">
+                	@app match {
+               		case module.auth.RegisterApprovedStatus.notApproved => {	
+                	<div class="pwtrade">
+                        <div class="band_error">
+                            <em></em>还没有通过认证
+                        </div>
+                        <br>
+                        <div class="set_verify">
+                            <ul>
+                                <li>您的身份信息 </li>
+                                <li>姓名：@{(profile \ "name").asOpt[String].get}</li>
+                                <li>证件类型： @{(profile \ "type").asOpt[Int].get match {
+                                				case 0 => "身份证"
+                                				case 1 => "军官证"
+                                				case 2 => "护照"
+                                			  }}
+                                </li>
+                                <li>身份证号：@{(profile \ "register_id").asOpt[String].get}</li>
+                                <li><button id='app' class='btn'>申请认证</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                	} 
+               		case module.auth.RegisterApprovedStatus.approved => {	
+                    <div class="pwtrade">
+                        <div class="band_succ">
+                            <em></em>已通过实名认证
+                        </div>
+                        <br>
+                        <div class="set_verify">
+                            <ul>
+                                <li>您的身份信息 </li>
+                                <li>姓名：@{(profile \ "name").asOpt[String].get}</li>
+                                <li>证件类型： @{(profile \ "type").asOpt[Int].get match {
+                                				case 0 => "身份证"
+                                				case 1 => "军官证"
+                                				case 2 => "护照"
+                                			  }}
+                                </li>
+                                <li>身份证号：@{(profile \ "register_id").asOpt[String].get}</li>
+                                <li>认证时间：2016-04-15 19:07:01</li>
+                            </ul>
+                        </div>
+                    </div>
+                    } 
+               		case module.auth.RegisterApprovedStatus.approving => {	
+                     <div class="pwtrade">
+                        <div class="band_error">
+                            <em></em>审核中
+                        </div>
+                        <br>
+                        <div class="set_verify">
+                            <ul>
+                                <li>您的身份信息 </li>
+                                <li>姓名：@{(profile \ "name").asOpt[String].get}</li>
+                                <li>证件类型： @{(profile \ "type").asOpt[Int].get match {
+                                				case 0 => "身份证"
+                                				case 1 => "军官证"
+                                				case 2 => "护照"
+                                			  }}
+                                </li>
+                                <li>身份证号：@{(profile \ "register_id").asOpt[String].get}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    }}
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+
+    <script type="text/javascript">
+        $('#app').click(function(){
+
+            var query_object = new Object();
+            query_object['amount'] = 0;
+            query_object['type'] = 2;
+            query_object['message'] = '我要开会员';
+
+            $.ajax({
+                url: "/apply/pushapp",
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json, charset=utf-8',
+                data: JSON.stringify(query_object),
+                cache: false,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+                },
+                success: function (data) {
+                    if (data.status == "ok") {
+                        alert("提交申请成功");
+                        location.reload();
+                    } else {
+                        alert(data.error.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("发布失败，请检查您的输入");
+                }
+            });
+
+        });
+    </script>
+
+}  {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <a href="#">退出</a>
+}

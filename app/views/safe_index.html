@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>个人中心</title>
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="keywords">
+    <meta name="description" content="description！">
+    <link rel="stylesheet" href="css/common.css">
+  
+    <style type="text/css">
+    object,
+    embed {
+        -webkit-animation-duration: .001s;
+        -webkit-animation-name: playerInserted;
+        -ms-animation-duration: .001s;
+        -ms-animation-name: playerInserted;
+        -o-animation-duration: .001s;
+        -o-animation-name: playerInserted;
+        animation-duration: .001s;
+        animation-name: playerInserted;
+    }
+    
+    @-webkit-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-ms-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-o-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="login-top">
+        <div class="login-top-head">
+            <div class="minbox">
+                <div class="h-l">
+                    <em class="contact pl10">客服电话：400-123-1234<i class="pl15">服务时间 9:00-21:00</i></em>
+                    <a href="javascript:void(0)" class="wx pop-wx" title="微信"></a>
+                    <a href="http://weibo.com/gobiw" target="_blank" class="wb" title="微博" rel="nofollow"></a>
+                    <a href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="qq" title="QQ"></a>
+                </div>
+                <div class="h-r pr30">
+                    您好，<a href="#">12345678@qq.com</a> ID：
+                    <a href="#">15698</a>
+                    <a href="#">退出</a>
+                </div>
+               <!--  <script src="//hm.baidu.com/hm.js?dc59d43ba314be9e7a66f9bc2a416c7d"></script>
+                <script type="text/javascript">
+                var islogin = 1;
+                </script> -->
+            </div>
+        </div>
+    </div>
+    <div class="logo-menu">
+        <div class="minbox clearfix">
+            <div class="k-logo pl10">
+                <a href="/?5196575" title="首页"><img alt="" src="images/logo.jpg"></a>
+            </div>
+            <div class="k-menu pl70">
+                <ul class="clearfix pt10">
+                    <li><a href="index.html">首页</a></li>
+                    <li>
+                        <a class="deal-center">
+                            <span>交易中心</span><img class="jt" src="images/down.png">
+                        </a>
+                        <div class="deal-list">
+                            <dl>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                            </dl>
+                            <div class="sj"></div>
+                            <div class="nocontent"></div>
+                        </div>
+                    </li>
+                    <li><a href="finance_index.html">财务中心</a></li>
+                    <li><a href="safe_index.html">安全中心</a></li>
+                    <li><a href="vote_index">投票中心</a></li>
+                    <li><a href="store.html">投票中心</a></li>
+                    <li><a href="help_index.html">帮助中心</a></li>
+                </ul>
+
+            </div>
+            <div class="hphone">
+                <a class="qqkefu" target="_blank" href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes"></a>
+                <span class="iphone">400-123-1234</span>
+            </div>
+        </div>
+    </div>
+    <div id="diyou_dialog" style="display: none">
+        <div class="dialog_main">
+            <div class="dialog_tit">
+                <h2 style="cursor: move;">登录</h2><i class="close CLOSE" data-url=""></i></div>
+            <div class="dialog_con">
+                <div class="login_div">
+                    <div class="login_content">
+                        <div class="login_reg">还没账号？<a href="/user/reg" target="_blank">免费注册</a></div>
+                        <div class="login_warning" name="login_warning" style="display:none;">
+                        </div>
+                        <div class="login_username">
+                            <input name="log_name" type="text" placeholder="电子邮箱" value="" class="login_input">
+                        </div>
+                        <div class="login_password">
+                            <input name="log_pwd" type="password" placeholder="密码" value="" class="login_input">
+                        </div>
+                        <!-- <div class="login_verify_code">
+        <input id="log_vericode" name="vericode" type="text" class="login_input_vericode" placeholder="输入验证码" maxlength="4" value=""> <img class="check-code" width="100" src="images/checkcode.jpg"> 
+        </div> -->
+                        <div class="log_status">
+                            <input type="checkbox" name="autologin" value="123123"> 下次自动登录</div>
+                        <div class="login_submit">
+                            <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
+                        </div>
+                        <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /头部 -->
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">安全中心</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_safe" class="active">
+                        <a href="index.html"><i class="coin_menu_op_14"></i><span class="pl10">个人中心</span></a>
+                    </li>
+                    <li id="nav_auth">
+                        <a href="auth.html"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
+                    </li>
+                    <li id="nav_editpw" >
+                        <a href="change_pwd.html"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
+                    </li>
+                    <li id="nav_phone">
+                        <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
+                    </li>
+                     
+                </ul>
+            </div> 
+         
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont-tit">
+                    <h2>个人中心</h2>
+                </div>
+                <div class="cont-detail">
+                    <div class="safe_center clearfix">
+                        <div class="sc_level">
+                            <div class="sc_level_2"></div>
+                            <div class="sc_level_info"></div>
+                        </div>
+                        <dl>
+                            <dt>ID：<span>15698</span></dt>
+                            <dd>姓名：王飞</dd>
+                            <dd>邮箱：906834468@qq.com</dd>
+                        </dl>
+                    </div>
+                    <ul class="sc_statu mt30">
+                        <li>
+                            <i class="iconfont active"></i>
+                            <dl>
+                                <dt>实名认证</dt>
+                                <dd class="alpass">已认证<a href="/my/auth">查看</a></dd>
+                            </dl>
+                        </li>
+                        
+                        <li>
+                            <i class="iconfont active"></i>
+                            <dl>
+                                <dt>绑定手机</dt>
+                                <dd class="alpass">已绑定</dd>
+                            </dl>
+                        </li>
+                    </ul>
+                    <div class="sc_info_list" id="sc_info_list">
+                        <dl style="background-color: rgb(249, 249, 249);">
+                            <dt>密码</dt>
+                            <dd>
+                                <p>登录时需要输入的密码</p>
+                            </dd>
+                            <dd>
+                                <div class="changepw"><a href="change_pwd.html">修改登录密码</a></div>
+                            </dd>
+                        </dl>
+                        
+                        <dl style="background-color: rgb(249, 249, 249);">
+                            <dt>实名认证</dt>
+                            <dd>
+                                <p>受国家要求及为了您的资金安全需进行实名认证</p>
+                            </dd>
+                            <dd>
+                                <div class="changepw">
+                                    已认证 ｜ <a href="/my/auth">查看</a>
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl style="background-color: rgb(249, 249, 249);">
+                            <dt>手机绑定</dt>
+                            <dd>
+                                <p>绑定手机，可以包含您的资金安全</p>
+                            </dd>
+                            <dd>
+                                <div class="changepw">
+                                    已绑定 ｜ <a href="/my/phone">修改绑定</a>
+                                </div>
+                            </dd>
+                        </dl>
+                       
+                    </div>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+    <!-- 底部 -->
+    <div id="ft" class="ft clearfix">
+        <div class="ft-inner clearfix">
+            <div class="help_service clearfix">
+                <div class="ft-helper clearfix">
+                    <dl>
+                        <dt><a href="javascript:;" title="">关于我们</a></dt>
+                        <dd>
+                            <a href="#>公司简介 </a>
+                            <a href=" #>联系我们 </a>
+                            <a href="#">法律声明 </a>
+                            <a href="#">费用说明 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">新手帮助</a></dt>
+                        <dd>
+                            <a href="#">注册指南 </a>
+                            <a href="#">充值指南 </a>
+                            <a href="#">交易指南 </a>
+                            <a href="#">虚拟币提现指南 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><a href="javascript:;" title="">下载中心</a></dt>
+                        <dd>
+                            <a href="#">虚拟币钱包下载 </a>
+                            <a href="#">浏览器下载 </a>
+                            <a href="#">新币上线申请条例 </a>
+                            <a href="#" title="">更多</a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ft-service">
+                    <dl>
+                        <dt><span class="icon-hdSprite icon-ft-tishi"></span>
+                            <a href="#" class="fl fb" target="_blank">在线客服</a></dt>
+                        <dd>
+                            <p>
+                                <strong>400-123-1234</strong>
+                            </p>
+                            <p>工作9:00-21:00 / 节假日9:00-18:00</p>
+                            <p>
+                                <a id="a-cs_email" href="mailto:admin@gobiw.com" class="serviceLink sLk1">客服邮箱</a>
+                                <a id="a-cs_ online" href="tencent://message/?uin=123456789&amp;Site=Gobiw.com凤凰币 | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="serviceLink sLk2">在线客服</a>
+                            </p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="ft-wap clearfix">
+                <ul class="mobile-client">
+                    <li>
+                        <p>关注微信</p>
+                        <p class="mt-10"><img width="110" src="images/code.png"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ft-record">
+            <div class="ft-identity">
+                <em>CopyRight©</em>
+                <span>2016 凤凰币 | 网购最具投资价值的虚拟货币 All rights reserved</span>
+                <span class="color-e6">|</span>
+                <span>福建中泰网络科技有限公司</span>
+                <span class="color-e6">|</span>
+                <span>闽ICP备14013060号</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

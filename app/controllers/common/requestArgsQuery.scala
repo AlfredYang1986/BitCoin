@@ -15,7 +15,7 @@ object requestArgsQuery extends Controller {
   def requestArgs(request : Request[AnyContent])(func : JsValue => JsValue) : Result = {
   		try {
   			request.body.asJson.map { x => 
-  				Ok(func(x))
+  			    Ok(func(x))
   			}.getOrElse (BadRequest("Bad Request for input"))
   		} catch {
   			case _ : Exception => BadRequest("Bad Request for input")

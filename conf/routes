@@ -3,10 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /								controllers.BitCode.landing
-GET     /landing                    	controllers.BitCode.landing
-GET     /sign                       	controllers.BitCode.sign
-GET     /home	            			controllers.BitCode.home
+GET     /register						controllers.BitCode.register				
+GET     /safe/auth/:t					controllers.BitCode.safe_auth(t)		
+GET     /safe/auth		 				controllers.BitCode.safe_auth(t="")	
 
 # Auth 
 POST	/auth/register					controllers.AuthController.register

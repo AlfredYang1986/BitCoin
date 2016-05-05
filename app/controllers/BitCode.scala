@@ -4,40 +4,37 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.ws._
 
-import scala.concurrent.Await
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits._
-import akka.util.Timeout
-import scala.concurrent.duration._
-import play.api.libs.concurrent.Execution.Implicits._
-import com.ning.http.client.Realm.AuthScheme
-
-import play.api.libs.json.Json
-import play.api.libs.json.Json.{toJson}
-import play.api.libs.json.JsValue
-
-import module.auth._
-import controllers.common.requestArgsQuery.{requestGetRequestArgs}
-import module.report.ReportModule
-import module.bitnews.BitNews
-import module.othernews.OtherNews
+import module.auth.RegisterApprovedStatus._
+import module.auth.AuthModule.queryProfile
 
 object BitCode extends Controller {
 
-  def landing = Action {
-    Ok(views.html.landing())
-  }
- 
-  def sign = Action {
-    Ok(views.html.sign())
-  }
-
-  def home = Action { request =>
-      val reports = (ReportModule.queryReports(toJson("")) \ "result").asOpt[List[String]].get
-      val bitnews = (BitNews.queryBitNews(toJson("")) \ "result").asOpt[List[String]].get
-      val othernews = (OtherNews.queryOtherNews(toJson("")) \ "result").asOpt[List[String]].get
-      Ok(views.html.home(reports)(bitnews)(othernews)) 
-//      if (requestGetRequestArgs(request)(AuthModule.authCheck)) {
-//      }
-    } 
+    /**
+     * 注册
+     */
+    def register = Action {
+        Ok(views.html.register())
+    }
+    
+    /**
+     * 实名认证
+     */
+    def safe_auth(t : String) = Action { request => 
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val user_id = request.cookies.get("user_id").map (x => x.value).getOrElse("")
+            
+            val profile = (queryProfile(user_id, null) \ "result")
+            val app = (profile \ "status").asOpt[Int].get
+            Ok(views.html.safe_auth(token)(
+                if (app == approved.s) approved
+                else if (app == notApproved.s) notApproved
+                else approving
+            )(profile))
+        }
+    }
 }

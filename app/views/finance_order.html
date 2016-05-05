@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>成交查询</title>
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="keywords">
+    <meta name="description" content="description">
+    <link rel="stylesheet" href="css/common.css">
+    <!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<![endif]-->
+    <style type="text/css">
+    object,
+    embed {
+        -webkit-animation-duration: .001s;
+        -webkit-animation-name: playerInserted;
+        -ms-animation-duration: .001s;
+        -ms-animation-name: playerInserted;
+        -o-animation-duration: .001s;
+        -o-animation-name: playerInserted;
+        animation-duration: .001s;
+        animation-name: playerInserted;
+    }
+    
+    @-webkit-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-ms-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @-o-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="login-top">
+        <div class="login-top-head">
+            <div class="minbox">
+                <div class="h-l">
+                    <em class="contact pl10">客服电话：400-123-1234<i class="pl15">服务时间 9:00-21:00</i></em>
+                    <a href="javascript:void(0)" class="wx pop-wx" title="微信"></a>
+                    <a href="http://weibo.com/gobiw" target="_blank" class="wb" title="微博" rel="nofollow"></a>
+                    <a href="tencent://message/?uin=22645950&amp;Site=xxx.com | 网购最具投资价值的虚拟货币&amp;Menu=yes" target="_blank" class="qq" title="QQ"></a>
+                </div>
+                <div class="h-r pr30">
+                    您好，<a href="#">12345678@qq.com</a> ID：
+                    <a href="#">15698</a>
+                    <a href="#">退出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="logo-menu">
+        <div class="minbox clearfix">
+            <div class="k-logo pl10">
+                <a href="/?5196575" title="首页"><img alt="" src="images/logo.jpg"></a>
+            </div>
+            <div class="k-menu pl70">
+                <ul class="clearfix pt10">
+                    <li><a href="index.html">首页</a></li>
+                    <li>
+                        <a class="deal-center">
+                            <span>交易中心</span><img class="jt" src="images/down.png">
+                        </a>
+                        <div class="deal-list">
+                            <dl>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                                <dd>
+                                    <a href="#"><img class="coin-it" src="images/k.png">凯特币(KTC)</a>
+                                </dd>
+                            </dl>
+                            <div class="sj"></div>
+                            <div class="nocontent"></div>
+                        </div>
+                    </li>
+                    <li><a href="finance_index.html">财务中心</a></li>
+                    <li><a href="safe_index.html">安全中心</a></li>
+                    <li><a href="vote_index">投票中心</a></li>
+                    <li><a href="store.html">投票中心</a></li>
+                    <li><a href="help_index.html">帮助中心</a></li>
+                </ul>
+            </div>
+            <div class="hphone">
+                <a class="qqkefu" target="_blank" href="tencent://message/?uin=22645950&amp;Site=xxx.com | 网购最具投资价值的虚拟货币&amp;Menu=yes"></a>
+                <span class="iphone">400-123-1234</span>
+            </div>
+        </div>
+    </div>
+    <div id="diyou_dialog" style="display: none">
+        <div class="dialog_main">
+            <div class="dialog_tit">
+                <h2 style="cursor: move;">登录</h2><i class="close CLOSE" data-url=""></i></div>
+            <div class="dialog_con">
+                <div class="login_div">
+                    <div class="login_content">
+                        <div class="login_reg">还没账号？<a href="/user/reg" target="_blank">免费注册</a></div>
+                        <div class="login_warning" name="login_warning" style="display:none;">
+                        </div>
+                        <div class="login_username">
+                            <input name="log_name" type="text" placeholder="电子邮箱" value="" class="login_input">
+                        </div>
+                        <div class="login_password">
+                            <input name="log_pwd" type="password" placeholder="密码" value="" class="login_input">
+                        </div>
+                        <!-- <div class="login_verify_code">
+        <input id="log_vericode" name="vericode" type="text" class="login_input_vericode" placeholder="输入验证码" maxlength="4" value=""> <img class="check-code" width="100" src="images/checkcode.jpg"> 
+        </div> -->
+                        <div class="log_status">
+                            <input type="checkbox" name="autologin" value="123123"> 下次自动登录</div>
+                        <div class="login_submit">
+                            <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
+                        </div>
+                        <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function login() {
+        var username = $('input[name="log_name"]').last().val();
+        var password = $('input[name="log_pwd"]').last().val();
+        var autologin = $('input[name="autologin"]').last().is(":checked");
+
+        var url = "https://www.gobiw.com/user/login/";
+        var param = {
+            'user': username,
+            'password': password,
+            'autologin': autologin
+        }
+        $.post(url, param,
+            function(data) {
+                if (data.flag) {
+                    location.reload();
+                } else {
+                    $('.login_warning').last().attr('style', '');
+                    $('.login_warning').last().html('<span>' + data.data + '</span>')
+                }
+            }, "json");
+    }
+    </script>
+    <!-- /头部 -->
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">成交查询</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_index">
+                        <a href="index.html"><i class="coin_menu_op_0"></i><span class="pl10">财务中心</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="people_pay.html"><i class="coin_menu_op_18"></i><span class="pl10">人民币充值</span></a>
+                    </li>
+                    <li id="nav_currencyin" style="border-top: 1px solid #ccc">
+                        <a href="currencyin.html"><i class="coin_menu_op_4"></i><span class="pl10">转入虚拟币</span></a>
+                    </li>
+                    <li id="nav_currencyout" style="border-top: 1px solid #ccc">
+                        <a href="currencyout.html"><i class="coin_menu_op_5"></i><span class="pl10">转出虚拟币</span></a>
+                    </li>
+                    <li id="nav_entrust" style="border-top: 1px solid #ccc">
+                        <a href="mandate.html"><i class="coin_menu_op_6"></i><span class="pl10">委托管理</span></a>
+                    </li>
+                    <li id="nav_order" class="active" style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc">
+                        <a href="order.html"><i class="coin_menu_op_7"></i><span class="pl10">成交查询</span></a>
+                    </li>
+                </ul>
+            </div>
+            <script type="text/javascript">
+            document.getElementById('nav_order').setAttribute("class", "active");
+            </script>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont-tit">
+                    <h2>成交查询</h2>
+                </div>
+                <div class="clearfix pt20">
+                    <div class="bizhong_select">
+                        <div class="bz_btn">
+                            <img class="coin-it" id="currentimg" data-value="15" src="images/k.png">
+                            <span id="coin-default">凯特币(KTC)</span></div>
+                        <i></i>
+                        <ul id="coinbox">
+                            <li>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                            </li>
+                            <li>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                            </li>
+                            <li>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt20">
+                    <table class="mes-dis">
+                        <thead>
+                            <tr>
+                                <th>成交时间</th>
+                                <th>
+                                    <select id="trades-type" onchange="gopage()">
+                                        <option value="0">买/卖</option>
+                                        <option value="1">买入</option>
+                                        <option value="2">卖出</option>
+                                    </select>
+                                </th>
+                                <th>成交价格</th>
+                                <th>成交数量</th>
+                                <th>成交金额</th>
+                                <th>手续费</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <p class="tc">暂无记录</p>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+    <!-- 底部 -->
+    <div class="ft-record">
+        <div class="ft-identity">
+            <em>CopyRight©</em>
+            <span>2016 凤凰币币网 | 网购最具投资价值的虚拟货币 All rights reserved</span>
+            <span class="color-e6">|</span>
+            <span>福建中泰网络科技有限公司</span>
+            <span class="color-e6">|</span>
+            <span>闽ICP备14013060号</span>
+        </div>
+    </div>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="js/common.js"></script>
+    <script type="text/javascript">
+    $('#trades-type').val(0);
+
+    function gopage() {
+        var type = $('#trades-type').val();
+        var id = $('#currentimg').data('value');
+        var url = '/finance/order/id/' + id + '/type/' + type;
+        location.href = url;
+    }
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+    </script>
+</body>
+
+</html>
