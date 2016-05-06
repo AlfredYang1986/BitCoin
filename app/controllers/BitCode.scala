@@ -135,11 +135,39 @@ object BitCode extends Controller {
             val profile = (queryProfileWithToken(token) \ "result")
             val user_id = (profile \ "user_id").asOpt[String].get
             val applies = (queryMyApplications(user_id, toJson("")) \ "result").asOpt[List[JsValue]].get
-            println(applies)
             Ok(views.html.finance_query_app(token)(profile)(applies))
         }
     }
     
+    /******************************************************/
+    
+    /******************************************************/
+    /**
+     * 交易界面
+     */
+    def btc_trade(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.trade_btc(token)(profile))
+        }
+    }
+    
+    def ltc_trade(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.trade_ltc(token)(profile))
+        }
+    }
     /******************************************************/
     
     /**

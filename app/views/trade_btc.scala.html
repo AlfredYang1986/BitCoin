@@ -1,0 +1,274 @@
+@(token: String)(profile: play.api.libs.json.JsValue)
+
+@main("BTC交易")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">BTC交易</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_safe" class="active">
+                        <a href="/trade/btc"><i class="coin_menu_op_14"></i><span class="pl10">BTC交易</span></a>
+                    </li>
+                    <li id="nav_auth">
+                        <a href="/trade/ltc"><i class="coin_menu_op_8"></i><span class="pl10">LTC交易</span></a>
+                    </li>
+<!--                     <li id="nav_phone">
+                        <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
+                    </li> -->
+                </ul>
+            </div>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <ul class="price_today_ul" id="price_today_ul">
+                    <li>
+                        <dl class="minbox clearfix">
+                            <dt class="bname">
+                                <a href="/coin/index/id/15"><img class="coin-it" src="@routes.Assets.at("images/btb.png")" width="26">
+                                    <p>比特币(BTC)</p>
+                                </a>
+                            </dt>
+                            <dd class="red b_price">￥0.416</dd>
+                            <dd>0.417</dd>
+                            <dd>0.423</dd>
+                            <dd class="w142">340982.505</dd>
+                            <dd class="w142 green" style="text-indent:2.8em;color:red">-6.73%</dd>
+                            <dd id="15_plot" style="width: 120px; height: 35px; padding: 0px; position: relative;">
+                                <canvas class="flot-base" width="120" height="35" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 120px; height: 35px;"></canvas>
+                                <canvas class="flot-overlay" width="120" height="35" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 120px; height: 35px;"></canvas>
+                            </dd>
+                            <dd class="bnt_jy"><a class="tojy" href="#">去交易</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+                <div style="width: 100%; height: 560px;" id="sosobtc_kline"></div>
+                <div class="charge_input">
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <div class="charge_title">购买数量：</div>
+                                    <div class="charge_text">
+                                        <input type="text" class="form-control" name="buy" id="buy"> &nbsp;&nbsp;
+                                    </div>
+                                    <!-- <div class="form_explain" id="money-msg" style="margin-top: -40px; position: relative; left: 50%; ">1％手续费<em></em></div> -->
+                                    </div>
+                                        <ul style="clear:both;">
+                                            <div class="cnyin_btn">
+                                                <input style="margin:30px 0 30px 30px;" type="button" value="购买" onclick="buybtc()">
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="charge_title">卖出数量：</div>
+                                    <div class="charge_text">
+                                        <input type="text" class="form-control" name="sell" id="sell"> &nbsp;&nbsp;
+                                    </div>
+                                    <!-- <div class="form_explain" id="money-msg" style="margin-top: -40px; position: relative; left: 50%; ">1％手续费<em></em></div> -->
+                                    </div>
+                                        <ul style="clear:both;">
+                                            <div class="cnyin_btn">
+                                                <input style="margin:30px 0 30px 30px;" type="button" value="出售" onclick="sellbtc()">
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+    <!-- <script src="http://www.sosobtc.com/public/assets/plugin/sosobtc_plugin.js"></script> -->
+    <script src="@routes.Assets.at("js/kline.js")"></script>
+    <script type="text/javascript">
+        (function(){
+            SOSOBTC('Kline').init({
+                sid : 'okcoin_btc',
+                id : 'sosobtc_kline'
+            });
+        })();
+    </script>
+    <script type="text/javascript">
+
+    function buybtc() {
+        var money = Number($("input[name='buy']").val());
+        if (!money) {
+            alert('请填写正确的数额');
+            return;
+        }
+        // if (money < 100 || money > 50000) {
+        //     alert('超出金额范围');
+        //     return;
+        // }
+
+        var query_object = new Object();
+        query_object['amount'] = money;
+        query_object['type'] = 0;
+
+        $.ajax({
+            url: "/trade/buy",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {
+                    alert("购买成功");
+                    location.href = "/finance/index";
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("请检查您的输入");
+            }
+        });
+    }
+
+        function sellbtc() {
+        var money = Number($("input[name='sell']").val());
+        if (!money) {
+            alert('请填写正确的数额');
+            return;
+        }
+        // if (money < 100 || money > 50000) {
+        //     alert('超出金额范围');
+        //     return;
+        // }
+
+        var query_object = new Object();
+        query_object['amount'] = money;
+        query_object['type'] = 0;
+
+        $.ajax({
+            url: "/trade/sell",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object), 
+            cache: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {
+                    alert("出售成功");
+                    location.href = "/finance/index";
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("请检查您的输入");
+            }
+        });
+    }
+
+    function getAllBrief() {
+        $.ajax({
+            url: "/market/btc",
+            type: 'POST',
+            dataType: 'json',
+            //contentType: 'application/json, charset=utf-8',
+            cache: false,
+            success: function (data) {
+                var html = '';
+                    // var d = data.data;
+                    // for (var i in d) {
+                        {
+                        var coin = data.ticker;
+                        html += '<li><dl class="minbox clearfix">';
+                        // html += '<dt class="bname"><a href="/coin/index/id/' + d[i]['cuy_id'] + '">';
+                        // html += '<img class="coin-it" src="' + d[i]['cuy_logo'] + '" width="26">';
+                        // html += '<p>' + d[i]['cuy_name'] + '(' + d[i]['cuy_abbr'] + ')</p></a></dt>';
+                        html += '<dt class="bname">'
+                        html += '<a href="/coin/index/id/15"><img class="coin-it" src="@routes.Assets.at("images/btb.png")" width="26">'
+                        html += '<p>比特币(BTC)</p>'
+                        html += '</a>'
+                        html += '</dt>'
+                        html += '<dd class="red b_price">￥' + coin.last + '</dd>';
+                        html += '<dd>' + coin.buy + '</dd>';
+                        html += '<dd>' + coin.sell + '</dd>';
+                        html += '<dd class="w142">' + coin.vol + '</dd>';
+                        var num = ((coin.last - coin.open) / coin.open);
+                        if (coin.last - coin.open < 0) {
+                            html += '<dd class="w142 green" style="text-indent:2.8em;color:red">' + Math.round(num * 10000) / 100 + '%</dd>';
+                        } else {
+                            html += '<dd class="w142" style="text-indent:2.8em;color:red">+' + Math.round(num * 10000) / 100 + '%</dd>';
+                        }
+
+                        // html += '<dd id="' + d[i]['cuy_id'] + '_plot"style="width:120px;height:35px;"></dd>';
+                        html += '<dd id="' + '_plot"style="width:120px;height:35px;"></dd>';
+                        // if (d[i]['cuy_status'] == 1) {
+                            // html += '<dd class="bnt_jy"><a class="tojy" href="/coin/subscribe/id/' + '">去认购</a></dd>';
+                        // } else {
+                            html += '<dd class="bnt_jy"><a class="tojy" href="/coin/index/id/' + '">去交易</a></dd>';
+                        // }
+                        html += '</dl></li>';
+                        }
+                    // }
+                    $('#price_today_ul').html(html);
+                    // coinplot();
+            },
+            error: function (xhr, status, error) {
+                // alert("请检查您的输入");
+            }
+        });
+    }
+    
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    
+    $(function() {
+        pageSet.init();
+        getAllBrief();
+        setInterval("getAllBrief()", 1000);
+        $(".hb_close").click(function(event) {
+            $(this).parent().parent().css({
+                "display": "none"
+            });
+            $(".hbbox").css({
+                "display": "none"
+            });
+        });
+    })
+    </script>
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+}

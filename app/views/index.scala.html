@@ -350,7 +350,7 @@
                     // coinplot();
             },
             error: function (xhr, status, error) {
-                alert("请检查您的输入");
+                // alert("请检查您的输入");
             }
         });
     }
@@ -450,7 +450,7 @@
     $(function() {
         pageSet.init();
         getAllBrief();
-        // setInterval("getAllBrief()", 10000);
+        setInterval("getAllBrief()", 1000);
         $(".hb_close").click(function(event) {
             $(this).parent().parent().css({
                 "display": "none"

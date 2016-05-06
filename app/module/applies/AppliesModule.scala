@@ -17,7 +17,7 @@ import module.auth.AuthModule
 object ApplyTypes {
   case object pushMoney extends ApplyTypesDefines(0, "push money")
   case object popMoney extends ApplyTypesDefines(1, "pop money")
-  case object register extends ApplyTypesDefines(2, "register")
+  case object accountApp extends ApplyTypesDefines(2, "upgrade account")
 }
 
 sealed abstract class ApplyTypesDefines(val t : Int, val des : String)

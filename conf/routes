@@ -3,6 +3,7 @@
 # ~~~~
 
 # pages
+GET     /									controllers.BitCode.index(t="")	
 GET     /index/:t							controllers.BitCode.index(t)		
 GET     /index								controllers.BitCode.index(t="")	
 GET     /register							controllers.BitCode.register				
@@ -20,52 +21,56 @@ GET     /profile/auth/:t					controllers.BitCode.safe_auth(t)
 GET     /profile/auth		 				controllers.BitCode.safe_auth(t="")	
 GET     /profile/changePwd/:t				controllers.BitCode.changePwd(t)		
 GET     /profile/changePwd		 			controllers.BitCode.changePwd(t="")	
+GET     /trade/btc/:t						controllers.BitCode.btc_trade(t)		
+GET     /trade/btc				 			controllers.BitCode.btc_trade(t="")	
+GET     /trade/ltc/:t						controllers.BitCode.ltc_trade(t)		
+GET     /trade/ltc				 			controllers.BitCode.ltc_trade(t="")	
 
 # Auth 
-POST	/auth/register					controllers.AuthController.register
-POST	/auth/login						controllers.AuthController.login
-POST	/auth/changePwd		 			controllers.AuthController.changePwd
+POST	/auth/register						controllers.AuthController.register
+POST	/auth/login							controllers.AuthController.login
+POST	/auth/changePwd		 				controllers.AuthController.changePwd
 
 # Profile
-POST	/profile/query					controllers.ProfileController.queryProfile
-POST	/profile/update				 	controllers.ProfileController.updateProfile
+POST	/profile/query						controllers.ProfileController.queryProfile
+POST	/profile/update				 		controllers.ProfileController.updateProfile
 
 # Market Data
-POST	/market/btc						controllers.MarketController.BTCMarket
-POST	/market/ltc						controllers.MarketController.LTCMarket
-POST	/market/current					controllers.MarketController.CurrentMarket
+POST	/market/btc							controllers.MarketController.BTCMarket
+POST	/market/ltc							controllers.MarketController.LTCMarket
+POST	/market/current						controllers.MarketController.CurrentMarket
 
-POST	/market/trade/btc				controllers.MarketController.BTCTrade
-POST	/market/trade/ltc 				controllers.MarketController.LTCTrade
+POST	/market/trade/btc					controllers.MarketController.BTCTrade
+POST	/market/trade/ltc 					controllers.MarketController.LTCTrade
 
 # Account 
-POST	/account/queryaccount			controllers.AccountController.queryAccountInfo
-POST	/account/pushmoney				controllers.AccountController.pushMoney
-POST	/account/popmoney				controllers.AccountController.popMoney
+POST	/account/queryaccount				controllers.AccountController.queryAccountInfo
+POST	/account/pushmoney					controllers.AccountController.pushMoney
+POST	/account/popmoney					controllers.AccountController.popMoney
 
 # Applications
-POST	/apply/pushapp					controllers.ApplyController.pushApp
-POST	/apply/revertapp				controllers.ApplyController.revertApp
-POST	/apply/rejectapp				controllers.ApplyController.rejectApp
-POST	/apply/approveapp				controllers.ApplyController.approveApp
+POST	/apply/pushapp						controllers.ApplyController.pushApp
+POST	/apply/revertapp					controllers.ApplyController.revertApp
+POST	/apply/rejectapp					controllers.ApplyController.rejectApp
+POST	/apply/approveapp					controllers.ApplyController.approveApp
 
-POST	/apply/query/all				controllers.ApplyController.queryAllApps
-POST	/apply/query/mine				controllers.ApplyController.queryMyApps
+POST	/apply/query/all					controllers.ApplyController.queryAllApps
+POST	/apply/query/mine					controllers.ApplyController.queryMyApps
 
 # Stoke
-POST	/stoke/query					controllers.StokeController.queryStoke
-POST	/stoke/push						controllers.StokeController.pushStoke
-POST	/stoke/pop						controllers.StokeController.popStoke
+POST	/stoke/query						controllers.StokeController.queryStoke
+POST	/stoke/push							controllers.StokeController.pushStoke
+POST	/stoke/pop							controllers.StokeController.popStoke
 
 # trade
-POST	/trade/buy						controllers.StokeController.purchaseStoke
-POST	/trade/sell						controllers.StokeController.sellStoke
+POST	/trade/buy							controllers.StokeController.purchaseStoke
+POST	/trade/sell							controllers.StokeController.sellStoke
 
 # trade records
-POST	/trade/query/all				controllers.TradeController.queryTradeRecords
-POST	/trade/query/mine				controllers.TradeController.queryMyTradeRecords
-POST	/trade/query/btc				controllers.TradeController.queryBTCTradeRecords
-POST	/trade/query/ltc				controllers.TradeController.queryLTCTradeRecords
+POST	/trade/query/all					controllers.TradeController.queryTradeRecords
+POST	/trade/query/mine					controllers.TradeController.queryMyTradeRecords
+POST	/trade/query/btc					controllers.TradeController.queryBTCTradeRecords
+POST	/trade/query/ltc					controllers.TradeController.queryLTCTradeRecords
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
