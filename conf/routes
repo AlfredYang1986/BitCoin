@@ -3,7 +3,11 @@
 # ~~~~
 
 # pages
-GET     /register						controllers.BitCode.register				
+GET     /index/:t							controllers.BitCode.index(t)		
+GET     /index								controllers.BitCode.index(t="")	
+GET     /register							controllers.BitCode.register				
+GET		/profile/index/:t					controllers.BitCode.profileIndex(t)
+GET		/profile/index						controllers.BitCode.profileIndex(t="")
 GET     /profile/auth/:t					controllers.BitCode.safe_auth(t)		
 GET     /profile/auth		 				controllers.BitCode.safe_auth(t="")	
 GET     /profile/changePwd/:t				controllers.BitCode.changePwd(t)		

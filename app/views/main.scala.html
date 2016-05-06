@@ -88,11 +88,11 @@
     <div class="logo-menu">
         <div class="minbox clearfix">
             <div class="k-logo pl10">
-                <a href="#" title="首页"><img alt="" src="@routes.Assets.at("images/logo.jpg")"></a>
+                <a href="/index" title="首页"><img alt="" src="@routes.Assets.at("images/logo.jpg")"></a>
             </div>
             <div class="k-menu pl70">
                 <ul class="clearfix pt10">
-                    <li><a href="index.html">首页</a></li>
+                    <li><a href="/index">首页</a></li>
                     <li>
                         <a class="deal-center">
                             <span>交易中心</span><img class="jt" src="@routes.Assets.at("images/down.png")">
@@ -100,28 +100,10 @@
                         <div class="deal-list">
                             <dl>
                                 <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">比特币(BTC)</a>
                                 </dd>
                                 <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
-                                </dd>
-                                <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
-                                </dd>
-                                <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
-                                </dd>
-                                <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
-                                </dd>
-                                <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
-                                </dd>
-                                <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
-                                </dd>
-                                <dd>
-                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">凯特币(KTC)</a>
+                                    <a href="#"><img class="coin-it" src="@routes.Assets.at("images/k.png")">莱特币(LTC)</a>
                                 </dd>
                             </dl>
                             <div class="sj"></div>
@@ -129,7 +111,7 @@
                         </div>
                     </li>
                     <li><a href="finance_index.html">财务中心</a></li>
-                    <li><a href="safe_index.html">安全中心</a></li>
+                    <li><a href="/profile/index">安全中心</a></li>
                     <li><a href="vote_index">投票中心</a></li>
                     <li><a href="store.html">投票中心</a></li>
                     <li><a href="help_index.html">帮助中心</a></li>
@@ -287,7 +269,7 @@
         function setCookie(cname,cvalue,expiredays) {
             var exp  = new Date();
             exp.setTime(exp.getTime() + expiredays*24*60*60*1000);
-            document.cookie = name + "="+ escape(cvalue) + ";expires=" + exp.toGMTString()+";path="+"/";
+            document.cookie = cname + "="+ escape(cvalue) + ";expires=" + exp.toGMTString()+";path="+"/";
         }
 
         function clearCookie(name) {  
@@ -295,6 +277,13 @@
             exp.setTime(exp.getTime() - 1);
             document.cookie= name + "=''"+";expires="+exp.toGMTString()+";path="+"/";
         }  
+
+        $('#logout_btn').click(function(){
+            clearCookie('user_id');
+            clearCookie('token');
+            alert("登出成果");
+            location.reload();   
+        });
         </script>
 
         @scripts

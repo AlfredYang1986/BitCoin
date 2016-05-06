@@ -94,6 +94,7 @@ object AuthModule {
     def DB2JsValue(x : MongoDBObject) : JsValue = 
         toJson(Map("user_id" -> toJson(x.getAs[String]("user_id").get),
                    "token" -> toJson(x.getAs[String]("token").get),
+                   "email" -> toJson(x.getAs[String]("email").get),
                    "name" -> toJson(x.getAs[String]("name").get),
                    "type" -> toJson(x.getAs[Number]("id_type").get.intValue),
                    "register_id"-> toJson(x.getAs[String]("register_id").get),

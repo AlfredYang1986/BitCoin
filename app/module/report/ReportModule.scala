@@ -40,7 +40,8 @@ object ReportModule {
        
          toJson(Map("status" -> toJson("ok"), "result" -> toJson(
              ((from db() in ("reposts")).selectSkipTop(skip)(take)("date") { x =>
-                 x.getAs[String]("title").get
+                 toJson(Map("title" -> toJson(x.getAs[String]("title").get),
+                            "id" -> toJson(x.getAs[String]("report_id").get)))
              }).toList
          )))
      }
