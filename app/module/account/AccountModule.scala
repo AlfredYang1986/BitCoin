@@ -18,6 +18,7 @@ object AccountModule {
         def createAccount(total : Number, user_id : String) : MongoDBObject = {
             val builder = MongoDBObject.newBuilder
                   builder += "balance" -> total
+                  builder += "total" -> total
                   builder += "btc" -> 0
                   builder += "ltc" -> 0
                   builder += "user_id" -> user_id
@@ -28,6 +29,7 @@ object AccountModule {
       
         def DB2JsValue(x : MongoDBObject) : JsValue =
             toJson(Map("balance" -> toJson(x.getAs[Number]("balance").get.floatValue),
+                      "total" -> toJson(x.getAs[Number]("total").get.floatValue), 
                       "btc" -> toJson(x.getAs[Number]("btc").get.floatValue), 
                       "ltc" -> toJson(x.getAs[Number]("ltc").get.floatValue),
                       "user_id" -> toJson(x.getAs[String]("user_id").get)
@@ -68,6 +70,7 @@ object AccountModule {
             val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0)
             enumUserAccunt(owner_id)  { head => 
                     head += "balance" -> (head.getAs[Number]("balance").get.floatValue + total.asInstanceOf[Float]).asInstanceOf[Number]
+                    head += "total" -> (head.getAs[Number]("total").get.floatValue + total.asInstanceOf[Float]).asInstanceOf[Number]
                     _data_connection.getCollection("accounts").update(DBObject("user_id" -> owner_id), head)
                     DB2JsValue(head)
                 } (noneFunc) 
@@ -80,6 +83,7 @@ object AccountModule {
                 if (tmp < 0) ErrorCode.errorToJson("not have enough money") 
                 else {
                     head += "balance" -> tmp.asInstanceOf[Number]
+                    head += "total" -> (head.getAs[Number]("total").get.floatValue - total.asInstanceOf[Float]).asInstanceOf[Number]
                     _data_connection.getCollection("accounts").update(DBObject("user_id" -> owner_id), head)
                     DB2JsValue(head)
                 }
@@ -92,9 +96,11 @@ object AccountModule {
    
         val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0) 
         enumUserAccunt(user_id)  { head => 
-            DB2JsValue(head)
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(
+              DB2JsValue(head))))
         } { () => 
-            DB2JsValue(createAccount(total.asInstanceOf[Number], user_id))
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(
+              DB2JsValue(createAccount(total.asInstanceOf[Number], user_id)))))
        }
     }
     

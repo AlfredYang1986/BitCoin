@@ -1,0 +1,237 @@
+@(token: String)(profile: play.api.libs.json.JsValue)
+
+@main("充值")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">人民币充值申请</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_index" >
+                        <a href="/finance/index"><i class="coin_menu_op_0"></i><span class="pl10">财务中心</span></a>
+                    </li>
+                    <li id="nav_onlinepay" class="active" style="border-top: 1px solid #ccc">
+                        <a href="/finance/pay"><i class="coin_menu_op_18"></i><span class="pl10">人民币充值</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/withdraw"><i class="coin_menu_op_18"></i><span class="pl10">人民币提现</span></a>
+                    </li>
+                    <!-- <li id="nav_currencyin" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyin.html"><i class="coin_menu_op_4"></i><span class="pl10">转入虚拟币</span></a>
+                    </li>
+                    <li id="nav_currencyout" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyout.html"><i class="coin_menu_op_5"></i><span class="pl10">转出虚拟币</span></a>
+                    </li>
+                    <li id="nav_entrust" style="border-top: 1px solid #ccc">
+                        <a href="finance_mandate.html"><i class="coin_menu_op_6"></i><span class="pl10">委托管理</span></a>
+                    </li> -->
+                    <li id="nav_order"  style="border-top: 1px solid #ccc;">
+                        <a href="finance_order.html"><i class="coin_menu_op_7"></i><span class="pl10">成交查询</span></a>
+                    </li>
+                    <li id="nav_order"  style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc">
+                        <a href="/finance/app/query"><i class="coin_menu_op_7"></i><span class="pl10">申请查询</span></a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont-tit">
+                    <h2>请选择您最便捷的充值方式</h2>
+                </div>
+                <div class="cont-detail">
+                    <div class="charge-wrap">
+                        <!-- <div class="charge_nav">
+                            <ul>
+                                <ul>
+                                    <li class="current"><a>在线充值</a></li>
+                                    <li><a href="/finance/deposit/">汇款充值</a></li>
+                                    <li><a href="/finance/deposit/alipay/1">支付宝充值</a></li>
+                                </ul>
+                            </ul>
+                        </div>
+                        <div class="charge_box">
+                            <div class="ebank_box">
+                                <ul class="ebank_logo">
+                                    <li>
+                                        <input name="bank" type="radio" id="ICBC" value="ICBC">
+                                        <label for="ICBC"><i class="ICBC"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="CCB" value="CCB">
+                                        <label for="CCB"><i class="CCB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="ABC" value="ABC">
+                                        <label for="ABC"><i class="ABC"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="PSBC" value="PSBC">
+                                        <label for="PSBC"><i class="PSBC"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="BOCSH" value="BOCSH">
+                                        <label for="BOCSH"><i class="BOCSH"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="CMB" value="CMB">
+                                        <label for="CMB"><i class="CMB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="BOCOM" value="BOCOM">
+                                        <label for="BOCOM"><i class="BOCOM"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="CMBC" value="CMBC">
+                                        <label for="CMBC"><i class="CMBC"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="SPDB" value="SPDB">
+                                        <label for="SPDB"><i class="SPDB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="GDB" value="GDB">
+                                        <label for="GDB"><i class="GDB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="CNCB" value="CNCB">
+                                        <label for="CNCB"><i class="CNCB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="CEB" value="CEB">
+                                        <label for="CEB"><i class="CEB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="HXB" value="HXB">
+                                        <label for="HXB"><i class="HXB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="CIB" value="CIB">
+                                        <label for="CIB"><i class="CIB"></i></label>
+                                    </li>
+                                    <li>
+                                        <input name="bank" type="radio" id="PAB" value="PAB">
+                                        <label for="PAB"><i class="PAB"></i></label>
+                                    </li>
+                                </ul>
+                            </div> -->
+                            <div class="charge_input">
+                                <div class="charge_title">充值金额：</div>
+                                <div class="charge_text">
+                                    <input type="text" class="form-control" name="money" id="money"> &nbsp;&nbsp;元
+                                </div>
+                                <div class="form_explain" id="money-msg">每次最低充值100元，最高充值5万元<em></em></div>
+                            </div>
+                            <ul style="clear:both;">
+                                <div class="cnyin_btn">
+                                    <input style="margin:30px 0 30px 30px;" type="button" value="充值申请" onclick="subfrm()">
+                                </div>
+                            </ul>
+                            <!-- <div class="">
+                                <table class="charge-dis">
+                                    <thead>
+                                        <tr>
+                                            <th>充值ID</th>
+                                            <th>时间</th>
+                                            <th>充值金额</th>
+                                            <th>充值方式</th>
+                                            <th>充值状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="7">
+                                                <p class="tc">暂无记录</p>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- 充值记录 -->
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+
+    <script type="text/javascript">
+    function subfrm() {
+        var money = Number($("input[name='money']").val());
+        if (!money) {
+            alert('请填写正确的数额');
+            return;
+        }
+        if (money < 100 || money > 50000) {
+            alert('超出金额范围');
+            return;
+        }
+
+        var query_object = new Object();
+        query_object['amount'] = money;
+        query_object['type'] = 0;
+        query_object['message'] = "充值";
+
+        $.ajax({
+            url: "/apply/pushapp",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {                                          
+                     alert("申请成功！");
+                     location.href = "/finance/app/query";
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("发布失败，请检查您的输入");
+            }
+        });
+    }
+
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+    </script>
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+}

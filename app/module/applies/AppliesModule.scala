@@ -47,14 +47,18 @@ object AppliesModule {
         builder += "date" -> new Date().getTime
         builder += "apply_id" -> apply_id
         
-        _data_connection.getCollection("apply") += builder.result
-       
         import module.applies.ApplyTypes._
         if (app_type == accountApp.t) {
             module.auth.AuthModule.updateProfile(user_id, toJson(Map("status" -> 2)))
         }
-        
-        toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
+       
+        import module.account.AccountModule.queryAccount
+        if (app_type == popMoney.t && (queryAccount(user_id, toJson("")) \ "balance").asOpt[Float].get < amount ) {
+            ErrorCode.errorToJson("not enough money")
+        } else {
+            _data_connection.getCollection("apply") += builder.result
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
+        }
     }
     
     def revertApplications(user_id : String, data : JsValue) : JsValue = {
@@ -115,7 +119,9 @@ object AppliesModule {
         toJson(Map("apply_id" -> toJson(x.getAs[String]("apply_id").get),
                    "apply_type" -> toJson(x.getAs[Number]("type").get.intValue),
                    "date" -> toJson(x.getAs[Number]("date").get.floatValue),
+                   "status" -> toJson(x.getAs[Number]("status").get.intValue),
                    "amount" -> toJson(x.getAs[Number]("amount").get.floatValue),
+                   "message" -> toJson(x.getAs[String]("message").get),
                    "apply_user_id" -> toJson(x.getAs[String]("apply_user_id").get)))
     
     def queryAllApplications(user_id : String, data : JsValue) : JsValue = 
@@ -132,6 +138,6 @@ object AppliesModule {
     def queryMyApplications(user_id :String, data : JsValue) : JsValue = 
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(
             (from db() in "apply" where ("apply_user_id" -> user_id) select (x =>
-               DB2JsValue(x) 
+                DB2JsValue(x)
             )).toList)))
 }

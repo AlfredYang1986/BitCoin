@@ -1,0 +1,171 @@
+@(token: String)(profile: play.api.libs.json.JsValue)(applies: List[play.api.libs.json.JsValue])
+
+@main("申请查询")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">成交查询</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_index" >
+                        <a href="/finance/index"><i class="coin_menu_op_0"></i><span class="pl10">财务中心</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/pay"><i class="coin_menu_op_18"></i><span class="pl10">人民币充值</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/withdraw"><i class="coin_menu_op_18"></i><span class="pl10">人民币提现</span></a>
+                    </li>
+                    <!-- <li id="nav_currencyin" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyin.html"><i class="coin_menu_op_4"></i><span class="pl10">转入虚拟币</span></a>
+                    </li>
+                    <li id="nav_currencyout" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyout.html"><i class="coin_menu_op_5"></i><span class="pl10">转出虚拟币</span></a>
+                    </li>
+                    <li id="nav_entrust" style="border-top: 1px solid #ccc">
+                        <a href="finance_mandate.html"><i class="coin_menu_op_6"></i><span class="pl10">委托管理</span></a>
+                    </li> -->
+                    <li id="nav_order"  style="border-top: 1px solid #ccc;">
+                        <a href="finance_order.html"><i class="coin_menu_op_7"></i><span class="pl10">成交查询</span></a>
+                    </li>
+                    <li id="nav_app" class="active" style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc">
+                        <a href="/finance/app/query"><i class="coin_menu_op_7"></i><span class="pl10">申请查询</span></a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <script type="text/javascript">
+            document.getElementById('nav_app').setAttribute("class", "active");
+            </script>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont-tit">
+                    <h2>申请查询</h2>
+                </div>
+                <div class="clearfix pt20">
+                    <!-- <div class="bizhong_select">
+                        <div class="bz_btn">
+                            <img class="coin-it" id="currentimg" data-value="15" src="images/k.png">
+                            <span id="coin-default">凯特币(KTC)</span></div>
+                        <i></i>
+                        <ul id="coinbox">
+                            <li>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                            </li>
+                            <li>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                            </li>
+                            <li>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                                <a href="#" name="chgeCoin"><img class="coin-it" src="images/k.png"><span>凯特币(KTC)</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+                <div class="pt20">
+                    <table class="mes-dis">
+                        <thead>
+                            <tr>
+                                <th>申请时间</th>
+                                <th>申请金额</th>
+                                <th>申请类型</th>
+                                <th>申请描述</th>
+                                <th>申请状态</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                        @if(applies.isEmpty) {
+                            <tr>
+                                <td colspan="5">
+                                    <p class="tc">暂无记录</p>
+                                </td>
+                            </tr>
+                        } else {
+                            @{applies map {x =>
+                            <tr>
+                                <th>{ val time_span = (x \ "date").asOpt[Long].get
+									  val format =   new java.text.SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+       								  format.format(time_span);
+                                }</th>
+                                <th>{(x \ "amount").asOpt[Float].get}</th>
+                                <th>{(x \ "apply_type").asOpt[Int].get match {
+                                    case 0 => "申请充值"
+                                    case 1 => "申请提现"
+                                    case 2 => "申请权限"
+                                }}</th>
+                                <th>{(x \ "message").asOpt[String].get}</th>
+                                <th>{(x \ "status").asOpt[Int].get match {
+                                    case 0 => "审核中"
+                                    case 1 => "通过"
+                                    case 2 => "取消"
+                                    case 3 => "拒绝"
+                                }}</th>
+                            </tr>
+                            }}
+                        }
+                            
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+
+    <script type="text/javascript">
+    $('#trades-type').val(0);
+
+    function gopage() {
+        var type = $('#trades-type').val();
+        var id = $('#currentimg').data('value');
+        var url = '/finance/order/id/' + id + '/type/' + type;
+        location.href = url;
+    }
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+    </script>
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+}

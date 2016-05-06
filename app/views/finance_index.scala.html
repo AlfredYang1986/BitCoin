@@ -1,0 +1,119 @@
+@(token: String)(profile: play.api.libs.json.JsValue)(account: play.api.libs.json.JsValue)(btc: Float)(ltc: Float)
+
+@main("财务中心")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">财务中心</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_index" class="active">
+                        <a href="/finance/index"><i class="coin_menu_op_0"></i><span class="pl10">财务中心</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/pay"><i class="coin_menu_op_18"></i><span class="pl10">人民币充值</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/withdraw"><i class="coin_menu_op_18"></i><span class="pl10">人民币提现</span></a>
+                    </li>
+                    <!-- <li id="nav_currencyin" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyin.html"><i class="coin_menu_op_4"></i><span class="pl10">转入虚拟币</span></a>
+                    </li>
+                    <li id="nav_currencyout" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyout.html"><i class="coin_menu_op_5"></i><span class="pl10">转出虚拟币</span></a>
+                    </li>
+                    <li id="nav_entrust" style="border-top: 1px solid #ccc">
+                        <a href="finance_mandate.html"><i class="coin_menu_op_6"></i><span class="pl10">委托管理</span></a>
+                    </li> -->
+                    <li id="nav_order"  style="border-top: 1px solid #ccc;">
+                        <a href="finance_order.html"><i class="coin_menu_op_7"></i><span class="pl10">成交查询</span></a>
+                    </li>
+                    <li id="nav_order"  style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc">
+                        <a href="/finance/app/query"><i class="coin_menu_op_7"></i><span class="pl10">申请查询</span></a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <script type="text/javascript">
+            document.getElementById('nav_index').setAttribute("class", "active");
+            </script>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont_tit_nav">
+                    <ul>
+                        <li class="cur"><a href="#">财务中心</a></li>
+                        <!-- <li><a href="/finance/statistics">平台交易数据</a></li>
+                        <li><a href="/finance/reward">分红记录</a></li> -->
+                    </ul>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="cont-detail clearfix">
+                    <div class="coin_style_box">
+                        <ul>
+                            <li style="width:150px;"><i class="iconfont" style="color: #0896e2; font-size: 32px"></i>　人民币(CNY)</li>
+                            <li>可用：<span class="green" id="cny_balance">￥@{(account \ "balance").asOpt[Float].get}</span></li>
+                            <!-- <li>冻结：<span class="orange" id="cny_lock">￥0</span></li> -->
+                            <li>总资产：<b id="cny_total">￥@{(account \ "total").asOpt[Float].get}</b></li>
+                        </ul>
+                    </div>
+                    <div class="coin_list_top">
+                        <ul>
+                            <li class="w176">币种</li>
+                            <li class="w135">可用余额</li>
+                            <!-- <li class="w145">冻结委托</li> -->
+                            <li>总计</li>
+                        </ul>
+                    </div>
+                    <ul class="coin_list">
+                        <li>
+                            <dl>
+                                <dt>
+                                    <div class="coin_pic">
+                                        <img src="@routes.Assets.at("images/btb.png")" width="47" height="47">
+                                    </div>
+                                    <div class="coin_name">
+                                        <div>比特币(BTC)</div>
+                                        <p class="orange">¥@btc</p>
+                                    </div>
+                                </dt>
+                                <dd class="w135">@{(account \ "btc").asOpt[Float].get}</dd>
+                                <dd class="w145">0</dd>
+                                <!-- <dd class="w152">0</dd> -->
+                                <dd><a class="tojy" href="#">去交易</a></dd>
+                            </dl>
+                        </li>
+                        <li>
+                            <dl>
+                                <dt>
+                                    <div class="coin_pic">
+                                        <img src="@routes.Assets.at("images/k.png")" width="47" height="47">
+                                    </div>
+                                    <div class="coin_name">
+                                        <div>莱特币(LTC)</div>
+                                        <p class="orange">¥@ltc</p>
+                                    </div>
+                                </dt>
+                                <dd class="w135">@{(account \ "ltc").asOpt[Float].get}</dd>
+                                <dd class="w145">0</dd>
+                                <!-- <dd class="w152">0</dd> -->
+                                <dd><a class="tojy" href="#">去交易</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+} 
