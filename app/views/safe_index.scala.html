@@ -13,17 +13,17 @@
             <div class="cont-left fl">
                 <ul class="mod-sidebar mon-cen">
                     <li id="nav_safe" class="active">
-                        <a href="index.html"><i class="coin_menu_op_14"></i><span class="pl10">个人中心</span></a>
+                        <a href="/profile/index"><i class="coin_menu_op_14"></i><span class="pl10">个人中心</span></a>
                     </li>
                     <li id="nav_auth">
-                        <a href="auth.html"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
+                        <a href="/prfile/auth"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
                     </li>
                     <li id="nav_editpw" >
-                        <a href="change_pwd.html"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
+                        <a href="/profile/changePwd"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
                     </li>
-                    <li id="nav_phone">
+                    <!-- <li id="nav_phone">
                         <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
-                    </li>
+                    </li> -->
                      
                 </ul>
             </div> 
@@ -46,7 +46,7 @@
                             <dd>邮箱：@{(profile \ "email").asOpt[String].get}</dd>
                         </dl>
                     </div>
-                    <ul class="sc_statu mt30">
+                    <!-- <ul class="sc_statu mt30">
                         <li>
                             <i class="iconfont active"></i>
                             <dl>
@@ -62,7 +62,7 @@
                                 <dd class="alpass">已绑定</dd>
                             </dl>
                         </li>
-                    </ul>
+                    </ul> -->
                     <div class="sc_info_list" id="sc_info_list">
                         <dl style="background-color: rgb(249, 249, 249);">
                             <dt>密码</dt>
@@ -70,7 +70,7 @@
                                 <p>登录时需要输入的密码</p>
                             </dd>
                             <dd>
-                                <div class="changepw"><a href="change_pwd.html">修改登录密码</a></div>
+                                <div class="changepw"><a href="/profile/changePwd">修改登录密码</a></div>
                             </dd>
                         </dl>
                         
@@ -81,11 +81,15 @@
                             </dd>
                             <dd>
                                 <div class="changepw">
-                                    已认证 ｜ <a href="/my/auth">查看</a>
+                                @{(profile \ "status").asOpt[Int].get match {
+                                    case 0 => "未认证"
+                                    case 1 => "已认证"
+                                    case 2 => "审核中"
+                                }}｜ <a href="/profile/auth">查看</a>
                                 </div>
                             </dd>
                         </dl>
-                        <dl style="background-color: rgb(249, 249, 249);">
+<!--                         <dl style="background-color: rgb(249, 249, 249);">
                             <dt>手机绑定</dt>
                             <dd>
                                 <p>绑定手机，可以包含您的资金安全</p>
@@ -95,7 +99,7 @@
                                     已绑定 ｜ <a href="/my/phone">修改绑定</a>
                                 </div>
                             </dd>
-                        </dl>
+                        </dl> -->
                        
                     </div>
                 </div>

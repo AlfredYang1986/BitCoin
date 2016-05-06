@@ -26,8 +26,8 @@ sealed abstract class IDTypeDefines(val s : Int, val des : String)
 
 object RegisterApprovedStatus {
   case object notApproved extends RegisterApprovedDefines(0, "未验证")
-  case object approved extends RegisterApprovedDefines(1, "通过验证")
-  case object approving extends RegisterApprovedDefines(2, "通过中")
+  case object approved extends RegisterApprovedDefines(1, "已验证")
+  case object approving extends RegisterApprovedDefines(2, "审核中")
 }
 
 sealed abstract class RegisterApprovedDefines(val s : Int, val des : String)
