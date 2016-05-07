@@ -25,6 +25,11 @@ GET     /trade/btc/:t						controllers.BitCode.btc_trade(t)
 GET     /trade/btc				 			controllers.BitCode.btc_trade(t="")	
 GET     /trade/ltc/:t						controllers.BitCode.ltc_trade(t)		
 GET     /trade/ltc				 			controllers.BitCode.ltc_trade(t="")	
+GET		/vote/:t							controllers.BitCode.vote(t)
+GET		/vote								controllers.BitCode.vote(t="")
+GET		/store/:t							controllers.BitCode.store(t)
+GET		/store								controllers.BitCode.store(t="")
+GET		/help								controllers.BitCode.help
 
 # Auth 
 POST	/auth/register						controllers.AuthController.register

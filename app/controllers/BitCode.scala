@@ -169,6 +169,56 @@ object BitCode extends Controller {
         }
     }
     /******************************************************/
+
+    /******************************************************/
+    /**
+     * 交易界面
+     */
+    def vote(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.vote_index(token)(profile))
+        }
+    }
+    /******************************************************/
+    
+    /******************************************************/
+    /**
+     * 商城界面
+     */
+    def store(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.vote_store(token)(profile))
+//            Ok(views.html.store(token)(profile))
+        }
+    }
+    /******************************************************/
+    
+    /******************************************************/
+    /**
+     * 商城界面
+     */
+    def help = Action { request =>
+        val token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        
+        if (token == "") Ok(views.html.help_index("")(null))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.help_index(token)(profile))
+        }
+    }
+    /******************************************************/
     
     /**
      * 主页面

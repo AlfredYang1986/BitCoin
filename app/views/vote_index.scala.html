@@ -1,0 +1,126 @@
+@(token: String)(profile: play.api.libs.json.JsValue)
+
+@main("新币投票")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <div class="tp_banner"><img src="@routes.Assets.at("images/vote.png")" width="1100" height="180"></div>
+        <div class="minbox pt10 clearfix">
+            <div class="maintain-content">
+                <div class="tp_tit">
+                    <h4 class="intro-hd" style="margin-top:0;">新币投票规则</h4>
+                </div>
+                <div class="tp_gz">
+                    <p>购币网上线以来承蒙业内众多新币开发团队的认可。购币网创立之初，立足于以公平公正公开为原则服务于广大用户。对于国内币市乱象，为广大会员提供良好的交易体验,现征求各实力团队币种上线投票。请为您所喜欢的币种投上宝贵的一票，选出您心中最具投资价值的虚拟货币。币种总得分数大于2000以上将有机会上线购币网交易，感谢您对购币网一直以来的支持和关注，祝您购币愉快。投票时间：3月25日至3月30日</p>
+                    <font color="grey">
+                        <p>只有拥有10比特币以上的用户才有投票资格 ,同一币种每个用户每日只能投5次票，每次消耗1凯特币。</p>
+                    </font>
+                </div>
+                <div class="tp_tit">
+                    <h4 class="intro-hd" style="margin-top:0;">新币投票</h4>
+                </div>
+                <!-- 赞同和反对 -->
+                <div class="tp_list">
+                    <ul class="tp_ul">
+                        <li class="bzw">币种</li>
+                        <li class="tp_zcb">赞成</li>
+                        <li class="tp_df">得分</li>
+                        <li class="tp_act">投票</li>
+                    </ul>
+                    <ul class="tp_list_ul">
+                        <li>
+                            <dl>
+                                <dt class="bzname">
+                                    <a href="#"><img src="@routes.Assets.at("images/fhb.png")" class="coin-it">
+                                        <p>凤凰币(HFC)</p>
+                                    </a>
+                                </dt>
+                                <dd class="tp_zcb">
+                                    <div class="progress w600">
+                                        <span class="red" style="width: 69%;"><span>5012票</span></span>
+                                    </div>
+                                </dd>
+                                <li class="list_df">
+                                    5012 </li>
+                                <li class="tp_act">
+                                    <input type="button" onclick="voted(1,1)" value="赞成" class="tp-zcbtn" style="cursor: pointer;">
+                                </li>
+                            </dl>
+                        </li>
+                        <li>
+                            <dl>
+                                <dt class="bzname">
+                                    <a href="#"><img src="@routes.Assets.at("images/fhb.png")" class="coin-it">
+                                        <p>凤凰币(HFC)</p>
+                                    </a>
+                                </dt>
+                                <dd class="tp_zcb">
+                                    <div class="progress w600">
+                                        <span class="red" style="width: 69%;"><span>5012票</span></span>
+                                    </div>
+                                </dd>
+                                <li class="list_df">
+                                    5012 </li>
+                                <li class="tp_act">
+                                    <input type="button" onclick="voted(1,1)" value="赞成" class="tp-zcbtn" style="cursor: pointer;">
+                                </li>
+                            </dl>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} { 
+    <script type="text/javascript">
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+
+    function voted(vom_id, type) {
+        // var voe_id = "1";
+        // var url = '/ajax/vote/id/' + voe_id;
+        // var param = {
+        //     "vom_id": vom_id,
+        //     'type': type
+        // }
+        // $.post(url, param,
+        //     function(data) {
+        //         if (data.flag) {
+        //             alert('投票成功');
+        //             location.reload();
+        //         } else {
+        //             alert(data.data);
+        //         }
+        //     }, "json");
+        alert("你所持的币不足");
+    }
+    </script>
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+}

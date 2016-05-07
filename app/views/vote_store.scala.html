@@ -1,0 +1,93 @@
+@(token: String)(profile: play.api.libs.json.JsValue)
+
+@main("新币投票")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="banner"><img src="@routes.Assets.at("images/banner.jpg")" alt=""></div>
+    <div class="goods_wrap">
+        <img class="bg" src="@routes.Assets.at("images/bg1.jpg")" alt="">
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods1.jpg")" alt="">
+            <a class="btn_l" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods2.jpg")" alt="">
+            <a class="btn_r" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods1.jpg")" alt="">
+            <a class="btn_l" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods2.jpg")" alt="">
+            <a class="btn_r" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods1.jpg")" alt="">
+            <a class="btn_l" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods2.jpg")" alt="">
+            <a class="btn_r" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods1.jpg")" alt="">
+            <a class="btn_l" href="#">立即兑换</a>
+        </div>
+        <div class="goods">
+            <img src="@routes.Assets.at("images/goods2.jpg")" alt="">
+            <a class="btn_r" href="#">立即兑换</a>
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} { 
+    <script type="text/javascript">
+    var pageSet = {};
+    pageSet.showDetail = function() {
+        var timer = null
+        $('.deal-center').hover(function() {
+            $('.deal-list').show();
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+
+        })
+        $('.deal-list').hover(function() {
+            timer && clearTimeout(timer);
+        }, function() {
+            timer = setTimeout(function() {
+                $('.deal-list').hide();
+            }, 500)
+        })
+    }
+    pageSet.init = function() {
+        pageSet.showDetail();
+    };
+    $(function() {
+        pageSet.init();
+    })
+
+    function voted(vom_id, type) {
+        // var voe_id = "1";
+        // var url = '/ajax/vote/id/' + voe_id;
+        // var param = {
+        //     "vom_id": vom_id,
+        //     'type': type
+        // }
+        // $.post(url, param,
+        //     function(data) {
+        //         if (data.flag) {
+        //             alert('投票成功');
+        //             location.reload();
+        //         } else {
+        //             alert(data.data);
+        //         }
+        //     }, "json");
+        alert("你所持的币不足");
+    }
+    </script>
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+}
