@@ -130,7 +130,7 @@
             <div class="dialog_con">
                 <div class="login_div">
                     <div class="login_content">
-                        <div class="login_reg">还没账号？<a href="register" target="_blank">免费注册</a></div>
+                        <div class="login_reg">还没账号？<a href="/register" target="_blank">免费注册</a></div>
                         <div class="login_warning" name="login_warning" style="display:none;">
                         </div>
                         <div class="login_username">
@@ -147,7 +147,7 @@
                         <div class="login_submit">
                             <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
                         </div>
-                        <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div>
+                        <!-- <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div> -->
                     </div>
                 </div>
             </div>
@@ -169,8 +169,10 @@
             cache: false,
             success: function (data) {
                 if (data.status == "ok") {
+                     alert("登录成功");
                      setCookie('user_id', data.result.user_id, 1);
                      setCookie('token', data.result.token, 1);
+                     location.reload();
                 } else {
                     alert(data.error.message);
                 }
