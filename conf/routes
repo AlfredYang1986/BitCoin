@@ -45,6 +45,10 @@ GET		/admin/applies						controllers.Admin.adminAppliesManager(t="", p="0")
 GET		/admin/auth/applies/:p/:t			controllers.Admin.adminAuthAppliesManager(t, p)
 GET		/admin/auth/applies/:p				controllers.Admin.adminAuthAppliesManager(t="", p)
 GET		/admin/auth/applies					controllers.Admin.adminAuthAppliesManager(t="", p="0")
+GET		/admin/trade/config/:t 				controllers.Admin.adminTradeConfig(t)
+GET		/admin/trade/config 				controllers.Admin.adminTradeConfig(t="")
+GET		/admin/stoke/:t 					controllers.Admin.adminStoke(t)
+GET		/admin/stoke						controllers.Admin.adminStoke(t="")
 
 # Auth 
 POST	/auth/register						controllers.AuthController.register

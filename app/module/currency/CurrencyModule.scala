@@ -49,6 +49,7 @@ object CurrencyModule {
             val limit = (data \ "limit").asOpt[Int].map (x => x).getOrElse(0)
             
             if (tag == "" || name == "" || commition == 0.0 || limit == 0) ErrorCode.errorToJson("wrong input")
+            else if (tag != "CNY") ErrorCode.errorToJson("not support money")
             else {
                 (from db() in "currency" where ("tag" -> tag) select (x => x)).toList match {
                   case Nil => {

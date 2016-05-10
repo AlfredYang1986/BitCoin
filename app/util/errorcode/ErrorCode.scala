@@ -25,6 +25,7 @@ object ErrorCode {
   		new ErrorNode("currency not exist", -15, "货币不存在"),
   		new ErrorNode("currency is exist", -16, "货币已经存在"),
   		new ErrorNode("up to limit", -17, "取钱超出上限"),
+  		new ErrorNode("not support money", -18, "暂时不支持人民币以外的钱"),
 
   		new ErrorNode("unknown error", -999, "unknown error")
   	)

@@ -1,0 +1,148 @@
+@(token: String)(config: play.api.libs.json.JsValue)
+
+@admin_main("后台管理")(token) {
+    
+} {
+    <!--[if lt IE 8]>
+			<div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+		<![endif]-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainNavbar">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <button id="logout_btn" style="float: right; clear: both" class="btn btn-primay" onclick="logout()">登出</button>
+    </nav>
+    <div class="clearfix row-main">
+        <div class="col-md-2">
+            <ul class="nav nav-primary nav-stacked leftmenu affix">
+            <li>
+                    <a href="/admin/statistic">统计数据 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="/admin/currency">币种管理 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="/admin/applies">审核管理 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="/admin/auth/applies">权限管理 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="/admin/trade/config">挂单设置<i class="icon-chevron-right"></i></a>
+                </li>
+                <li class="active">
+                    <a href="/admin/stoke">库存管理<i class="icon-chevron-right"></i></a>
+                </li>
+                <!-- <li>
+                    <a href="share-vote.html">分红/投票设置 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="banner.html">首页广告图设置 <i class="icon-chevron-right"></i></a>
+                </li> -->
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="panel">
+                <div class="panel-heading"><strong><i class="icon-globe"></i> 库存管理</strong></div>
+                <div class="panel-body">
+                    <table class="table table-form">
+                        <tbody>
+                            <tr>
+                                <th class="col-xs-2"></th>
+                                <td class="col-xs-5" colspan="2">
+                                    BTC - BTC </td>
+                            </tr>
+                            <tr>
+                                <th class="col-xs-2">平台虚拟币总量</th>
+                                <td class="col-xs-5">
+                                    <span class="form-control"></span>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="col-xs-2">平台虚拟币流通量</th>
+                                <td class="col-xs-5">
+                                    <span class="form-control"></span>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="col-xs-2">添加平台货币</th>
+                                <td class="col-xs-3">
+                                    <input type="text" name="SZ_SDRATEPER_5" value="" class="form-control">
+                                </td>
+                                <td class="col-xs-2">
+                                    <button class="btn btn-primay">添加</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="col-xs-2">减少平台货币</th>
+                                <td class="col-xs-3">
+                                    <input type="text" name="SZ_SDRATEPER_5" value="" class="form-control">
+                                </td>
+                                <td class="col-xs-2">
+                                    <button class="btn btn-primay">减少</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td colspan="2">
+                                    <input type="submit" data-loading="稍候..." value="保存" class="btn btn-primary" id="submit">
+                                    <a onclick="location.reload();" class="btn btn-primary"><i class="icon-refresh "> 更新数据 </i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+} {
+    <script type="text/javascript">
+    (function() {
+        var tab_tit = document.getElementById('think_page_trace_tab_tit').getElementsByTagName('span');
+        var tab_cont = document.getElementById('think_page_trace_tab_cont').getElementsByTagName('div');
+        var open = document.getElementById('think_page_trace_open');
+        var close = document.getElementById('think_page_trace_close').childNodes[0];
+        var trace = document.getElementById('think_page_trace_tab');
+        var cookie = document.cookie.match(/thinkphp_show_page_trace=(\d\|\d)/);
+        var history = (cookie && typeof cookie[1] != 'undefined' && cookie[1].split('|')) || [0, 0];
+        open.onclick = function() {
+            trace.style.display = 'block';
+            this.style.display = 'none';
+            close.parentNode.style.display = 'block';
+            history[0] = 1;
+            document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+        }
+        close.onclick = function() {
+            trace.style.display = 'none';
+            this.parentNode.style.display = 'none';
+            open.style.display = 'block';
+            history[0] = 0;
+            document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+        }
+        for (var i = 0; i < tab_tit.length; i++) {
+            tab_tit[i].onclick = (function(i) {
+                return function() {
+                    for (var j = 0; j < tab_cont.length; j++) {
+                        tab_cont[j].style.display = 'none';
+                        tab_tit[j].style.color = '#999';
+                    }
+                    tab_cont[i].style.display = 'block';
+                    tab_tit[i].style.color = '#000';
+                    history[1] = i;
+                    document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+                }
+            })(i)
+        }
+        parseInt(history[0]) && open.click();
+        (tab_tit[history[1]] || tab_tit[0]).click();
+    })();
+    </script>
+}

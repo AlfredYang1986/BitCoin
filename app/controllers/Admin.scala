@@ -102,4 +102,38 @@ object Admin extends Controller {
             }else Redirect("/admin/login")
         }
     }
+    
+    def adminTradeConfig(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            val user_id = (profile \ "user_id").asOpt[String].get
+           
+            if (AuthModule.adminAuthCheck(user_id)) {
+                val statistic = (statistics(toJson("")) \ "result")
+                Ok(views.html.admin_trade_config(token)(statistic))
+            }else Redirect("/admin/login")
+        }
+    }
+    
+    def adminStoke(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            val user_id = (profile \ "user_id").asOpt[String].get
+           
+            if (AuthModule.adminAuthCheck(user_id)) {
+                val statistic = (statistics(toJson("")) \ "result")
+                Ok(views.html.admin_stoke_config(token)(statistic))
+            }else Redirect("/admin/login")
+        }
+    }
 }
