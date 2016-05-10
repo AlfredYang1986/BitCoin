@@ -1,0 +1,107 @@
+@admin_main("管理员登录")("") {
+    <link href="@routes.Assets.at("css/common.css")" rel='stylesheet' type='text/css' />
+} {
+	<div id="diyou_dialog">
+        <div class="dialog_main">
+            <div class="dialog_tit">
+                <h2 style="cursor: move;">管理员登录</h2><i class="close CLOSE" data-url=""></i></div>
+            <div class="dialog_con">
+                <div class="login_div">
+                    <div class="login_content">
+                        <!-- <div class="login_reg">还没账号？<a href="/register" target="_blank">免费注册</a></div> -->
+                        <div class="login_warning" name="login_warning" style="display:none;">
+                        </div>
+                        <div class="login_username">
+                            <input name="log_name" type="text" placeholder="电子邮箱" value="" class="login_input">
+                        </div>
+                        <div class="login_password">
+                            <input name="log_pwd" type="password" placeholder="密码" value="" class="login_input">
+                        </div>
+                        <!-- <div class="login_verify_code">
+        <input id="log_vericode" name="vericode" type="text" class="login_input_vericode" placeholder="输入验证码" maxlength="4" value=""> <img class="check-code" width="100" src="images/checkcode.jpg"> 
+        </div> -->
+                        <div class="log_status">
+                            <input type="checkbox" name="autologin" value="123123"> 下次自动登录</div>
+                        <div class="login_submit">
+                            <input type="button" onclick="login()" value="登&nbsp;&nbsp;录" id="log_sub">
+                        </div>
+                        <!-- <div class="login_forget_password"><a href="/user/forget" target="_blank">忘记密码？</a></div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+} {
+    <script type="text/javascript">
+    (function() {
+        var tab_tit = document.getElementById('think_page_trace_tab_tit').getElementsByTagName('span');
+        var tab_cont = document.getElementById('think_page_trace_tab_cont').getElementsByTagName('div');
+        var open = document.getElementById('think_page_trace_open');
+        var close = document.getElementById('think_page_trace_close').childNodes[0];
+        var trace = document.getElementById('think_page_trace_tab');
+        var cookie = document.cookie.match(/thinkphp_show_page_trace=(\d\|\d)/);
+        var history = (cookie && typeof cookie[1] != 'undefined' && cookie[1].split('|')) || [0, 0];
+        open.onclick = function() {
+            trace.style.display = 'block';
+            this.style.display = 'none';
+            close.parentNode.style.display = 'block';
+            history[0] = 1;
+            document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+        }
+        close.onclick = function() {
+            trace.style.display = 'none';
+            this.parentNode.style.display = 'none';
+            open.style.display = 'block';
+            history[0] = 0;
+            document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+        }
+        for (var i = 0; i < tab_tit.length; i++) {
+            tab_tit[i].onclick = (function(i) {
+                return function() {
+                    for (var j = 0; j < tab_cont.length; j++) {
+                        tab_cont[j].style.display = 'none';
+                        tab_tit[j].style.color = '#999';
+                    }
+                    tab_cont[i].style.display = 'block';
+                    tab_tit[i].style.color = '#000';
+                    history[1] = i;
+                    document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+                }
+            })(i)
+        }
+        parseInt(history[0]) && open.click();
+        (tab_tit[history[1]] || tab_tit[0]).click();
+    })();
+    </script>
+    
+    <script type="text/javascript">
+    function login() {
+        var email = $('input[name="log_name"]').last().val();
+        var query_object = new Object();
+        query_object['email'] = email;
+        query_object['token'] = hex_md5(email + $('input[name="log_pwd"]').last().val());
+
+        $.ajax({
+            url: "/auth/admain/login",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            success: function (data) {
+                if (data.status == "ok") {
+                     alert("登录成功");
+                     setCookie('user_id', data.result.user_id, 1);
+                     setCookie('token', data.result.token, 1);
+                     location.href = "/admin/statistic";
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("发布失败，请检查您的输入");
+            }
+        });
+    }
+    </script>
+}

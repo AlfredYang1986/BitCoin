@@ -14,6 +14,7 @@ import util.dao._data_connection
 import util.errorcode.ErrorCode
 import com.mongodb.casbah.Imports._
 import module.sercurity.Sercurity
+import module.statistic.StatisticModule.pushNewUsers
 
 object IDType {
   case object socialID extends IDTypeDefines(0, "身份证")
@@ -64,7 +65,7 @@ object AuthModule {
                   builder += "status" -> notApproved.s
                   
                   _data_connection.getCollection("users") += builder.result
-                  
+                  pushNewUsers
                   Json.toJson(Map("status" -> toJson("ok"), 
                       "result" -> toJson(Map("user_id" -> toJson(user_id), "token" -> toJson(token)))))
               }
@@ -88,6 +89,27 @@ object AuthModule {
                else ErrorCode.errorToJson("email not exist") 
           }
           case _ => ErrorCode.errorToJson("unknown error")
+        }
+    }
+    
+    def admainLogin(data : JsValue) : JsValue = {
+        val email = (data \ "email").asOpt[String].map(x => x).getOrElse("")
+        val token = (data \ "token").asOpt[String].map(x => x).getOrElse("")
+       
+        if (email != "admin") ErrorCode.errorToJson("user not admin")
+        else {
+            (from db() in "users" where ("email" -> email) select (x => x)).toList match {
+              case Nil => ErrorCode.errorToJson("email not exist")
+              case head :: Nil => {
+                   val validata = Sercurity.md5Hash(email + head.getAs[String]("pwd").get)
+                   if (token.equals(validata)) 
+                       Json.toJson(Map("status" -> toJson("ok"), 
+                                       "result" -> toJson(Map("user_id" -> toJson(head.getAs[String]("user_id").get), 
+                                       "token" -> toJson(token)))))
+                   else ErrorCode.errorToJson("email not exist") 
+              }
+              case _ => ErrorCode.errorToJson("unknown error")
+            }
         }
     }
    
@@ -130,6 +152,23 @@ object AuthModule {
           }
           case Nil => ErrorCode.errorToJson("email not exist") 
           case _ => ErrorCode.errorToJson("email not exist") 
+        }
+    }
+    
+    def queryMultipleProfiles(lst : List[String]) : List[JsValue] = {
+        def conditionImpl(l : List[String], cur: Option[DBObject]) : Option[DBObject] = {
+            l match {
+              case Nil => cur
+              case head :: t => cur match {
+                                      case None => conditionImpl(t, Some(DBObject("user_id" -> head)))
+                                      case Some(x) => conditionImpl(t, Some($or(x, DBObject("user_id" -> head))))
+                                  }
+            }
+        }
+       
+        conditionImpl(lst, None) match {
+          case None => Nil
+          case Some(x) => (from db() in "users" where (x) select (DB2JsValue(_))).toList
         }
     }
    

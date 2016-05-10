@@ -20,6 +20,10 @@ object ErrorCode {
   		new ErrorNode("not enough coin", -10, "货存不足"),
   		new ErrorNode("not enough money", -11, "钱不够"),
   		new ErrorNode("user not approved", -12, "用户需要验证才有这个功能"),
+  		new ErrorNode("user not admin", -13, "不是管理员账户"),
+  		new ErrorNode("wrong input", -14, "输入不正确"),
+  		new ErrorNode("currency not exist", -15, "货币不存在"),
+  		new ErrorNode("currency is exist", -16, "货币已经存在"),
 
   		new ErrorNode("unknown error", -999, "unknown error")
   	)

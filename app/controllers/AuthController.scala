@@ -8,5 +8,6 @@ import module.auth.AuthModule
 object AuthController extends Controller {
 	def register = Action (request => requestArgs(request)(AuthModule.register))
 	def login = Action (request => requestArgs(request)(AuthModule.login))
+	def admainLogin = Action (request => requestArgs(request)(AuthModule.admainLogin))
   def changePwd = Action (request => requestGetRequestArgs(request)(AuthModule.authCheck)(AuthModule.updateProfile)(false))
 }

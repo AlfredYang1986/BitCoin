@@ -130,14 +130,27 @@ object AppliesModule {
             val skip = (data \ "skip").asOpt[Int].map (x => x).getOrElse(0)
             
             toJson(Map("status" -> toJson("ok"), "result" -> toJson(
-                ((from db() in "apply" where ("status" -> ApplyStatus.add.s.asInstanceOf[Number])).selectSkipTop(skip)(take)("date")(x => 
+                ((from db() in "apply" where ($or("type" -> ApplyTypes.pushMoney.t.asInstanceOf[Number], 
+                                                  "type" -> ApplyTypes.popMoney.t.asInstanceOf[Number])
+                                              )).selectSkipTop(skip)(take)("date")(x => 
                     DB2JsValue(x)
                 )).toList))) 
+        } else ErrorCode.errorToJson("not have enough mana")
+        
+    def queryAuthApplications(user_id : String, data : JsValue) : JsValue = 
+        if (AuthModule.adminAuthCheck(user_id)) {
+            val take = (data \ "take").asOpt[Int].map (x => x).getOrElse(10)
+            val skip = (data \ "skip").asOpt[Int].map (x => x).getOrElse(0)
+            
+            val lst = ((from db() in "apply" where ("type" -> ApplyTypes.accountApp.t.asInstanceOf[Number]))
+                        .selectSkipTop(skip)(take)("date")(x => x.getAs[String]("apply_user_id").get)).toList
+      
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(AuthModule.queryMultipleProfiles(lst))))
         } else ErrorCode.errorToJson("not have enough mana")
     
     def queryMyApplications(user_id :String, data : JsValue) : JsValue = 
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(
             (from db() in "apply" where ("apply_user_id" -> user_id) select (x =>
                 DB2JsValue(x)
-            )).toList)))
+            )).toList.reverse)))
 }

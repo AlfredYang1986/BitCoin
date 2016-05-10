@@ -1,0 +1,108 @@
+@(title: String)(token: String)(include: Html)(content: Html)(scripts: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>    
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Cache-Control" content="no-transform">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@title</title>
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+
+        <link rel="stylesheet" href="@routes.Assets.at("css/admin.css")" type="text/css" media="screen">
+        <link rel="stylesheet" href="@routes.Assets.at("css/all.css")" type="text/css" media="screen">
+        <link href="@routes.Assets.at("css/bootstrap-datetimepicker.min.css")" rel="stylesheet" media="screen">
+        <meta name="description" content="2000 Currency  index ">
+
+        <style type="text/css">
+        object,
+        embed {
+            -webkit-animation-duration: .001s;
+            -webkit-animation-name: playerInserted;
+            -ms-animation-duration: .001s;
+            -ms-animation-name: playerInserted;
+            -o-animation-duration: .001s;
+            -o-animation-name: playerInserted;
+            animation-duration: .001s;
+            animation-name: playerInserted;
+        }
+        
+        -webkit-keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        -ms-keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        -o-keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        keyframes playerInserted {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        </style>
+
+        @include
+    </head>
+
+    <body class="" style="zoom: 1;">
+        
+        @content
+            	
+        <script src="@routes.Assets.at("js/all.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("js/my.admin.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("js/jquery-1.10.2.min.js")"></script>
+        <script src="@routes.Assets.at("js/JQuery.md5.js")"></script>
+
+        <script type="text/javascript">
+        function setCookie(cname,cvalue,expiredays) {
+            var exp  = new Date();
+            exp.setTime(exp.getTime() + expiredays*24*60*60*1000);
+            document.cookie = cname + "="+ escape(cvalue) + ";expires=" + exp.toGMTString()+";path="+"/";
+        }
+
+        function clearCookie(name) {  
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 1);
+            document.cookie= name + "=''"+";expires="+exp.toGMTString()+";path="+"/";
+        }  
+
+        $('#logout_btn').click(function(){
+            clearCookie('user_id');
+            clearCookie('token');
+            alert("登出成果");
+            location.reload();   
+        });
+        </script>
+
+        @scripts
+    </body>
+</html>

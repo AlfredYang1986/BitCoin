@@ -1,0 +1,347 @@
+@(token: String)(cur: List[play.api.libs.json.JsValue])
+
+@admin_main("后台管理")(token) {
+    
+} {
+    <!--[if lt IE 8]>
+			<div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+		<![endif]-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainNavbar">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <button id="logout_btn" style="float: right;" class="btn btn-primay" onclick="logout()">登出</button>
+    </nav>
+    <script language="javascript">
+    function check_all(obj, cName) {
+        var checkboxs = document.getElementsByName(cName);
+        for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = obj.checked;
+        }
+    }
+    </script>
+    <div class="clearfix row-main">
+        <div class="col-md-2">
+            <ul class="nav nav-primary nav-stacked leftmenu affix">
+            <li>
+                    <a href="/admin/statistic">统计数据 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li class="active">
+                    <a href="/admin/currency">币种管理 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="/admin/applies">审核管理 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="configscalper.html">挂单设置<i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="share-vote.html">分红/投票设置 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="currency.html">货币接口设置 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="QQserver.html">QQ客服充值 <i class="icon-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="banner.html">首页广告图设置 <i class="icon-chevron-right"></i></a>
+                </li>
+            </ul>
+        </div>
+        <script language="javascript">
+        function fn(coinid) {
+            if (confirm("确定删除吗")) {
+                location.href = "/testadmin.php/Home/Currency/delCoin/coinid/" + coinid;
+            } else {
+                location.href = "";
+            }
+        }
+
+        function selectWallet(obj, coinid, type) {
+            $(obj).siblings().removeClass('active');
+            $(obj).addClass('active');
+            if (type == 1) {
+                $('#wallet_1_' + coinid).show();
+                $('#wallet_2_' + coinid).hide();
+                //$('#pubkey_'+coinid).val('');
+                $('#hostip_' + coinid).val(1);
+            } else {
+                $('#wallet_2_' + coinid).show();
+                $('#wallet_1_' + coinid).hide();
+                $('#hostip_' + coinid).val('');
+                //$('#hostip_'+coinid).attr("checked",'');
+            }
+        }
+        </script>
+        <div class="col-md-10">
+            <div class="panel">
+                <div class="panel-heading">
+                    <strong>
+					<i class="icon-list-ul">
+					</i>
+					币种管理
+				</strong>
+                    <div class="panel-actions">
+                        <a data-toggle="modal" data-target="#ajaxModal" class="btn btn-primary">
+                            <i class="icon-plus"></i> 新增币种
+                        </a>
+                    </div>
+                </div>
+                <table class="table table-hover   tablesorter">
+                    <thead>
+                        <tr>
+                            <th class="text-center w-60px">编号</th>
+                            <th class="text-center w-80px">标识</th>
+                            <th class="text-center w-100px">名称</th>
+                            <th class="text-center w-100px">提现手续费</th>
+                            <th class="text-center w-100px">取现限额</th>
+                            <th class="text-center w-90px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @{(cur zipWithIndex) map { iter =>
+                        <!-- <form action="/testadmin.php/Home/Currency/saveAll/" method="post"></form> -->
+                        <tr class="success">
+                            <td class="text-center">
+                                {iter._2 + 1}
+                                <input type="hidden" value={(iter._2 + 1).toString} name="coin[1]" style=" width:50px;" />
+                            </td>
+                            <td class="text-center">
+                            
+                                <input type="text" value={(iter._1 \ "tag").asOpt[String].get} name="cointype[1]" class="form-control" />
+                                <!-- 启用：<input type="checkbox" name="enable[1]" value="1" checked=""> -->
+                            </td>
+                            <td class="text-center">
+                                <input id={"name_" + iter._2} type="text" value={(iter._1 \ "name").asOpt[String].get} name="coinname[1]" class="form-control" />
+                            </td>
+                            <td class="text-center w-60px">
+                                <select name="feetype[1]" class="form-control">
+                                    <option value="0" selected="">比例</option>
+                                    <option value="1">固定</option>
+                                </select>
+                                <input id={"commition_" + iter._2} type="text" value={(iter._1 \ "commition").toString} name="drawfee[1]" class="form-control" />
+                            </td>
+                            <td class="text-center">
+                                <input id={"limit_" + iter._2} type="text" value={(iter._1 \ "withdraw_limit").toString} name="drawlimit[1]" class="form-control" />
+                            </td>
+                            <td class="text-center">
+                                充值审核:<input type="checkbox" name="rechcheck[1]" value="1" checked="" /> 
+                                提现审核:<input type="checkbox" name="drawcheck[1]" value="1" checked="" />
+                            </td>
+                        </tr>
+                        <th>
+                            <button id={"button_" + iter._2} class="btn btn-warning" onclick={"update(" + (iter._2) + ", '" + (iter._1 \  "tag").asOpt[String].get + "')"}>修改 </button>
+                        </th>
+                    }}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="15">
+                                <div style="float:right; clear:none;" class="page form-inline">
+                                    <div class="pagination">
+                                        <div> </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="ajaxModal" class="modal fade" aria-hidden="true" style="display: none;">
+        <!-- /.modal-dialog -->
+        <div class="modal-dialog w-500px" style="margin-top: 0px;">
+            <!-- /.modal-content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title">
+					<i class="icon-plus">
+					</i>
+					新增一个币种
+				</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- <form action="/testadmin.php/Home/Currency/addCoin/" method="post" name="trans" class="form"> -->
+                        <table class="table table-form borderless">
+                            <tbody>
+                                <tr>
+                                    <th class="col-xs-4">标识</th>
+                                    <td class="col-xs-6">
+                                        <input id="tag-new" type="text" name="cointype" class="form-control" placeholder="请输入币种标识">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>名称</th>
+                                    <td>
+                                        <input id="name-new" type="text" name="coinname" class="form-control" placeholder="请输入币种名称">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>提现手续费</th>
+                                    <td>
+                                        <input id="commition-new" type="text" name="drawfee" class="form-control" placeholder="请输入x.xxx 格式的数字">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>手续费类型</th>
+                                    <td>
+                                        <select name="feetype" class="form-control">
+                                            <option value="0">比例</option>
+                                            <option value="1">实币</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>取现限额</th>
+                                    <td>
+                                        <input id="limit-new" type="text" name="drawlimit" class="form-control" placeholder="请输入纯数字">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <button id="currency-new" class="btn btn-primary" onclick="currencyNew()">保存</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+} {
+    <script type="text/javascript">
+    (function() {
+        var tab_tit = document.getElementById('think_page_trace_tab_tit').getElementsByTagName('span');
+        var tab_cont = document.getElementById('think_page_trace_tab_cont').getElementsByTagName('div');
+        var open = document.getElementById('think_page_trace_open');
+        var close = document.getElementById('think_page_trace_close').childNodes[0];
+        var trace = document.getElementById('think_page_trace_tab');
+        var cookie = document.cookie.match(/thinkphp_show_page_trace=(\d\|\d)/);
+        var history = (cookie && typeof cookie[1] != 'undefined' && cookie[1].split('|')) || [0, 0];
+        open.onclick = function() {
+            trace.style.display = 'block';
+            this.style.display = 'none';
+            close.parentNode.style.display = 'block';
+            history[0] = 1;
+            document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+        }
+        close.onclick = function() {
+            trace.style.display = 'none';
+            this.parentNode.style.display = 'none';
+            open.style.display = 'block';
+            history[0] = 0;
+            document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+        }
+        for (var i = 0; i < tab_tit.length; i++) {
+            tab_tit[i].onclick = (function(i) {
+                return function() {
+                    for (var j = 0; j < tab_cont.length; j++) {
+                        tab_cont[j].style.display = 'none';
+                        tab_tit[j].style.color = '#999';
+                    }
+                    tab_cont[i].style.display = 'block';
+                    tab_tit[i].style.color = '#000';
+                    history[1] = i;
+                    document.cookie = 'thinkphp_show_page_trace=' + history.join('|')
+                }
+            })(i)
+        }
+        parseInt(history[0]) && open.click();
+        (tab_tit[history[1]] || tab_tit[0]).click();
+    })();
+
+    function currencyNew() {
+        var tag = $('#tag-new').val();
+        var name = $('#name-new').val();
+        var commition = parseFloat($('#commition-new').val());
+        var limit = parseInt($('#limit-new').val());
+
+        var query_object = new Object();
+        query_object['tag'] = tag;
+        query_object['name'] = name;
+        query_object['commition'] = commition;
+        query_object['limit'] = limit;
+
+        $.ajax({
+            url: "/admin/currency/create",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {                                          
+                     alert("添加成功！");
+                     location.reload();
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("请检查您的输入");
+            }
+        });
+    };
+
+    function update(index, tag) {
+        // alert(index);
+        var name = $('#name_' + index).val();
+        var commition = parseFloat($('#commition_' + index).val());
+        var limit = parseInt($('#limit_' + index).val());
+
+        var query_object = new Object();
+        query_object['tag'] = tag;
+        query_object['name'] = name;
+        query_object['commition'] = commition;
+        query_object['limit'] = limit;
+
+        $.ajax({
+            url: "/admin/currency/update",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {                                          
+                     alert("修改成功！");
+                     location.reload();
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("请检查您的输入");
+            }
+        });
+    }
+    </script>
+}

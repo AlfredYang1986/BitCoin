@@ -31,9 +31,22 @@ GET		/store/:t							controllers.BitCode.store(t)
 GET		/store								controllers.BitCode.store(t="")
 GET		/help								controllers.BitCode.help
 
+GET		/admin/login/:t						controllers.Admin.adminLogin(t)
+GET		/admin/login						controllers.Admin.adminLogin(t="")
+GET		/admin/statistic/:t					controllers.Admin.adminStatistic(t)
+GET		/admin/statistic					controllers.Admin.adminStatistic(t="")
+GET		/admin/currency/:t					controllers.Admin.adminCurrencyManager(t)
+GET		/admin/currency						controllers.Admin.adminCurrencyManager(t="")
+POST	/admin/currency/update				controllers.Admin.adminUpdateCurrency
+POST	/admin/currency/create 				controllers.Admin.adminCreateCurrency
+GET		/admin/applies/:p/:t				controllers.Admin.adminAppliesManager(t, p)
+GET		/admin/applies/:p					controllers.Admin.adminAppliesManager(t="", p)
+GET		/admin/applies						controllers.Admin.adminAppliesManager(t="", p="0")
+
 # Auth 
 POST	/auth/register						controllers.AuthController.register
 POST	/auth/login							controllers.AuthController.login
+POST	/auth/admain/login					controllers.AuthController.admainLogin
 POST	/auth/changePwd		 				controllers.AuthController.changePwd
 
 # Profile

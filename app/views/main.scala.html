@@ -172,7 +172,7 @@
                      alert("登录成功");
                      setCookie('user_id', data.result.user_id, 1);
                      setCookie('token', data.result.token, 1);
-                     location.reload();
+                     location.href = "/index";
                 } else {
                     alert(data.error.message);
                 }
