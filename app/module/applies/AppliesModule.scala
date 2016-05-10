@@ -13,6 +13,8 @@ import module.sercurity.Sercurity
 import java.util.Date
 
 import module.auth.AuthModule
+import module.account.AccountModule
+import module.currency.CurrencyModule.currentLimit
 
 object ApplyTypes {
   case object pushMoney extends ApplyTypesDefines(0, "push money")
@@ -47,16 +49,30 @@ object AppliesModule {
         builder += "date" -> new Date().getTime
         builder += "apply_id" -> apply_id
         
+        val result = builder.result
+        
         import module.applies.ApplyTypes._
         if (app_type == accountApp.t) {
             module.auth.AuthModule.updateProfile(user_id, toJson(Map("status" -> 2)))
         }
        
+        val limit = currentLimit
         import module.account.AccountModule.queryAccount
-        if (app_type == popMoney.t && (queryAccount(user_id, toJson("")) \ "balance").asOpt[Float].get < amount ) {
-            ErrorCode.errorToJson("not enough money")
-        } else {
-            _data_connection.getCollection("apply") += builder.result
+     
+        val reVal = 
+            if (app_type == popMoney.t) {
+                if ((queryAccount(user_id, toJson("")) \ "result" \ "balance").asOpt[Float].get < amount ) ErrorCode.errorToJson("not enough money")
+                else if (amount > limit) ErrorCode.errorToJson("up to limit")
+                else {
+                    AccountModule.freezeMoney(user_id, 
+                        toJson(Map("amount" -> toJson(result.getAs[Number]("amount").get.floatValue),
+                                   "owner_id" -> toJson(result.getAs[String]("apply_user_id").get))))
+                }
+            } else null
+       
+        if (reVal != null && ((reVal \ "status").asOpt[String].get != "ok")) reVal
+        else {
+            _data_connection.getCollection("apply") += result
             toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
         }
     }
@@ -88,9 +104,29 @@ object AppliesModule {
                 (from db() in "apply" where ("apply_id" -> apply_id) select (x => x)).toList match {
                   case Nil => ErrorCode.errorToJson("application not exist")
                   case head :: Nil => {
-                      head += "status" -> ApplyStatus.approve.s.asInstanceOf[Number]
-                      _data_connection.getCollection("apply").update(DBObject("apply_id" -> apply_id), head)
-                      toJson(Map("status" -> "ok", "result" -> "approve application success"))
+                      val result =                    
+                          head.getAs[Number]("type").get.intValue match {
+                            case module.applies.ApplyTypes.accountApp.t => 
+                                  AuthModule.updateProfile(head.getAs[String]("apply_user_id").get,
+                                      toJson(Map("status" -> toJson(module.auth.RegisterApprovedStatus.approved.s),
+                                                "approved_date" -> toJson(new java.util.Date().getTime))))
+                            case module.applies.ApplyTypes.pushMoney.t =>
+                                  AccountModule.pushMoney(user_id, 
+                                      toJson(Map("total" -> toJson(head.getAs[Number]("amount").get.floatValue),
+                                                "owner_id" -> toJson(head.getAs[String]("apply_user_id").get))))
+                            
+                            case module.applies.ApplyTypes.popMoney.t => 
+                                  AccountModule.popMoney(user_id, 
+                                      toJson(Map("total" -> toJson(head.getAs[Number]("amount").get.floatValue),
+                                                "owner_id" -> toJson(head.getAs[String]("apply_user_id").get))))
+                          }
+                      
+                      if ((result \ "status").asOpt[String].get != "ok") result
+                      else {
+                          head += "status" -> ApplyStatus.approve.s.asInstanceOf[Number]
+                          _data_connection.getCollection("apply").update(DBObject("apply_id" -> apply_id), head)
+                          toJson(Map("status" -> "ok", "result" -> "approve application success"))
+                      }
                   }
                   case _ => ErrorCode.errorToJson("application not exist")
                 }
@@ -137,16 +173,28 @@ object AppliesModule {
                 )).toList))) 
         } else ErrorCode.errorToJson("not have enough mana")
         
-    def queryAuthApplications(user_id : String, data : JsValue) : JsValue = 
+    def queryAuthApplications(user_id : String, data : JsValue) : List[JsValue] = {
+        def lst2args(xls : List[JsValue]) : List[String] =
+            xls match {
+              case Nil => Nil
+              case head :: l => (head \ "apply_user_id").asOpt[String].get :: lst2args(l)
+            }
+        
         if (AuthModule.adminAuthCheck(user_id)) {
             val take = (data \ "take").asOpt[Int].map (x => x).getOrElse(10)
             val skip = (data \ "skip").asOpt[Int].map (x => x).getOrElse(0)
             
             val lst = ((from db() in "apply" where ("type" -> ApplyTypes.accountApp.t.asInstanceOf[Number]))
-                        .selectSkipTop(skip)(take)("date")(x => x.getAs[String]("apply_user_id").get)).toList
-      
-            toJson(Map("status" -> toJson("ok"), "result" -> toJson(AuthModule.queryMultipleProfiles(lst))))
-        } else ErrorCode.errorToJson("not have enough mana")
+                        .selectSkipTop(skip)(take)("date")(DB2JsValue(_))).toList
+          
+            val profile_lst = AuthModule.queryMultipleProfiles(lst2args(lst))
+            val reVal = ((lst.sortBy(x => (x \ "apply_user_id").asOpt[String].get)) zip (profile_lst.sortBy(x => (x \ "user_id").asOpt[String].get))) map { result => 
+                toJson(Map("apply" -> result._1, "profile" -> result._2))
+            }
+            
+            reVal.sortBy[Long](y => (y \ "apply" \ "date").asOpt[Long].get).reverse
+        } else Nil
+    }
     
     def queryMyApplications(user_id :String, data : JsValue) : JsValue = 
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(

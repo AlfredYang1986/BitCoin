@@ -11,6 +11,8 @@ import util.errorcode.ErrorCode
 import com.mongodb.casbah.Imports._
 import module.sercurity.Sercurity
 import module.auth.AuthModule
+import module.currency.CurrencyModule.currentCommition
+import module.statistic.StatisticModule.pushIncome
 
 object AccountModule {
 
@@ -18,6 +20,7 @@ object AccountModule {
         def createAccount(total : Number, user_id : String) : MongoDBObject = {
             val builder = MongoDBObject.newBuilder
                   builder += "balance" -> total
+                  builder += "freeze" -> total
                   builder += "total" -> total
                   builder += "btc" -> 0
                   builder += "ltc" -> 0
@@ -30,6 +33,7 @@ object AccountModule {
         def DB2JsValue(x : MongoDBObject) : JsValue =
             toJson(Map("balance" -> toJson(x.getAs[Number]("balance").get.floatValue),
                       "total" -> toJson(x.getAs[Number]("total").get.floatValue), 
+                      "freeze" -> toJson(x.getAs[Number]("freeze").get.floatValue), 
                       "btc" -> toJson(x.getAs[Number]("btc").get.floatValue), 
                       "ltc" -> toJson(x.getAs[Number]("ltc").get.floatValue),
                       "user_id" -> toJson(x.getAs[String]("user_id").get)
@@ -68,7 +72,7 @@ object AccountModule {
         
         def pushMoneyImpl(owner_id: String, data : JsValue) : JsValue = {
             val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0)
-            enumUserAccunt(owner_id)  { head => 
+            enumUserAccunt(owner_id)  { head =>
                     head += "balance" -> (head.getAs[Number]("balance").get.floatValue + total.asInstanceOf[Float]).asInstanceOf[Number]
                     head += "total" -> (head.getAs[Number]("total").get.floatValue + total.asInstanceOf[Float]).asInstanceOf[Number]
                     _data_connection.getCollection("accounts").update(DBObject("user_id" -> owner_id), head)
@@ -76,15 +80,31 @@ object AccountModule {
                 } (noneFunc) 
         }
         
+        def freezeMoneyImpl(owner_id: String, data : JsValue) : JsValue = {
+            val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.0)
+            val commition = currentCommition * amount.asInstanceOf[Float] 
+            enumUserAccunt(owner_id)  { head => 
+                  val tmp = head.getAs[Number]("balance").get.floatValue - amount.asInstanceOf[Float] - commition
+                  if (tmp < 0) ErrorCode.errorToJson("not have enough money") 
+                  else {
+                      head += "balance" -> tmp.asInstanceOf[Number]
+                      head += "freeze" -> (head.getAs[Number]("freeze").get.floatValue + amount.asInstanceOf[Float] + commition).asInstanceOf[Number]
+                      _data_connection.getCollection("accounts").update(DBObject("user_id" -> owner_id), head)
+                      DB2JsValue(head)
+                  }
+            } (noneFunc) 
+        }
+        
         def popMoneyImpl(owner_id : String, data : JsValue) : JsValue = {
             val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0)
             enumUserAccunt(owner_id)  { head => 
-                val tmp = head.getAs[Number]("balance").get.floatValue - total.asInstanceOf[Float]
+                val tmp = head.getAs[Number]("freeze").get.floatValue - total.asInstanceOf[Float]
                 if (tmp < 0) ErrorCode.errorToJson("not have enough money") 
                 else {
-                    head += "balance" -> tmp.asInstanceOf[Number]
+                    head += "freeze" -> tmp.asInstanceOf[Number]
                     head += "total" -> (head.getAs[Number]("total").get.floatValue - total.asInstanceOf[Float]).asInstanceOf[Number]
                     _data_connection.getCollection("accounts").update(DBObject("user_id" -> owner_id), head)
+                    pushIncome(total.asInstanceOf[Float] * currentCommition)
                     DB2JsValue(head)
                 }
             } (noneFunc) 
@@ -108,15 +128,23 @@ object AccountModule {
         val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0)
         val owner_id = (data \ "owner_id").asOpt[String].map (x => x).getOrElse("")
         if (AuthModule.adminAuthCheck(user_id)) {
-            pushMoneyImpl(owner_id, data)
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(pushMoneyImpl(owner_id, data))))
         } else ErrorCode.errorToJson("not have enough mana")
+    }
+    
+    def freezeMoney(user_id : String, data : JsValue) : JsValue = {
+        val total = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0)
+        val owner_id = (data \ "owner_id").asOpt[String].map (x => x).getOrElse("")
+//        if (AuthModule.adminAuthCheck(user_id)) {
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(freezeMoneyImpl(owner_id, data))))
+//        } else ErrorCode.errorToJson("not have enough mana")
     }
 
     def popMoney(user_id : String, data : JsValue) : JsValue = {
         val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0) 
         val owner_id = (data \ "owner_id").asOpt[String].map (x => x).getOrElse("")
         if (AuthModule.adminAuthCheck(user_id)) {
-            popMoneyImpl(owner_id, data)
+            toJson(Map("status" -> toJson("ok"), "result" -> toJson(popMoneyImpl(owner_id, data))))
         } else ErrorCode.errorToJson("not have enough mana")
     }
 }

@@ -58,7 +58,7 @@
                         <ul>
                             <li style="width:150px;"><i class="iconfont" style="color: #0896e2; font-size: 32px"></i>　人民币(CNY)</li>
                             <li>可用：<span class="green" id="cny_balance">￥@{(account \ "balance").asOpt[Float].get}</span></li>
-                            <!-- <li>冻结：<span class="orange" id="cny_lock">￥0</span></li> -->
+                            <li>冻结：<span class="orange" id="cny_lock">￥@{(account \ "freeze").asOpt[Float].get}</span></li>
                             <li>总资产：<b id="cny_total">￥@{(account \ "total").asOpt[Float].get}</b></li>
                         </ul>
                     </div>
@@ -85,7 +85,7 @@
                                 <dd class="w135">@{(account \ "btc").asOpt[Float].get}</dd>
                                 <dd class="w145">0</dd>
                                 <!-- <dd class="w152">0</dd> -->
-                                <dd><a class="tojy" href="#">去交易</a></dd>
+                                <dd><a class="tojy" href="/trade/btc">去交易</a></dd>
                             </dl>
                         </li>
                         <li>
@@ -102,7 +102,7 @@
                                 <dd class="w135">@{(account \ "ltc").asOpt[Float].get}</dd>
                                 <dd class="w145">0</dd>
                                 <!-- <dd class="w152">0</dd> -->
-                                <dd><a class="tojy" href="#">去交易</a></dd>
+                                <dd><a class="tojy" href="/trade/ltc">去交易</a></dd>
                             </dl>
                         </li>
                     </ul>

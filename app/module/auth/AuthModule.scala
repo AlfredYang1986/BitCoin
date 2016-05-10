@@ -145,6 +145,7 @@ object AuthModule {
               (data \ "register_id").asOpt[String].map (x => head += "register_id" -> x).getOrElse(Unit)
               (data \ "id_type").asOpt[Int].map (x => head += "id_type" -> x.asInstanceOf[Number]).getOrElse(Unit)
               (data \ "status").asOpt[Int].map (x => head += "status" -> x.asInstanceOf[Number]).getOrElse(Unit)
+              (data \ "approved_date").asOpt[Long].map (x => head += "approved_date" -> x.asInstanceOf[Number]).getOrElse(Unit)
               
               _data_connection.getCollection("users").update(DBObject("user_id" -> user_id), head)
 

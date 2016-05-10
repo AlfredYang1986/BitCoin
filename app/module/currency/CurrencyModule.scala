@@ -29,8 +29,8 @@ object CurrencyModule {
     def createCurrencyNode(data : JsValue) : MongoDBObject = {
         val tag = (data \ "tag").asOpt[String].map (x => x).getOrElse("")
         val name = (data \ "name").asOpt[String].map (x => x).getOrElse("")
-        val commition = (data \ "commition").asOpt[Float].map (x => x).getOrElse(0.0)
-        val limit = (data \ "limit").asOpt[Int].map (x => x).getOrElse(0)
+        val commition = (data \ "commition").asOpt[Float].map (x => x).getOrElse(0.01)
+        val limit = (data \ "limit").asOpt[Int].map (x => x).getOrElse(50000)
         
         val builder = MongoDBObject.newBuilder
         builder += "tag" -> tag
@@ -40,7 +40,6 @@ object CurrencyModule {
         
         builder.result
     }
- 
     
     def createCurrency(user_id : String, data : JsValue) : JsValue = {
         if (AuthModule.adminAuthCheck(user_id)) {
@@ -87,7 +86,29 @@ object CurrencyModule {
             }
         } else ErrorCode.errorToJson("not have enough mana")
     }
-  
+ 
+    def currentCommition : Float = {
+        (from db() in "currency" where ("tag" -> "CNY") select (x => x)).toList match {
+            case Nil => {
+                val node = createCurrencyNode(toJson(""))
+                node.getAs[Number]("commition").get.floatValue
+            }
+            case head :: Nil => head.getAs[Number]("commition").get.floatValue
+            case _ => 0.01.floatValue
+        }
+    }
+    
+    def currentLimit : Int = {
+                (from db() in "currency" where ("tag" -> "CNY") select (x => x)).toList match {
+            case Nil => {
+                val node = createCurrencyNode(toJson(""))
+                node.getAs[Number]("withdraw_limit").get.intValue
+            }
+            case head :: Nil => head.getAs[Number]("withdraw_limit").get.intValue
+            case _ => 50000.intValue
+        }
+    }
+    
     def currency : JsValue = {
         def currencyImpl : List[JsValue] = {
             ((from db() in "currency") select (x => x)).toList match {

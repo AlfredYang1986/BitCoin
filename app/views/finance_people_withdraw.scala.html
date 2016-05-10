@@ -122,7 +122,7 @@
                                 </ul>
                             </div> -->
                             <div class="charge_input">
-                                <div class="charge_title">充值金额：</div>
+                                <div class="charge_title">提现金额：</div>
                                 <div class="charge_text">
                                     <input type="text" class="form-control" name="money" id="money"> &nbsp;&nbsp;元
                                 </div>
@@ -180,7 +180,7 @@
         var query_object = new Object();
         query_object['amount'] = money;
         query_object['type'] = 1;
-        query_object['message'] = "充值";
+        query_object['message'] = "提现";
 
         $.ajax({
             url: "/apply/pushapp",
