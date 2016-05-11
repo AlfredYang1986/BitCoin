@@ -219,6 +219,19 @@ object BitCode extends Controller {
         }
     }
     /******************************************************/
+   
+    def forgetPwd = Action { request =>
+//        var token = t
+//        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+//        else Unit 
+        
+//        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+//        else {
+//            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.forget_pwd())
+//            Ok(views.html.store(token)(profile))
+//        }
+    }
     
     /**
      * 主页面

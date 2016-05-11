@@ -49,7 +49,7 @@
                 </ul>
                 <div style="width: 100%; height: 560px;" id="sosobtc_kline"></div>
                 <div class="charge_input">
-                    <table style="width: 100%">
+                    <table style="width: 70%; float: left">
                         <tr>
                             <td>
                                 <div class="charge_title">购买数量：</div>
@@ -83,6 +83,7 @@
                             </td>
                         </tr>
                     </table>
+                    <div id="trade" style="width:30%; margin-top:0px; float:left"></div>
                 </div>
             </div>
             <!--/右边内容区域-->
@@ -231,6 +232,39 @@
             }
         });
     }
+
+    function getTradeBrief() {
+        $.ajax({
+            url: "/market/trade/btc",
+            type: 'POST',
+            dataType: 'json',
+            //contentType: 'application/json, charset=utf-8',
+            cache: false,
+            success: function (data) {
+                var html = '';
+                var buys = data.buys;
+                var sells = data.sells;
+
+                html += '<table style="width: 100%">';
+                html += '<tr style="background: green"><th>类型</th><th>价格</th><th>数量</th></tr>'
+                for (var i = sells.length - 1; i >= 0; i--) {
+                    html += '<tr><td style="text-align: center">' + '卖' + (sells.length - 1 - i) + '</td><td style="text-align: center">' + sells[i].price + '</td><td style="text-align: center">' + sells[i].amount + '</td></tr>';
+                };
+                html += '</table>';
+                html += '<table style="width: 100%">';
+                html += '<tr style="background: green"><th>类型</th><th>价格</th><th>数量</th></tr>'
+                for (var i = 0; i < buys.length; i++) {
+                    html += '<tr><td style="text-align: center">' + '买' + (i + 1) + '</td><td style="text-align: center">' + buys[i].price + '</td><td style="text-align: center">' + buys[i].amount + '</td></tr>';
+                };
+                html += '</table>';
+                
+                $('#trade').html(html);
+            },
+            error: function (xhr, status, error) {
+                // alert("请检查您的输入");
+            }
+        });
+    }
     
     var pageSet = {};
     pageSet.showDetail = function() {
@@ -258,7 +292,9 @@
     $(function() {
         pageSet.init();
         getAllBrief();
+        getTradeBrief();
         setInterval("getAllBrief()", 1000);
+        setInterval("getTradeBrief()", 1000);
         $(".hb_close").click(function(event) {
             $(this).parent().parent().css({
                 "display": "none"

@@ -35,7 +35,7 @@ object StokeModule {
         def createCoin(data : JsValue) : MongoDBObject = {
             val coin_type = (data \ "type").asOpt[Int].map (x => x).getOrElse(-1)
             val coin_amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.0)
-           
+            
             val builder = MongoDBObject.newBuilder
             builder += "coin_type" -> coin_type
             builder += "coin_amount" -> coin_amount
@@ -47,13 +47,18 @@ object StokeModule {
         
         def DB2JsValue(obj : MongoDBObject) : JsValue = 
             toJson(Map("coin_type" -> toJson(obj.getAs[Number]("coin_type").get.intValue),
+                       "coin_name" -> toJson((obj.getAs[Number]("coin_type").get.intValue match {
+                         case BTC.s => BTC.des
+                         case LTC.s => LTC.des
+                         case _ => "not suport"
+                       })),
                        "coin_amount" -> toJson(obj.getAs[Number]("coin_amount").get.floatValue),
                        "coin_total" -> toJson(obj.getAs[Number]("coin_total").get.floatValue)))
       
         def queryStoke(t : Int) : Option[MongoDBObject] = {
             if (checkCoinType(t)) {
                 (from db() in "stoke" where ("coin_type" -> t) select (x => x)).toList match {
-                  case Nil => Some(createCoin(toJson(Map("coin_type" -> toJson(t), "coin_amount" -> toJson(0)))))
+                  case Nil => Some(createCoin(toJson(Map("type" -> toJson(t), "coin_amount" -> toJson(0)))))
                   case head :: Nil => Some(head)
                   case _ => None
                 }
@@ -118,7 +123,14 @@ object StokeModule {
      */
     def queryAllStoke(user_id : String, data : JsValue) : JsValue = 
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(
-            (from db() in "stoke" select (x => DB2JsValue(x))).toList)))
+            ((from db() in "stoke" select (x => DB2JsValue(x))).toList) match { 
+                case Nil => {
+                  
+                   (queryStoke(BTC.s) :: queryStoke(LTC.s) :: Nil) flatMap (x => x.map(DB2JsValue(_)))
+                }
+                case xls : List[JsValue] => xls
+            }
+        )))
     
         
     import module.trade.TradeModule.pushRecord

@@ -1,4 +1,4 @@
-@(token: String)(config: play.api.libs.json.JsValue)
+@(token: String)(config: List[play.api.libs.json.JsValue])
 
 @admin_main("后台管理")(token) {
     
@@ -52,50 +52,53 @@
                 <div class="panel-body">
                     <table class="table table-form">
                         <tbody>
+                        @{config map { iter => 
                             <tr>
                                 <th class="col-xs-2"></th>
                                 <td class="col-xs-5" colspan="2">
-                                    BTC - BTC </td>
+                                    {(iter \ "coin_name").asOpt[String].get} 
+                                </td>
                             </tr>
                             <tr>
                                 <th class="col-xs-2">平台虚拟币总量</th>
                                 <td class="col-xs-5">
-                                    <span class="form-control"></span>
+                                    <span class="form-control">{(iter \ "coin_total").asOpt[Float].get}</span>
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th class="col-xs-2">平台虚拟币流通量</th>
                                 <td class="col-xs-5">
-                                    <span class="form-control"></span>
+                                    <span class="form-control">{(iter \ "coin_amount").asOpt[Float].get}</span>
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th class="col-xs-2">添加平台货币</th>
                                 <td class="col-xs-3">
-                                    <input type="text" name="SZ_SDRATEPER_5" value="" class="form-control">
+                                    <input id={"add-" + (iter \ "coin_type").asOpt[Int].get} type="text" name="SZ_SDRATEPER_5" value="" class="form-control" />
                                 </td>
                                 <td class="col-xs-2">
-                                    <button class="btn btn-primay">添加</button>
+                                    <button class="btn btn-primay" onclick={"addCoin(" + (iter \ "coin_type").asOpt[Int].get + ")"}>添加</button>
                                 </td>
                             </tr>
                             <tr>
                                 <th class="col-xs-2">减少平台货币</th>
                                 <td class="col-xs-3">
-                                    <input type="text" name="SZ_SDRATEPER_5" value="" class="form-control">
+                                    <input id={"sub-" + (iter \ "coin_type").asOpt[Int].get} type="text" name="SZ_SDRATEPER_5" value="" class="form-control" />
                                 </td>
                                 <td class="col-xs-2">
-                                    <button class="btn btn-primay">减少</button>
+                                    <button class="btn btn-primay" onclick={"subCoin(" + (iter \ "coin_type").asOpt[Int].get + ")"}>减少</button>
                                 </td>
                             </tr>
                             <tr>
                                 <th></th>
                                 <td colspan="2">
-                                    <input type="submit" data-loading="稍候..." value="保存" class="btn btn-primary" id="submit">
+                                    <!-- <button class="btn btn-primary" >保存</button> -->
                                     <a onclick="location.reload();" class="btn btn-primary"><i class="icon-refresh "> 更新数据 </i></a>
                                 </td>
                             </tr>
+                        }}
                         </tbody>
                     </table>
                 </div>
@@ -144,5 +147,75 @@
         parseInt(history[0]) && open.click();
         (tab_tit[history[1]] || tab_tit[0]).click();
     })();
+
+    function addCoin(coin_type) {
+        var amount = Number($('#add-' + coin_type).val());
+        if (!amount) {
+            alert('请填写正确的数额');
+            return;
+        };
+
+        var query_object = new Object();
+        query_object['amount'] = amount;
+        query_object['type'] = coin_type;
+
+        $.ajax({
+            url: "/stoke/push",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {                                          
+                     alert("push成功！");
+                     location.reload();
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("发布失败，请检查您的输入");
+            }
+        });
+    }
+
+    function subCoin(coin_type) {
+        var amount = Number($('#sub-' + coin_type).val());
+        if (!amount) {
+            alert('请填写正确的数额');
+            return;
+        };
+
+        var query_object = new Object();
+        query_object['amount'] = amount;
+        query_object['type'] = coin_type;
+
+        $.ajax({
+            url: "/stoke/pop",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {                                          
+                     alert("pop成功！");
+                     location.reload();
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("发布失败，请检查您的输入");
+            }
+        });
+    }
     </script>
 }

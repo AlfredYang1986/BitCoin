@@ -1,0 +1,111 @@
+
+@main("忘记密码")("") {
+    
+} {
+    <!-- 注册 -->
+    <div class="minbox" id="reg-step1">
+        <div class="login_step">
+            <ul class="order clearfix step-1 pt10">
+                <li class="active"><i>1</i>确认账号
+                    <div class="order_line"></div>
+                </li>
+                <li id="step2"><i class="">2</i>验证身份
+                    <div class="order_line"></div>
+                </li>
+                <li id="step3"><i class="">3</i>重置密码
+                    <div class="order_line"></div>
+                </li>
+                <li id="step4"><i class="">4</i>成功</li>
+            </ul>
+        </div>
+        <div class="reg_box">
+            <div class="reg_wrap pt60">
+                <div id="qqlogin" style="margin:0 0 30px -50px"></div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">电子邮箱：</div>
+                    <input type="text" id="email" value="" onblur="checkEmail()">
+                    <div id="email-msg" class="form_explain" data-explain="请输入有效的电子邮箱<em></em>" style="display: none;">请输入有效的电子邮箱<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">验证码：</div>
+                    <input type="text" id="captcha" value="">
+                    <div id="captcha-msg" style="display: none;">请输入有效的验证码<em></em></div>
+                </div>
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title"></div>
+                    <img class="check-code" width="100" height="35" id="rcode" src="https://www.gobiw.com/user/generate/">
+                    <a href="javascript:;" onclick="refresh()">看不清，换一张</a>
+                </div>
+                <div class="reg_button_box">
+                    <input type="button" onclick="getStep(2)" value="下一步">
+                </div>
+            </div>
+        </div>
+        <div class="reg_box" id="step2_div" style="display: none">
+            <div class="reg_wrap pt60">
+                <div class="reg_input_box reg-fb">
+                    <div class="reg_title">邮箱：</div>
+                    <span style=" line-height:40px;" id="emailshow"></span>
+                    <div id="send-msg" style="display: none;">邮件已发送，请查收邮箱<em></em></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /注册 -->
+ } {
+    <script type="text/javascript">
+    function getStep(step) {
+        var email = $('#email').val();
+        var captcha = $('#captcha').val();
+        if (step == 2) {
+            if (!checkEmail()) {
+                return false;
+            }
+            $('#emailshow').html(email);
+            sendEmail();
+        }
+
+        $('.reg_box').hide();
+        $('#step' + step + '_div').show();
+        $('#step' + step).addClass('active');
+    }
+
+    function refresh() {
+        var url = "https://www.gobiw.com/user/generate/r/" + Math.random();
+        $('#rcode').attr('src', url);
+    }
+
+    function checkEmail() {
+        var email = $('#email').val();
+        if (!email) {
+            $('#email-msg').show();
+            return false;
+        } else {
+            var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if (!reg.test(email)) {
+                $('#email-msg').show();
+                return false;
+            }
+            $('#email-msg').hide();
+        }
+        return true;
+    }
+
+    function sendEmail() {
+        var email = $('#email').val();
+        var captcha = $('#captcha').val();
+        $.ajax({
+            type: "POST",
+            url: "https://www.gobiw.com/user/sendemail/",
+            data: "captcha=" + captcha + "&email=" + email,
+            dataType: 'json',
+            success: function(s) {
+                $('#send-msg').show();
+                $('#send-msg').html(s.data + '<em></em>');
+            }
+        });
+    }
+    </script>
+} {
+    
+}

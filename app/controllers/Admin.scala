@@ -13,6 +13,7 @@ import module.currency.CurrencyModule
 import controllers.common.requestArgsQuery._
 import module.auth.AuthModule
 import module.applies.AppliesModule
+import module.stoke.StokeModule.queryAllStoke
 //import module.account.AccountModule.queryAccount
 //import module.common.http.HTTP
 //import module.applies.AppliesModule.queryMyApplications
@@ -131,8 +132,8 @@ object Admin extends Controller {
             val user_id = (profile \ "user_id").asOpt[String].get
            
             if (AuthModule.adminAuthCheck(user_id)) {
-                val statistic = (statistics(toJson("")) \ "result")
-                Ok(views.html.admin_stoke_config(token)(statistic))
+                val stoke = (queryAllStoke(user_id, toJson("")) \ "result").asOpt[List[JsValue]].get
+                Ok(views.html.admin_stoke_config(token)(stoke))
             }else Redirect("/admin/login")
         }
     }
