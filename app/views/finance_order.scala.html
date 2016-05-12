@@ -1,0 +1,95 @@
+@(token: String)(profile: play.api.libs.json.JsValue)(order: List[play.api.libs.json.JsValue])
+
+@main("财务中心")(token) {
+
+} {
+    <!-- 主体内容 -->
+    <div class="main-wrap">
+        <p class="ac-mk">
+            <a href="/">首页</a> &gt; <a href="javascript:;">财务中心</a>
+        </p>
+        <div class="l-container">
+            <!--左边导航区域-->
+            <div class="cont-left fl">
+                <ul class="mod-sidebar mon-cen">
+                    <li id="nav_index" >
+                        <a href="/finance/index"><i class="coin_menu_op_0"></i><span class="pl10">财务中心</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/pay"><i class="coin_menu_op_18"></i><span class="pl10">人民币充值</span></a>
+                    </li>
+                    <li id="nav_onlinepay" style="border-top: 1px solid #ccc">
+                        <a href="/finance/withdraw"><i class="coin_menu_op_18"></i><span class="pl10">人民币提现</span></a>
+                    </li>
+                    <!-- <li id="nav_currencyin" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyin.html"><i class="coin_menu_op_4"></i><span class="pl10">转入虚拟币</span></a>
+                    </li>
+                    <li id="nav_currencyout" style="border-top: 1px solid #ccc">
+                        <a href="finance_currencyout.html"><i class="coin_menu_op_5"></i><span class="pl10">转出虚拟币</span></a>
+                    </li>
+                    <li id="nav_entrust" style="border-top: 1px solid #ccc">
+                        <a href="finance_mandate.html"><i class="coin_menu_op_6"></i><span class="pl10">委托管理</span></a>
+                    </li> -->
+                    <li id="nav_order" class="active"  style="border-top: 1px solid #ccc;">
+                        <a href="/finance/order"><i class="coin_menu_op_7"></i><span class="pl10">挂单查询</span></a>
+                    </li>
+                    <li id="nav_order" style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc">
+                        <a href="/finance/app/query"><i class="coin_menu_op_7"></i><span class="pl10">申请查询</span></a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <script type="text/javascript">
+            // document.getElementById('nav_index').setAttribute("class", "active");
+            </script>
+            <!--/左边导航区域-->
+            <!--右边内容区域-->
+            <div class="cont-right fr">
+                <div class="cont_tit_nav">
+                    <ul>
+                        <li class="cur"><a href="#">成交纪录</a></li>
+                    </ul>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="cont-detail clearfix">
+                    <table class="mes-dis">
+                        <thead>
+                        <tr>
+                            <th>下单时间</th>
+                            <th>下单数量</th>
+                            <th>下单价格</th>
+                            <th>下单手续费</th>
+                            <th>下单总价</th>
+                            <th>下单状态</th>
+                        </tr>
+                        </thead>
+                        @{order map {iter => 
+                            <tr>
+                                <th>{
+                                    val time_span = (iter \ "date").asOpt[Long].get
+                                    val format =   new java.text.SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+                                    format.format(time_span);
+                                }</th>
+                                <th>{(iter \ "amount").asOpt[Float].get}</th>
+                                <th>{(iter \ "price").asOpt[Float].get}</th>
+                                <th>{((iter \ "price").asOpt[Float].get * (iter \ "amount").asOpt[Float].get) * 0.01}</th>
+                                <th>{((iter \ "price").asOpt[Float].get * (iter \ "amount").asOpt[Float].get) * 1.01}</th>
+                                <th>{(iter \ "status").asOpt[Int].get match {
+                                        case module.order.OrderStatus.waiting.t => "挂单中"
+                                        case module.order.OrderStatus.success.t => "交易成功"
+                                        case module.order.OrderStatus.reject.t => "交易失败"
+                                }}</th>
+                            </tr>
+                        }}
+                    </table>
+                </div>
+            </div>
+            <!--/右边内容区域-->
+        </div>
+    </div>
+    <!-- /主体内容 -->
+} {
+
+} {
+	您好，<a href="#">@{(profile \ "name").asOpt[String].get}</a> <button id='logout_btn' class='btn'>退出</button>
+} 

@@ -14,6 +14,7 @@ import controllers.common.requestArgsQuery._
 import module.auth.AuthModule
 import module.applies.AppliesModule
 import module.stoke.StokeModule.queryAllStoke
+import module.order.OrderModule.queryAllOrders
 //import module.account.AccountModule.queryAccount
 //import module.common.http.HTTP
 //import module.applies.AppliesModule.queryMyApplications
@@ -134,6 +135,23 @@ object Admin extends Controller {
             if (AuthModule.adminAuthCheck(user_id)) {
                 val stoke = (queryAllStoke(user_id, toJson("")) \ "result").asOpt[List[JsValue]].get
                 Ok(views.html.admin_stoke_config(token)(stoke))
+            }else Redirect("/admin/login")
+        }
+    }
+    
+    def adminOrder(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            val user_id = (profile \ "user_id").asOpt[String].get
+           
+            if (AuthModule.adminAuthCheck(user_id)) {
+                val orders = (queryAllOrders(user_id, toJson("")) \ "result").asOpt[List[JsValue]].get
+                Ok(views.html.admin_order_manager(token)(orders))
             }else Redirect("/admin/login")
         }
     }

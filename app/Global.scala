@@ -8,6 +8,15 @@ import util.errorcode.ErrorCode
 import com.mongodb.casbah.Imports._
 import module.sercurity.Sercurity
 
+import akka.actor.{Actor, Props}
+import play.api.libs.concurrent.Akka
+import play.api.GlobalSettings
+import play.api.templates.Html
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+import module.timer.handleOrders
+import module.timer.TimerModule
+
 object Global extends GlobalSettings {
     override def onStart(application : Application) = {
         if (!_data_connection.isExisted("users")) {
@@ -25,7 +34,7 @@ object Global extends GlobalSettings {
            val token = Sercurity.md5Hash(email + pwd)
            builder += "token" -> token
            
-           builder += "name" -> ""
+           builder += "name" -> "admin"
            builder += "id_type" -> socialID.s
            builder += "register_id" -> ""
            builder += "approved_date" -> 0
@@ -33,5 +42,9 @@ object Global extends GlobalSettings {
                   
            _data_connection.getCollection("users") += builder.result 
         }
+        
+    		import scala.concurrent.duration._
+    		val actor = Akka.system(application).actorOf(Props[TimerModule])
+		    Akka.system(application).scheduler.schedule(0.seconds, 10.seconds, actor, handleOrders) 
     }
 }

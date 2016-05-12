@@ -15,6 +15,8 @@ GET		/finance/withdraw/:t				controllers.BitCode.financeWithdraw(t)
 GET		/finance/withdraw					controllers.BitCode.financeWithdraw(t="")
 GET		/finance/app/query/:t				controllers.BitCode.financeQueryApp(t)
 GET		/finance/app/query					controllers.BitCode.financeQueryApp(t="")
+GET		/finance/order/:t					controllers.BitCode.financeTradeRecords(t)
+GET		/finance/order						controllers.BitCode.financeTradeRecords(t="")
 GET		/profile/index/:t					controllers.BitCode.profileIndex(t)
 GET		/profile/index						controllers.BitCode.profileIndex(t="")
 GET     /profile/auth/:t					controllers.BitCode.safe_auth(t)		
@@ -50,6 +52,8 @@ GET		/admin/trade/config/:t 				controllers.Admin.adminTradeConfig(t)
 GET		/admin/trade/config 				controllers.Admin.adminTradeConfig(t="")
 GET		/admin/stoke/:t 					controllers.Admin.adminStoke(t)
 GET		/admin/stoke						controllers.Admin.adminStoke(t="")
+GET		/admin/order/:t 					controllers.Admin.adminOrder(t)
+GET		/admin/order						controllers.Admin.adminOrder(t="")
 
 # Auth 
 POST	/auth/register						controllers.AuthController.register
@@ -87,6 +91,13 @@ POST	/apply/query/mine					controllers.ApplyController.queryMyApps
 POST	/stoke/query						controllers.StokeController.queryStoke
 POST	/stoke/push							controllers.StokeController.pushStoke
 POST	/stoke/pop							controllers.StokeController.popStoke
+
+# Orders
+POST	/order/push							controllers.OrderController.pushOrder
+POST	/order/reject						controllers.OrderController.rejectOrder
+POST	/order/approve						controllers.OrderController.approveOrder
+POST	/order/query						controllers.OrderController.queryOrders
+POST	/order/mine							controllers.OrderController.queryMyOrders
 
 # trade
 POST	/trade/buy							controllers.StokeController.purchaseStoke

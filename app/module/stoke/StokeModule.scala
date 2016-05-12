@@ -12,6 +12,7 @@ import com.mongodb.casbah.Imports._
 import module.sercurity.Sercurity
 import java.util.Date
 import module.common.http.{HTTP}
+import module.statistic.StatisticModule.pushIncome
 
 import module.auth.AuthModule
 
@@ -138,16 +139,18 @@ object StokeModule {
     import module.account.AccountModule.AccountModuleImpl.{popMoneyImpl, queryAccount}
     
     def purchaseStoke(user_id : String, data : JsValue) : JsValue = {
-      
-        val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0)
+        
+        val amount = ((data \ "amount").asOpt[Float].map (x => x).getOrElse(0)).asInstanceOf[Float]
         val t = (data \ "type").asOpt[Int].map (x => x).getOrElse(-1)
+        val price = ((data \ "price").asOpt[Float].map (x => x).getOrElse(0.0)).asInstanceOf[Float]
+        val commition = amount * price * 0.01
        
         queryStoke(t) match {
           case None => ErrorCode.errorToJson("not support coin")
           case Some(stoke) => {
-              val p = if (t == BTC.s) HTTP("http://api.huobi.com/staticmarket/ticker_btc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
-                      else HTTP("http://api.huobi.com/staticmarket/ticker_ltc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
-              val price = ((p \ "ticker") \ "last").asOpt[Float].get
+//              val p = if (t == BTC.s) HTTP("http://api.huobi.com/staticmarket/ticker_btc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
+//                      else HTTP("http://api.huobi.com/staticmarket/ticker_ltc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
+//              val price = ((p \ "ticker") \ "last").asOpt[Float].get
 
               val tmp = stoke.getAs[Number]("coin_amount").get.floatValue - amount.asInstanceOf[Float] 
               if (tmp < 0) ErrorCode.errorToJson("not enough coin")
@@ -155,12 +158,12 @@ object StokeModule {
                   queryAccount(user_id) match {
                     case None => ErrorCode.errorToJson("email not exist")
                     case Some(account) => {
-                        val balance = account.getAs[Number]("balance").get.floatValue - price * amount.asInstanceOf[Float]
-                        if (balance < 0) ErrorCode.errorToJson("not enough money")
+                        val freeze = account.getAs[Number]("freeze").get.floatValue - price * amount.asInstanceOf[Float] - commition
+                        if (freeze < 0) ErrorCode.errorToJson("not enough money")
                         else {
                             if (t == BTC.s) {
                                account += "btc" -> (account.getAs[Number]("btc").get.floatValue + amount.asInstanceOf[Float]).asInstanceOf[Number]
-                               account += "balance" -> balance.asInstanceOf[Number]
+                               account += "freeze" -> freeze.asInstanceOf[Number]
                                
                                stoke += "coin_amount" -> tmp.asInstanceOf[Number]
                                
@@ -168,12 +171,13 @@ object StokeModule {
                                _data_connection.getCollection("stoke").update(DBObject("coin_type" -> t), stoke)
                             
                                pushRecord(user_id, purchase.s, BTC.s, amount.asInstanceOf[Float], price * amount.asInstanceOf[Float])
+                               pushIncome(commition.asInstanceOf[Float])
  
                                toJson(Map("status" -> toJson("ok"), "result" -> toJson("purchase success")))
                             }
                             else if (t == LTC.s) {
                                account += "ltc" -> (account.getAs[Number]("ltc").get.floatValue + amount.asInstanceOf[Float]).asInstanceOf[Number]
-                               account += "balance" -> balance.asInstanceOf[Number]
+                               account += "freeze" -> freeze.asInstanceOf[Number]
                                
                                stoke += "coin_amount" -> tmp.asInstanceOf[Number]
                                
@@ -181,6 +185,7 @@ object StokeModule {
                                _data_connection.getCollection("stoke").update(DBObject("coin_type" -> t), stoke)
 
                                pushRecord(user_id, purchase.s, LTC.s, amount.asInstanceOf[Float], price * amount.asInstanceOf[Float])
+                               pushIncome(commition.asInstanceOf[Float])
                             
                                toJson(Map("status" -> toJson("ok"), "result" -> toJson("purchase success")))
                             }
@@ -195,15 +200,17 @@ object StokeModule {
     
     def sellMyStoke(user_id : String, data : JsValue) : JsValue = {
       
-        val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0)
+        val amount = ((data \ "amount").asOpt[Float].map (x => x).getOrElse(0)).asInstanceOf[Float]
         val t = (data \ "type").asOpt[Int].map (x => x).getOrElse(-1)
+        val price = ((data \ "price").asOpt[Float].map (x => x).getOrElse(0.0)).asInstanceOf[Float]
+        val commition = amount * price * 0.01
         
         queryStoke(t) match {
           case None => ErrorCode.errorToJson("not support coin")
           case Some(stoke) => {
-              val p = if (t == BTC.s) HTTP("http://api.huobi.com/staticmarket/ticker_btc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
-                      else HTTP("http://api.huobi.com/staticmarket/ticker_ltc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
-              val price = ((p \ "ticker") \ "last").asOpt[Float].get
+//              val p = if (t == BTC.s) HTTP("http://api.huobi.com/staticmarket/ticker_btc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
+//                      else HTTP("http://api.huobi.com/staticmarket/ticker_ltc_json.js").header("Accept" -> "application/json", "Content-Type" -> "application/json").get(Map.empty)
+//              val price = ((p \ "ticker") \ "last").asOpt[Float].get
                   
               queryAccount(user_id) match {
                   case None => ErrorCode.errorToJson("email not exist")
@@ -214,7 +221,7 @@ object StokeModule {
                             if (tmp < 0) ErrorCode.errorToJson("not enough coin")
                             else {
                                 account += "btc" -> tmp.asInstanceOf[Number]
-                                account += "balance" -> (account.getAs[Number]("balance").get.floatValue + price * amount.asInstanceOf[Float]).asInstanceOf[Number]
+                                account += "balance" -> (account.getAs[Number]("balance").get.floatValue + price * amount.asInstanceOf[Float] - commition).asInstanceOf[Number]
 
                                 stoke += "coin_amount" -> (stoke.getAs[Number]("coin_amount").get.floatValue + amount.asInstanceOf[Float]).asInstanceOf[Number]
 
@@ -222,6 +229,7 @@ object StokeModule {
                                 _data_connection.getCollection("stoke").update(DBObject("coin_type" -> t), stoke)
 
                                 pushRecord(user_id, sell.s, BTC.s, amount.asInstanceOf[Float], price * amount.asInstanceOf[Float])
+                                pushIncome(commition.asInstanceOf[Float])
                                 toJson(Map("status" -> toJson("ok"), "result" -> toJson("sell success")))
                             }
                         }
@@ -230,7 +238,7 @@ object StokeModule {
                             if (tmp < 0) ErrorCode.errorToJson("not enough coin")
                             else {
                                 account += "ltc" -> tmp.asInstanceOf[Number]
-                                account += "balance" -> (account.getAs[Number]("balance").get.floatValue + price * amount.asInstanceOf[Float]).asInstanceOf[Number]
+                                account += "balance" -> (account.getAs[Number]("balance").get.floatValue + price * amount.asInstanceOf[Float] - commition).asInstanceOf[Number]
 
                                 stoke += "coin_amount" -> (stoke.getAs[Number]("coin_amount").get.floatValue + amount.asInstanceOf[Float]).asInstanceOf[Number]
 
@@ -238,6 +246,7 @@ object StokeModule {
                                 _data_connection.getCollection("stoke").update(DBObject("coin_type" -> t), stoke)
 
                                 pushRecord(user_id, sell.s, LTC.s, amount.asInstanceOf[Float], price * amount.asInstanceOf[Float])
+                                pushIncome(commition.asInstanceOf[Float])
                                 toJson(Map("status" -> toJson("ok"), "result" -> toJson("sell success")))
                             }
                         }

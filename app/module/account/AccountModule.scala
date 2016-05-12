@@ -95,6 +95,21 @@ object AccountModule {
             } (noneFunc) 
         }
         
+        def unfreezeMoneyImpl(owner_id: String, data : JsValue) : JsValue = {
+            val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.0)
+            val commition = currentCommition * amount.asInstanceOf[Float] 
+            enumUserAccunt(owner_id)  { head => 
+                  val tmp = head.getAs[Number]("freeze").get.floatValue - amount.asInstanceOf[Float] - commition
+                  if (tmp < 0) ErrorCode.errorToJson("not have enough money") 
+                  else {
+                      head += "freeze" -> tmp.asInstanceOf[Number]
+                      head += "balance" -> (head.getAs[Number]("balance").get.floatValue + amount.asInstanceOf[Float] + commition).asInstanceOf[Number]
+                      _data_connection.getCollection("accounts").update(DBObject("user_id" -> owner_id), head)
+                      DB2JsValue(head)
+                  }
+            } (noneFunc) 
+        }
+        
         def popMoneyImpl(owner_id : String, data : JsValue) : JsValue = {
             val total = (data \ "total").asOpt[Float].map (x => x).getOrElse(0)
             enumUserAccunt(owner_id)  { head => 
@@ -135,9 +150,13 @@ object AccountModule {
     def freezeMoney(user_id : String, data : JsValue) : JsValue = {
         val total = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0)
         val owner_id = (data \ "owner_id").asOpt[String].map (x => x).getOrElse("")
-//        if (AuthModule.adminAuthCheck(user_id)) {
-            toJson(Map("status" -> toJson("ok"), "result" -> toJson(freezeMoneyImpl(owner_id, data))))
-//        } else ErrorCode.errorToJson("not have enough mana")
+        toJson(Map("status" -> toJson("ok"), "result" -> toJson(freezeMoneyImpl(owner_id, data))))
+    }
+    
+    def unfreezeMoney(user_id : String, data : JsValue) : JsValue = {
+        val total = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0)
+        val owner_id = (data \ "owner_id").asOpt[String].map (x => x).getOrElse("")
+        toJson(Map("status" -> toJson("ok"), "result" -> toJson(unfreezeMoneyImpl(owner_id, data))))
     }
 
     def popMoney(user_id : String, data : JsValue) : JsValue = {

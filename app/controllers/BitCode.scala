@@ -11,6 +11,7 @@ import module.auth.AuthModule.queryProfileWithToken
 import module.account.AccountModule.queryAccount
 import module.common.http.HTTP
 import module.applies.AppliesModule.queryMyApplications
+import module.order.OrderModule.queryMyOrders
 
 object BitCode extends Controller {
 
@@ -136,6 +137,20 @@ object BitCode extends Controller {
             val user_id = (profile \ "user_id").asOpt[String].get
             val applies = (queryMyApplications(user_id, toJson("")) \ "result").asOpt[List[JsValue]].get
             Ok(views.html.finance_query_app(token)(profile)(applies))
+        }
+    }
+    
+    def financeTradeRecords(t : String) = Action { request => 
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            val user_id = (profile \ "user_id").asOpt[String].get
+            val orders = (queryMyOrders(user_id, toJson("")) \ "result").asOpt[List[JsValue]].get
+            Ok(views.html.finance_order(token)(profile)(orders))
         }
     }
     

@@ -1,4 +1,4 @@
-@(token: String)(config: List[play.api.libs.json.JsValue])
+@(token: String)(orders: List[play.api.libs.json.JsValue])
 
 @admin_main("后台管理")(token) {
     
@@ -15,7 +15,6 @@
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <button id="logout_btn" style="float: right; clear: both" class="btn btn-primay" onclick="logout()">登出</button>
     </nav>
     <div class="clearfix row-main">
         <div class="col-md-2">
@@ -35,10 +34,10 @@
                 <li>
                     <a href="/admin/trade/config">挂单设置<i class="icon-chevron-right"></i></a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="/admin/order">挂单管理<i class="icon-chevron-right"></i></a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/admin/stoke">库存管理<i class="icon-chevron-right"></i></a>
                 </li>
                 <!-- <li>
@@ -51,58 +50,46 @@
         </div>
         <div class="col-md-10">
             <div class="panel">
-                <div class="panel-heading"><strong><i class="icon-globe"></i> 库存管理</strong></div>
+                <div class="panel-heading"><strong><i class="icon-globe"></i> 挂单设置</strong></div>
                 <div class="panel-body">
-                    <table class="table table-form">
-                        <tbody>
-                        @{config map { iter => 
+                    <table class="mes-dis" style="width:100%; line-height:30px">
+                        <tr>
+                            <th style="text-align:center">下单时间</th>
+                            <th style="text-align:center">下单数量</th>
+                            <th style="text-align:center">下单价格</th>
+                            <th style="text-align:center">下单手续费</th>
+                            <th style="text-align:center">下单总价</th>
+                            <th style="text-align:center">下单状态</th>
+                            <th style="text-align:center"></th>
+                        </tr>
+                        @{orders map {iter => 
                             <tr>
-                                <th class="col-xs-2"></th>
-                                <td class="col-xs-5" colspan="2">
-                                    {(iter \ "coin_name").asOpt[String].get} 
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">平台虚拟币总量</th>
-                                <td class="col-xs-5">
-                                    <span class="form-control">{(iter \ "coin_total").asOpt[Float].get}</span>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">平台虚拟币流通量</th>
-                                <td class="col-xs-5">
-                                    <span class="form-control">{(iter \ "coin_amount").asOpt[Float].get}</span>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">添加平台货币</th>
-                                <td class="col-xs-3">
-                                    <input id={"add-" + (iter \ "coin_type").asOpt[Int].get} type="text" name="SZ_SDRATEPER_5" value="" class="form-control" />
-                                </td>
-                                <td class="col-xs-2">
-                                    <button class="btn btn-primay" onclick={"addCoin(" + (iter \ "coin_type").asOpt[Int].get + ")"}>添加</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">减少平台货币</th>
-                                <td class="col-xs-3">
-                                    <input id={"sub-" + (iter \ "coin_type").asOpt[Int].get} type="text" name="SZ_SDRATEPER_5" value="" class="form-control" />
-                                </td>
-                                <td class="col-xs-2">
-                                    <button class="btn btn-primay" onclick={"subCoin(" + (iter \ "coin_type").asOpt[Int].get + ")"}>减少</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <td colspan="2">
-                                    <!-- <button class="btn btn-primary" >保存</button> -->
-                                    <a onclick="location.reload();" class="btn btn-primary"><i class="icon-refresh "> 更新数据 </i></a>
-                                </td>
+                                <th style="text-align:center">{
+                                    val time_span = (iter \ "date").asOpt[Long].get
+                                    val format =   new java.text.SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+                                    format.format(time_span);
+                                }</th>
+                                <th style="text-align:center">{(iter \ "amount").asOpt[Float].get}</th>
+                                <th style="text-align:center">{(iter \ "price").asOpt[Float].get}</th>
+                                <th style="text-align:center">{((iter \ "price").asOpt[Float].get * (iter \ "amount").asOpt[Float].get) * 0.01}</th>
+                                <th style="text-align:center">{((iter \ "price").asOpt[Float].get * (iter \ "amount").asOpt[Float].get) * 1.01}</th>
+                                <th style="text-align:center">{(iter \ "status").asOpt[Int].get match {
+                                        case module.order.OrderStatus.waiting.t => "挂单中"
+                                        case module.order.OrderStatus.success.t => "交易成功"
+                                        case module.order.OrderStatus.reject.t => "交易失败"
+                                }}</th>
+                                <!-- <th style="text-align:center">{(iter \ "status").asOpt[Int].get match {
+                                        case module.order.OrderStatus.waiting.t => <button class="btn btn-primary" onclick={"approve('" + (iter \ "order_id").asOpt[String].get + "')"}>同意挂单</button>
+                                        case module.order.OrderStatus.success.t => ""
+                                        case module.order.OrderStatus.reject.t => ""
+                                }}</th> -->
+                                <th style="text-align:center">{(iter \ "status").asOpt[Int].get match {
+                                        case module.order.OrderStatus.waiting.t => <button class="btn btn-primary" onclick={"reject('" + (iter \ "order_id").asOpt[String].get + "')"}>取消挂单</button>
+                                        case module.order.OrderStatus.success.t => ""
+                                        case module.order.OrderStatus.reject.t => ""
+                                }}</th>
                             </tr>
                         }}
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -151,72 +138,60 @@
         (tab_tit[history[1]] || tab_tit[0]).click();
     })();
 
-    function addCoin(coin_type) {
-        var amount = Number($('#add-' + coin_type).val());
-        if (!amount) {
-            alert('请填写正确的数额');
-            return;
-        };
-
+    function reject(order_id) {
         var query_object = new Object();
-        query_object['amount'] = amount;
-        query_object['type'] = coin_type;
+        query_object['order_id'] = order_id;
 
         $.ajax({
-            url: "/stoke/push",
+            // url: "/trade/sell",
+            url: "/order/reject",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json, charset=utf-8',
-            data: JSON.stringify(query_object),
+            data: JSON.stringify(query_object), 
             cache: false,
             beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+                xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
             },
             success: function (data) {
-                if (data.status == "ok") {                                          
-                     alert("push成功！");
-                     location.reload();
+                if (data.status == "ok") {
+                    alert("取消成功");
+                    location.href = "/admin/order";
                 } else {
                     alert(data.error.message);
                 }
             },
             error: function (xhr, status, error) {
-                alert("发布失败，请检查您的输入");
+                alert("请检查您的输入");
             }
         });
     }
 
-    function subCoin(coin_type) {
-        var amount = Number($('#sub-' + coin_type).val());
-        if (!amount) {
-            alert('请填写正确的数额');
-            return;
-        };
-
+    function approve(order_id) {
         var query_object = new Object();
-        query_object['amount'] = amount;
-        query_object['type'] = coin_type;
+        query_object['order_id'] = order_id;
 
         $.ajax({
-            url: "/stoke/pop",
+            // url: "/trade/sell",
+            url: "/order/approve",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json, charset=utf-8',
-            data: JSON.stringify(query_object),
+            data: JSON.stringify(query_object), 
             cache: false,
             beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+                xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
             },
             success: function (data) {
-                if (data.status == "ok") {                                          
-                     alert("pop成功！");
-                     location.reload();
+                if (data.status == "ok") {
+                    alert("交易成功");
+                    location.href = "/admin/order";
                 } else {
                     alert(data.error.message);
                 }
             },
             error: function (xhr, status, error) {
-                alert("发布失败，请检查您的输入");
+                alert("请检查您的输入");
             }
         });
     }

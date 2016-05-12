@@ -13,10 +13,12 @@
             <div class="cont-left fl">
                 <ul class="mod-sidebar mon-cen">
                     <li id="nav_safe" class="active">
-                        <a href="/trade/btc"><i class="coin_menu_op_14"></i><span class="pl10">BTC交易</span></a>
+                        <a href="/trade/btc"><img src="@routes.Assets.at("images/btb.png")" style="width:20px; height:20px; margin-top: 10px; float: left"; />
+                        <span class="pl10" >BTC交易</span></a>
                     </li>
                     <li id="nav_auth">
-                        <a href="/trade/ltc"><i class="coin_menu_op_8"></i><span class="pl10">LTC交易</span></a>
+                        <a href="/trade/ltc"><img src="@routes.Assets.at("images/k.png")" style="width:20px; height:20px; margin-top: 10px; float: left"; />
+                        <span class="pl10">LTC交易</span></a>
                     </li>
 <!--                     <li id="nav_phone">
                         <a href="phone.html"><i class="coin_menu_op_12"></i><span class="pl10">手机绑定</span></a>
@@ -26,6 +28,25 @@
             <!--/左边导航区域-->
             <!--右边内容区域-->
             <div class="cont-right fr">
+                <ul class="price_today_ul">
+                    <li>
+                        <dl class="minbox clearfix">
+                            <dt class="bname">
+                                <p>货币名</p>
+                            </dt>
+                            <dd class="red b_price">当前价格</dd>
+                            <dd>买一价</dd>
+                            <dd>卖一价</dd>
+                            <dd class="w142">交易量</dd>
+                            <dd class="w142 green" style="text-indent:2.8em;color:red">涨幅</dd>
+                            <dd id="15_plot" style="width: 120px; height: 35px; padding: 0px; position: relative;">
+                                <canvas class="flot-base" width="120" height="35" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 120px; height: 35px;"></canvas>
+                                <canvas class="flot-overlay" width="120" height="35" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 120px; height: 35px;"></canvas>
+                            </dd>
+                            <dd class="bnt_jy"><a class="tojy" href="#">去交易</a></dd>
+                        </dl>
+                    </li>
+                </ul>
                 <ul class="price_today_ul" id="price_today_ul">
                     <li>
                         <dl class="minbox clearfix">
@@ -52,6 +73,12 @@
                     <table style="width: 70%; float: left">
                         <tr>
                             <td>
+                                <div class="charge_title">购买价格：</div>
+                                    <div class="charge_text">
+                                        <input type="text" class="form-control" name="buy-price" /> &nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br/>
                                 <div class="charge_title">购买数量：</div>
                                     <div class="charge_text">
                                         <input type="text" class="form-control" name="buy" id="buy"> &nbsp;&nbsp;
@@ -67,6 +94,12 @@
                                 </div>
                             </td>
                             <td>
+                                <div class="charge_title">卖出价格：</div>
+                                    <div class="charge_text">
+                                        <input type="text" class="form-control" name="sell-price" /> &nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br/>
                                 <div class="charge_title">卖出数量：</div>
                                     <div class="charge_text">
                                         <input type="text" class="form-control" name="sell" id="sell"> &nbsp;&nbsp;
@@ -104,22 +137,26 @@
     <script type="text/javascript">
 
     function buybtc() {
-        var money = Number($("input[name='buy']").val());
-        if (!money) {
+        var amount = Number($("input[name='buy']").val());
+        if (!amount) {
             alert('请填写正确的数额');
             return;
         }
-        // if (money < 100 || money > 50000) {
-        //     alert('超出金额范围');
-        //     return;
-        // }
+
+        var price = Number($("input[name='buy-price']").val());
+        if (!price) {
+            alert('请填写正确的数额');
+            return
+        };
 
         var query_object = new Object();
-        query_object['amount'] = money;
+        query_object['amount'] = amount;
+        query_object['price'] = price;
+        query_object['coin'] = 0;
         query_object['type'] = 0;
 
         $.ajax({
-            url: "/trade/buy",
+            url: "/order/push",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json, charset=utf-8',
@@ -142,23 +179,28 @@
         });
     }
 
-        function sellbtc() {
-        var money = Number($("input[name='sell']").val());
-        if (!money) {
+    function sellbtc() {
+        var amount = Number($("input[name='sell']").val());
+        if (!amount) {
             alert('请填写正确的数额');
             return;
         }
-        // if (money < 100 || money > 50000) {
-        //     alert('超出金额范围');
-        //     return;
-        // }
+                
+        var price = Number($("input[name='sell-price']").val());
+        if (!price) {
+            alert('请填写正确的数额');
+            return
+        };
 
         var query_object = new Object();
-        query_object['amount'] = money;
-        query_object['type'] = 0;
+        query_object['amount'] = amount;
+        query_object['price'] = price;
+        query_object['coin'] = 0;
+        query_object['type'] = 1;
 
         $.ajax({
-            url: "/trade/sell",
+            // url: "/trade/sell",
+            url: "/order/push",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json, charset=utf-8',
@@ -248,7 +290,7 @@
                 html += '<table style="width: 100%">';
                 html += '<tr style="background: green"><th>类型</th><th>价格</th><th>数量</th></tr>'
                 for (var i = sells.length - 1; i >= 0; i--) {
-                    html += '<tr><td style="text-align: center">' + '卖' + (sells.length - 1 - i) + '</td><td style="text-align: center">' + sells[i].price + '</td><td style="text-align: center">' + sells[i].amount + '</td></tr>';
+                    html += '<tr><td style="text-align: center">' + '卖' + (i + 1) + '</td><td style="text-align: center">' + sells[i].price + '</td><td style="text-align: center">' + sells[i].amount + '</td></tr>';
                 };
                 html += '</table>';
                 html += '<table style="width: 100%">';
