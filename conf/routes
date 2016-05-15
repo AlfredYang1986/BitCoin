@@ -54,6 +54,8 @@ GET		/admin/stoke/:t 					controllers.Admin.adminStoke(t)
 GET		/admin/stoke						controllers.Admin.adminStoke(t="")
 GET		/admin/order/:t 					controllers.Admin.adminOrder(t)
 GET		/admin/order						controllers.Admin.adminOrder(t="")
+GET		/admin/bankaccount/:t 				controllers.Admin.adminBankAccount(t)
+GET		/admin/bankaccount					controllers.Admin.adminBankAccount(t="")
 
 # Auth 
 POST	/auth/register						controllers.AuthController.register
@@ -108,6 +110,10 @@ POST	/trade/query/all					controllers.TradeController.queryTradeRecords
 POST	/trade/query/mine					controllers.TradeController.queryMyTradeRecords
 POST	/trade/query/btc					controllers.TradeController.queryBTCTradeRecords
 POST	/trade/query/ltc					controllers.TradeController.queryLTCTradeRecords
+
+# bank account
+POST	/bank/query							controllers.BankController.queryBankAccount
+POST	/bank/update						controllers.BankController.updateBankAccount
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

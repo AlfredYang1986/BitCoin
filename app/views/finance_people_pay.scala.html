@@ -1,4 +1,4 @@
-@(token: String)(profile: play.api.libs.json.JsValue)
+@(token: String)(profile: play.api.libs.json.JsValue)(account: String)
 
 @main("充值")(token) {
 
@@ -121,6 +121,12 @@
                                     </li>
                                 </ul>
                             </div> -->
+                            <div class="charge_input">
+                                <div class="charge_title">银行账户：</div>
+                                <div class="charge_text">
+                                    <span class="form-control" >@account</span> 
+                                </div>
+                            </div>
                             <div class="charge_input">
                                 <div class="charge_title">充值金额：</div>
                                 <div class="charge_text">

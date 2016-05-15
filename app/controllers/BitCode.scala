@@ -12,6 +12,7 @@ import module.account.AccountModule.queryAccount
 import module.common.http.HTTP
 import module.applies.AppliesModule.queryMyApplications
 import module.order.OrderModule.queryMyOrders
+import module.bank.BankModule.queryBankAccount
 
 object BitCode extends Controller {
 
@@ -110,7 +111,8 @@ object BitCode extends Controller {
         if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
         else {
             val profile = (queryProfileWithToken(token) \ "result")
-            Ok(views.html.finance_people_pay(token)(profile))
+            val account = (queryBankAccount("", toJson("")) \ "result" \ "account").asOpt[String].get
+            Ok(views.html.finance_people_pay(token)(profile)(account))
         }
     }
     

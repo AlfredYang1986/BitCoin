@@ -6,7 +6,6 @@ import play.api.libs.ws._
 import play.api.libs.json.Json.{toJson}
 import play.api.libs.json.JsValue
 
-//import module.auth.RegisterApprovedStatus._
 import module.auth.AuthModule.queryProfileWithToken
 import module.statistic.StatisticModule.statistics
 import module.currency.CurrencyModule
@@ -15,9 +14,7 @@ import module.auth.AuthModule
 import module.applies.AppliesModule
 import module.stoke.StokeModule.queryAllStoke
 import module.order.OrderModule.queryAllOrders
-//import module.account.AccountModule.queryAccount
-//import module.common.http.HTTP
-//import module.applies.AppliesModule.queryMyApplications
+import module.bank.BankModule.queryBankAccount
 
 object Admin extends Controller {
     def adminLogin(t : String) = Action { request => 
@@ -45,7 +42,6 @@ object Admin extends Controller {
         }
     }
     
-//    def adminAppliesManager(t : String) = Action { request => 
     def adminAppliesManager(t : String, p : String) = Action { request => 
       
         val page = p.toInt
@@ -154,5 +150,22 @@ object Admin extends Controller {
                 Ok(views.html.admin_order_manager(token)(orders))
             }else Redirect("/admin/login")
         }
+    }
+    
+    def adminBankAccount(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            val user_id = (profile \ "user_id").asOpt[String].get
+           
+            if (AuthModule.adminAuthCheck(user_id)) {
+                val account = (queryBankAccount(user_id, toJson("")) \ "result" \ "account").asOpt[String].get
+                Ok(views.html.admin_bank_account(token)(account))
+            }else Redirect("/admin/login")
+        } 
     }
 }

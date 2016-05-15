@@ -1,4 +1,4 @@
-@(token: String)(config: List[play.api.libs.json.JsValue])
+@(token: String)(account: String)
 
 @admin_main("后台管理")(token) {
     
@@ -15,12 +15,11 @@
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <button id="logout_btn" style="float: right; clear: both" class="btn btn-primay" onclick="logout()">登出</button>
     </nav>
     <div class="clearfix row-main">
         <div class="col-md-2">
             <ul class="nav nav-primary nav-stacked leftmenu affix">
-            <li>
+                <li>
                     <a href="/admin/statistic">统计数据 <i class="icon-chevron-right"></i></a>
                 </li>
                 <li>
@@ -36,12 +35,12 @@
                     <a href="/admin/trade/config">挂单设置<i class="icon-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="/admin/order">挂单管理<i class="icon-chevron-right"></i></a>
-                </li>
-                <li class="active">
-                    <a href="/admin/stoke">库存管理<i class="icon-chevron-right"></i></a>
+                	<a href="/admin/order">挂单管理<i class="icon-chevron-right"></i></a>
                 </li>
                 <li>
+                    <a href="/admin/stoke">库存管理<i class="icon-chevron-right"></i></a>
+                </li>
+                <li  class="active">
                     <a href="/admin/bankaccount">银行帐号<i class="icon-chevron-right"></i></a>
                 </li>
                 <!-- <li>
@@ -54,57 +53,29 @@
         </div>
         <div class="col-md-10">
             <div class="panel">
-                <div class="panel-heading"><strong><i class="icon-globe"></i> 库存管理</strong></div>
+                <div class="panel-heading"><strong><i class="icon-globe"></i> 挂单设置</strong></div>
                 <div class="panel-body">
                     <table class="table table-form">
                         <tbody>
-                        @{config map { iter => 
                             <tr>
                                 <th class="col-xs-2"></th>
                                 <td class="col-xs-5" colspan="2">
-                                    {(iter \ "coin_name").asOpt[String].get} 
-                                </td>
+                                    CYN - CYN </td>
                             </tr>
                             <tr>
-                                <th class="col-xs-2">平台虚拟币总量</th>
+                                <th class="col-xs-2"></th>
                                 <td class="col-xs-5">
-                                    <span class="form-control">{(iter \ "coin_total").asOpt[Float].get}</span>
+                                    <input type="text" name="bank" value="@{account}" class="form-control" />
                                 </td>
                                 <td></td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">平台虚拟币流通量</th>
-                                <td class="col-xs-5">
-                                    <span class="form-control">{(iter \ "coin_amount").asOpt[Float].get}</span>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">添加平台货币</th>
-                                <td class="col-xs-3">
-                                    <input id={"add-" + (iter \ "coin_type").asOpt[Int].get} type="text" name="SZ_SDRATEPER_5" value="" class="form-control" />
-                                </td>
-                                <td class="col-xs-2">
-                                    <button class="btn btn-primay" onclick={"addCoin(" + (iter \ "coin_type").asOpt[Int].get + ")"}>添加</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="col-xs-2">减少平台货币</th>
-                                <td class="col-xs-3">
-                                    <input id={"sub-" + (iter \ "coin_type").asOpt[Int].get} type="text" name="SZ_SDRATEPER_5" value="" class="form-control" />
-                                </td>
-                                <td class="col-xs-2">
-                                    <button class="btn btn-primay" onclick={"subCoin(" + (iter \ "coin_type").asOpt[Int].get + ")"}>减少</button>
-                                </td>
                             </tr>
                             <tr>
                                 <th></th>
                                 <td colspan="2">
-                                    <!-- <button class="btn btn-primary" >保存</button> -->
+                                    <button class="btn btn-primary" onclick="update()">保存</button>
                                     <a onclick="location.reload();" class="btn btn-primary"><i class="icon-refresh "> 更新数据 </i></a>
                                 </td>
                             </tr>
-                        }}
                         </tbody>
                     </table>
                 </div>
@@ -154,72 +125,33 @@
         (tab_tit[history[1]] || tab_tit[0]).click();
     })();
 
-    function addCoin(coin_type) {
-        var amount = Number($('#add-' + coin_type).val());
-        if (!amount) {
-            alert('请填写正确的数额');
-            return;
-        };
+    function update() {
+        var account = $('input[name="bank"]').val();
 
         var query_object = new Object();
-        query_object['amount'] = amount;
-        query_object['type'] = coin_type;
+        query_object['account'] = account;
 
         $.ajax({
-            url: "/stoke/push",
+            // url: "/trade/sell",
+            url: "/bank/update",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json, charset=utf-8',
-            data: JSON.stringify(query_object),
+            data: JSON.stringify(query_object), 
             cache: false,
             beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+                xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
             },
             success: function (data) {
-                if (data.status == "ok") {                                          
-                     alert("push成功！");
-                     location.reload();
+                if (data.status == "ok") {
+                    alert("更新成功");
+                    location.reload();
                 } else {
                     alert(data.error.message);
                 }
             },
             error: function (xhr, status, error) {
-                alert("发布失败，请检查您的输入");
-            }
-        });
-    }
-
-    function subCoin(coin_type) {
-        var amount = Number($('#sub-' + coin_type).val());
-        if (!amount) {
-            alert('请填写正确的数额');
-            return;
-        };
-
-        var query_object = new Object();
-        query_object['amount'] = amount;
-        query_object['type'] = coin_type;
-
-        $.ajax({
-            url: "/stoke/pop",
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json, charset=utf-8',
-            data: JSON.stringify(query_object),
-            cache: false,
-            beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
-            },
-            success: function (data) {
-                if (data.status == "ok") {                                          
-                     alert("pop成功！");
-                     location.reload();
-                } else {
-                    alert(data.error.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                alert("发布失败，请检查您的输入");
+                alert("请检查您的输入");
             }
         });
     }

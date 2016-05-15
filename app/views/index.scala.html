@@ -237,7 +237,9 @@
         </div>
     </div>
 } { 
-    <!-- <script src="js/jquery.flot.js?v=1.37"></script> -->
+    <script src="@routes.Assets.at("js/JQuery.flot.js")"></script>
+    <script src="@routes.Assets.at("js/JQuery.flot.cursors.js")"></script>
+    <script src="@routes.Assets.at("js/JQuery.flot.symbol.js")"></script>
     <script type="text/javascript">
     // 登陆
     $('#index_login_btn').click(function(){
@@ -305,7 +307,7 @@
                         }
 
                         // html += '<dd id="' + d[i]['cuy_id'] + '_plot"style="width:120px;height:35px;"></dd>';
-                        html += '<dd id="' + '_plot"style="width:120px;height:35px;"></dd>';
+                        html += '<dd id="btc_plot"style="width:120px;height:35px;"></dd>';
                         // if (d[i]['cuy_status'] == 1) {
                             // html += '<dd class="bnt_jy"><a class="tojy" href="/coin/subscribe/id/' + '">去认购</a></dd>';
                         // } else {
@@ -337,7 +339,7 @@
                         }
 
                         // html += '<dd id="' + d[i]['cuy_id'] + '_plot"style="width:120px;height:35px;"></dd>';
-                        html += '<dd id="' + '_plot"style="width:120px;height:35px;"></dd>';
+                        html += '<dd id="ltc_plot"style="width:120px;height:35px;"></dd>';
                         // if (d[i]['cuy_status'] == 1) {
                             // html += '<dd class="bnt_jy"><a class="tojy" href="/coin/subscribe/id/' + '">去认购</a></dd>';
                         // } else {
@@ -347,7 +349,7 @@
                         }
                     // }
                     $('#price_today_ul').html(html);
-                    // coinplot();
+                    coinplot();
             },
             error: function (xhr, status, error) {
                 // alert("请检查您的输入");
@@ -359,8 +361,8 @@
     function coinplot() {
         if (d) {
             for (var i in d) {
-                if (d[i].length > 0 && $("#" + i + "_plot").length > 0) {
-                    $.plot($("#" + i + "_plot"), [{
+                if (d[i].length > 0 && $("#btc_plot").length > 0) {
+                    $.plot($("#btc_plot"), [{
                         shadowSize: 0,
                         data: d[i]
                     }], {
@@ -368,7 +370,26 @@
                             borderWidth: 0
                         },
                         xaxis: {
-                            mode: "time",
+                            // mode: "time",
+                            ticks: false
+                        },
+                        yaxis: {
+                            tickDecimals: 0,
+                            ticks: false
+                        },
+                        colors: ['#f99f83']
+                    });
+                }
+                if (d[i].length > 0 && $("#ltc_plot").length > 0) {
+                    $.plot($("#ltc_plot"), [{
+                        shadowSize: 0,
+                        data: d[i]
+                    }], {
+                        grid: {
+                            borderWidth: 0
+                        },
+                        xaxis: {
+                            // mode: "time",
                             ticks: false
                         },
                         yaxis: {
@@ -382,16 +403,17 @@
             return;
         }
 
-        var url = 'js/plot.js';
+        var url = "@routes.Assets.at("js/plot.js")";
+        // val url = "https://www.okcoin.cn/api/v1/kline.do?symbol=btc_cny&type=3day";
         var param = {}
 
-        $.post(url, param,
+        $.get(url, param,
             function(data) {
                 if (data.flag) {
                     d = data.data;
                     for (var i in d) {
-                        if (d[i].length > 0 && $("#" + i + "_plot").length > 0) {
-                            $.plot($("#" + i + "_plot"), [{
+                        if (d[i].length > 0 && $("#btc_plot").length > 0) {
+                            $.plot($("#btc_plot"), [{
                                 shadowSize: 0,
                                 data: d[i]
                             }], {
@@ -399,7 +421,7 @@
                                     borderWidth: 0
                                 },
                                 xaxis: {
-                                    mode: "time",
+                                    // mode: "time",
                                     ticks: false
                                 },
                                 yaxis: {
@@ -415,6 +437,38 @@
                 }
                 runed = 1;
             }, "json");
+
+        $.get(url, param,
+            function(data) {
+                if (data.flag) {
+                    d = data.data;
+                    for (var i in d) {
+                        if (d[i].length > 0 && $("#ltc_plot").length > 0) {
+                            $.plot($("#ltc_plot"), [{
+                                shadowSize: 0,
+                                data: d[i]
+                            }], {
+                                grid: {
+                                    borderWidth: 0
+                                },
+                                xaxis: {
+                                    // mode: "time",
+                                    ticks: false
+                                },
+                                yaxis: {
+                                    tickDecimals: 0,
+                                    ticks: false
+                                },
+                                colors: ['#f99f83']
+                            });
+                        }
+                    };
+                } else {
+                    alert(data.data);
+                }
+                runed = 1;
+            }, "json");
+
     }
 
     $(".cagret-up,.cagret-down").click(function() {
