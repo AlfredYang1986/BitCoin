@@ -33,6 +33,13 @@ object RegisterApprovedStatus {
 
 sealed abstract class RegisterApprovedDefines(val s : Int, val des : String)
 
+object EmailStatus {
+  case object notChecked extends EmailStatusDefines(0, "未验证")
+  case object checked extends EmailStatusDefines(1, "已验证")
+}
+
+sealed abstract class EmailStatusDefines(val s : Int, val des : String)
+
 object AuthModule {
     def register(data : JsValue) : JsValue = {
         val email = (data \ "email").asOpt[String].map (x => x).getOrElse("")
@@ -48,9 +55,11 @@ object AuthModule {
             (from db() in ("users") where ("email" -> email) select (x => x)).toList match {
               case Nil => {
                   import IDType._
+                  import EmailStatus._
                   import RegisterApprovedStatus._
                   val builder = MongoDBObject.newBuilder
                   builder += "email" -> email
+                  builder += "email_status" -> notChecked.s
                   builder += "pwd" -> pwd
                   val user_id = Sercurity.md5Hash(email)
                   builder += "user_id" -> user_id
@@ -63,6 +72,7 @@ object AuthModule {
                   builder += "register_id" -> register_id
                   builder += "approved_date" -> 0
                   builder += "status" -> notApproved.s
+                  builder += "bank_accounts" -> MongoDBList.newBuilder.result
                   
                   _data_connection.getCollection("users") += builder.result
                   pushNewUsers
@@ -112,11 +122,25 @@ object AuthModule {
             }
         }
     }
-   
+  
+    def queryBankAccount(user_id : String, Data : JsValue) : JsValue = 
+        toJson(Map("status" -> toJson("ok"), "result" -> toJson(
+          (from db() in "users" where ("user_id" -> user_id) select (x => x.getAs[MongoDBList]("bank_accounts").get)).toList match {
+            case Nil => ErrorCode.errorToJson("email not exist")
+            case head :: Nil => toJson(head.toList.asInstanceOf[List[MongoDBObject]] map (account2JsValue(_)))
+            case _ => ErrorCode.errorToJson("email not exist")
+          })))
+    
+    def account2JsValue(x : MongoDBObject) : JsValue = 
+        toJson(Map("bank_name" -> toJson(x.getAs[String]("bank_name").get),
+                   "bank_account" -> toJson(x.getAs[String]("bank_account").get),
+                   "account_name" -> toJson(x.getAs[String]("account_name").get)))
+    
     def DB2JsValue(x : MongoDBObject) : JsValue = 
         toJson(Map("user_id" -> toJson(x.getAs[String]("user_id").get),
                    "token" -> toJson(x.getAs[String]("token").get),
                    "email" -> toJson(x.getAs[String]("email").get),
+                   "email_status" -> toJson(x.getAs[Number]("email_status").get.intValue),
                    "name" -> toJson(x.getAs[String]("name").get),
                    "type" -> toJson(x.getAs[Number]("id_type").get.intValue),
                    "register_id"-> toJson(x.getAs[String]("register_id").get),
@@ -146,6 +170,7 @@ object AuthModule {
               (data \ "id_type").asOpt[Int].map (x => head += "id_type" -> x.asInstanceOf[Number]).getOrElse(Unit)
               (data \ "status").asOpt[Int].map (x => head += "status" -> x.asInstanceOf[Number]).getOrElse(Unit)
               (data \ "approved_date").asOpt[Long].map (x => head += "approved_date" -> x.asInstanceOf[Number]).getOrElse(Unit)
+              (data \ "trade_pwd").asOpt[String].map (x => head += "trade_pwd" -> x).getOrElse(Unit)
               
               _data_connection.getCollection("users").update(DBObject("user_id" -> user_id), head)
 

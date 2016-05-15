@@ -18,13 +18,13 @@
                     <li id="nav_auth">
                         <a href="/profile/auth"><i class="coin_menu_op_8"></i><span class="pl10">实名认证</span></a>
                     </li>
-                    <li id="nav_editpw" class="active">
+                    <li id="nav_editpw">
                         <a href="/profile/changePwd"><i class="coin_menu_op_9"></i><span class="pl10">修改密码</span></a>
                     </li>
                     <li id="nav_phone">
                         <a href="/profile/changeTradePwd"><i class="coin_menu_op_11"></i><span class="pl10">修改交易密码</span></a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/profile/checkEmail"><i class="coin_menu_op_10"></i><span class="pl10">验证邮箱</span></a>
                     </li>
                 </ul>
@@ -33,36 +33,25 @@
             <!--右边内容区域-->
             <div class="cont-right fr">
                 <div class="cont-tit">
-                    <h2>修改登录密码</h2>
+                    <h2>验证邮箱</h2>
                 </div>
                 <div class="cont-detail">
-                    <div class="changepw_warning pt20">
-                        <p><i></i><span class="fRed">为确保您的顺利交易，请牢记登录密码!</span></p>
-                    </div>
                     <div class="pwtrade">
                         <dl>
-                            <dt>登录密码：</dt>
+                            <dt>用户邮件：</dt>
                             <dd>
-                                <input type="password" name="oldpw">
+                                <span>@{(profile \ "email").asOpt[String].get}</span>
                             </dd>
                         </dl>
                         <dl>
-                            <dt>新登录密码：</dt>
+                            <dt>
+                                
+                            </dt>
                             <dd>
-                                <input type="password" name="pw">
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>再次输入新密码：</dt>
-                            <dd>
-                                <input type="password" name="repw">
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt></dt>
-                            <dd>
-                                <!-- <input type="submit" value="保存"> -->
-                                <button id='save_btn' class='btn btn-primary'>保存</button>
+                                @{(profile \ "email_status").asOpt[Int].get match {
+                                    case module.auth.EmailStatus.notChecked.s => <button id='save_btn' class='btn btn-primary'>发送验证邮件</button>
+                                    case module.auth.EmailStatus.checked.s => <span>邮件已验证</span>
+                                }}
                             </dd>
                         </dl>
                     </div>

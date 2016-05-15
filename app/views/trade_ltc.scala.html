@@ -79,18 +79,42 @@
                                     </div>
                                 </div>
                                 <br/>
+                                <div class="charge_title">最大可买：</div>
+                                    <div class="charge_text">
+                                        <span class="form-control"></span> &nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br/>
                                 <div class="charge_title">购买数量：</div>
                                     <div class="charge_text">
-                                        <input type="text" class="form-control" name="buy" id="buy" /> &nbsp;&nbsp;
+                                        <input type="text" class="form-control" name="buy" id="buy"> &nbsp;&nbsp;
                                     </div>
-                                    <!-- <div class="form_explain" id="money-msg" style="max-width: 110px; margin-top: -40px; position: relative; left: 50%; ">1％手续费<em></em></div> -->
+                                </div>
+                                <br/>
+                                <div class="charge_title">总价：</div>
+                                    <div class="charge_text">
+                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
                                     </div>
-                                        <ul style="clear:both;">
-                                            <div class="cnyin_btn">
-                                                <input style="margin:30px 0 30px 30px;" type="button" value="购买" onclick="buyltc()">
-                                            </div>
-                                        </ul>
+                                </div>
+                                <br/>
+                                <div class="charge_title">手续费：</div>
+                                    <div class="charge_text">
+                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
                                     </div>
+                                </div>
+                                <br/>
+                                <div class="charge_title">交易密码：</div>
+                                    <div class="charge_text">
+                                        <input type="password" class="form-control" name="buy-pwd"> &nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="charge_title" style="width: 100%">
+                                    <ul>
+                                        <div class="cnyin_btn">
+                                            <input style="margin:30px 0 30px 30px;" type="button" value="购买" onclick="buyltc()">
+                                        </div>
+                                    </ul>
                                 </div>
                             </td>
                             <td>
@@ -100,18 +124,42 @@
                                     </div>
                                 </div>
                                 <br/>
+                                <div class="charge_title">最大可卖：</div>
+                                    <div class="charge_text">
+                                        <span class="form-control"></span> &nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br/>
                                 <div class="charge_title">卖出数量：</div>
                                     <div class="charge_text">
                                         <input type="text" class="form-control" name="sell" id="sell"> &nbsp;&nbsp;
                                     </div>
-                                    <!-- <div class="form_explain" id="money-msg" style="margin-top: -40px; position: relative; left: 50%; ">1％手续费<em></em></div> -->
+                                </div>
+                                <br/>
+                                <div class="charge_title">总价：</div>
+                                    <div class="charge_text">
+                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
                                     </div>
-                                        <ul style="clear:both;">
-                                            <div class="cnyin_btn">
-                                                <input style="margin:30px 0 30px 30px;" type="button" value="出售" onclick="sellltc()">
-                                            </div>
-                                        </ul>
+                                </div>
+                                <br/>
+                                <div class="charge_title">手术费：</div>
+                                    <div class="charge_text">
+                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
                                     </div>
+                                </div>
+                                <br/>
+                                <div class="charge_title">交易密码：</div>
+                                    <div class="charge_text">
+                                        <input type="password" class="form-control" name="sell-pwd"> &nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br/>
+                                <div>
+                                    <ul style="clear:both;">
+                                        <div class="cnyin_btn">
+                                            <input style="margin:30px 0 30px 30px;" type="button" value="出售" onclick="sellbtc()">
+                                        </div>
+                                    </ul>
                                 </div>
                             </td>
                         </tr>
@@ -289,7 +337,7 @@
                 html += '<table style="width: 100%">';
                 html += '<tr style="background: green"><th>类型</th><th>价格</th><th>数量</th></tr>'
                 for (var i = sells.length - 1; i >= 0; i--) {
-                    html += '<tr><td style="text-align: center">' + '卖' + (sells.length - 1 - i) + '</td><td style="text-align: center">' + sells[i].price + '</td><td style="text-align: center">' + sells[i].amount + '</td></tr>';
+                    html += '<tr><td style="text-align: center">' + '卖' + (1 + i) + '</td><td style="text-align: center">' + sells[i].price + '</td><td style="text-align: center">' + sells[i].amount + '</td></tr>';
                 };
                 html += '</table>';
                 html += '<table style="width: 100%">';

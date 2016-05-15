@@ -22,12 +22,14 @@ object Global extends GlobalSettings {
         if (!_data_connection.isExisted("users")) {
            import module.auth.RegisterApprovedStatus._
            import module.auth.IDType._
+           import module.auth.EmailStatus._
           
            val email = "admin"
            val pwd = "admin"
           
            val builder = MongoDBObject.newBuilder
            builder += "email" -> email
+           builder += "email_status" -> checked.s
            builder += "pwd" -> pwd
            val user_id = Sercurity.md5Hash(email)
            builder += "user_id" -> user_id

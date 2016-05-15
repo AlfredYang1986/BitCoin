@@ -72,8 +72,49 @@ object BitCode extends Controller {
         if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
         else {
             val profile = (queryProfileWithToken(token) \ "result")
-            val app = (profile \ "status").asOpt[Int].get
             Ok(views.html.safe_change_pwd(token)(profile))
+        }
+    }
+    
+    /**
+     * 修改交易密码
+     */
+    def changeTradePwd(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.safe_change_trade_pwd(token)(profile))
+        }
+    }
+    
+    /**
+     * 验证邮箱
+     */
+    def checkEmail(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.safe_email_check(token)(profile))
+        }
+    }
+    
+    def bankAccount(t : String) = Action { request =>
+        var token = t
+        if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        else Unit 
+        
+        if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.safe_bank_accounts(token)(profile))
         }
     }
     /******************************************************/
@@ -257,7 +298,7 @@ object BitCode extends Controller {
         var token = t
         if(token == "") token = request.cookies.get("token").map (x => x.value).getOrElse("")
         else Unit 
-  
+        
         import module.report.ReportModule.queryReports
         import module.bitnews.BitNews.queryBitNews
         import module.othernews.OtherNews.queryOtherNews

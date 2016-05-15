@@ -23,6 +23,12 @@ GET     /profile/auth/:t					controllers.BitCode.safe_auth(t)
 GET     /profile/auth		 				controllers.BitCode.safe_auth(t="")	
 GET     /profile/changePwd/:t				controllers.BitCode.changePwd(t)		
 GET     /profile/changePwd		 			controllers.BitCode.changePwd(t="")	
+GET     /profile/changeTradePwd/:t			controllers.BitCode.changeTradePwd(t)		
+GET     /profile/changeTradePwd		 		controllers.BitCode.changeTradePwd(t="")	
+GET     /profile/checkEmail/:t				controllers.BitCode.checkEmail(t)		
+GET     /profile/checkEmail		 			controllers.BitCode.checkEmail(t="")	
+GET     /profile/bankaccount/:t				controllers.BitCode.bankAccount(t)		
+GET     /profile/bankaccount		 		controllers.BitCode.bankAccount(t="")	
 GET     /profile/forget/pwd		 			controllers.BitCode.forgetPwd
 GET     /trade/btc/:t						controllers.BitCode.btc_trade(t)		
 GET     /trade/btc				 			controllers.BitCode.btc_trade(t="")	
@@ -62,6 +68,7 @@ POST	/auth/register						controllers.AuthController.register
 POST	/auth/login							controllers.AuthController.login
 POST	/auth/admain/login					controllers.AuthController.admainLogin
 POST	/auth/changePwd		 				controllers.AuthController.changePwd
+POST	/auth/changeTradePwd		 		controllers.AuthController.changeTradePwd
 
 # Profile
 POST	/profile/query						controllers.ProfileController.queryProfile
