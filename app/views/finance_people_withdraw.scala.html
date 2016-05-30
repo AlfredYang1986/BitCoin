@@ -1,4 +1,4 @@
-@(token: String)(profile: play.api.libs.json.JsValue)
+@(token: String)(profile: play.api.libs.json.JsValue)(banks: List[play.api.libs.json.JsValue])
 
 @main("充值")(token) {
 
@@ -47,113 +47,53 @@
                 </div>
                 <div class="cont-detail">
                     <div class="charge-wrap">
-                        <!-- <div class="charge_nav">
-                            <ul>
-                                <ul>
-                                    <li class="current"><a>在线充值</a></li>
-                                    <li><a href="/finance/deposit/">汇款充值</a></li>
-                                    <li><a href="/finance/deposit/alipay/1">支付宝充值</a></li>
-                                </ul>
-                            </ul>
-                        </div>
-                        <div class="charge_box">
-                            <div class="ebank_box">
-                                <ul class="ebank_logo">
-                                    <li>
-                                        <input name="bank" type="radio" id="ICBC" value="ICBC">
-                                        <label for="ICBC"><i class="ICBC"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="CCB" value="CCB">
-                                        <label for="CCB"><i class="CCB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="ABC" value="ABC">
-                                        <label for="ABC"><i class="ABC"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="PSBC" value="PSBC">
-                                        <label for="PSBC"><i class="PSBC"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="BOCSH" value="BOCSH">
-                                        <label for="BOCSH"><i class="BOCSH"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="CMB" value="CMB">
-                                        <label for="CMB"><i class="CMB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="BOCOM" value="BOCOM">
-                                        <label for="BOCOM"><i class="BOCOM"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="CMBC" value="CMBC">
-                                        <label for="CMBC"><i class="CMBC"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="SPDB" value="SPDB">
-                                        <label for="SPDB"><i class="SPDB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="GDB" value="GDB">
-                                        <label for="GDB"><i class="GDB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="CNCB" value="CNCB">
-                                        <label for="CNCB"><i class="CNCB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="CEB" value="CEB">
-                                        <label for="CEB"><i class="CEB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="HXB" value="HXB">
-                                        <label for="HXB"><i class="HXB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="CIB" value="CIB">
-                                        <label for="CIB"><i class="CIB"></i></label>
-                                    </li>
-                                    <li>
-                                        <input name="bank" type="radio" id="PAB" value="PAB">
-                                        <label for="PAB"><i class="PAB"></i></label>
-                                    </li>
-                                </ul>
-                            </div> -->
+                            <div class="charge_input">
+                                <div class="charge_title">银行卡号：</div>
+                                <div class="charge_text">
+                                    <select name="select-bank">
+                                        @{(banks zipWithIndex) map { x =>
+                                            <option value={(x._1 \ "bank_name").asOpt[String].get + ":" + {(x._1 \ "bank_account").asOpt[String].get}}>
+                                                {(x._1 \ "bank_name").asOpt[String].get}:{(x._1 \ "bank_account").asOpt[String].get}
+                                            </option>    
+                                        }}
+                                    </select>
+                                </div>
+                                <div class="charge_title"></div>
+                                <div class="charge_text">
+                                    <a href="/profile/bankaccount">管理银行卡</a>
+                                </div>
+                            </div>
                             <div class="charge_input">
                                 <div class="charge_title">提现金额：</div>
                                 <div class="charge_text">
                                     <input type="text" class="form-control" name="money" id="money"> &nbsp;&nbsp;元
                                 </div>
-                                <div class="form_explain" id="money-msg">每次最低充值100元，最高充值5万元，单日最高50万元<em></em></div>
+                                <div class="form_explain" id="money-msg">最低提现100元，单笔最高充值5万元，单日最高50万元<em></em></div>
+                            </div>
+                            <div class="charge_input">
+                                <div class="charge_title">交易密码：</div>
+                                <div class="charge_text">
+                                    <input type="password" class="form-control" name="trade-pwd" >
+                                </div>
                             </div>
                             <ul style="clear:both;">
                                 <div class="cnyin_btn">
                                     <input style="margin:30px 0 30px 30px;" type="button" value="提现申请" onclick="subfrm()">
                                 </div>
                             </ul>
-                            <!-- <div class="">
-                                <table class="charge-dis">
-                                    <thead>
-                                        <tr>
-                                            <th>充值ID</th>
-                                            <th>时间</th>
-                                            <th>充值金额</th>
-                                            <th>充值方式</th>
-                                            <th>充值状态</th>
-                                            <th>操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="7">
-                                                <p class="tc">暂无记录</p>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div> -->
+                            <div class="sc_info_list" id="sc_info_list">
+                                <div style="background-color: rgb(249, 249, 249);">
+                                    <dt>提现须知：</dt>
+                                    <br/>
+                                    <dd>
+                                        <p>1. 提现手续费为提现现金金额的1%，每笔提现最低收费2元</p>
+                                    </dd>
+                                    <br/>
+                                    <dd>
+                                        <p>2. 银行卡提现24小时内到账，在已汇出24小时后仍未收到款项，请联系在线客服</p>
+                                    </dd>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- 充值记录 -->
@@ -177,10 +117,14 @@
             return;
         }
 
+        var trade_pwd = $("input[name='trade-pwd']").val();
+        var message = $('select').val();
+        
         var query_object = new Object();
         query_object['amount'] = money;
         query_object['type'] = 1;
-        query_object['message'] = "提现";
+        query_object['message'] = message;
+        query_object['trade_pwd'] = trade_pwd;
 
         $.ajax({
             url: "/apply/pushapp",

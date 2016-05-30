@@ -123,17 +123,49 @@ object AuthModule {
         }
     }
   
-    def queryBankAccount(user_id : String, Data : JsValue) : JsValue = 
+    def pushBankAccount(user_id : String, data : JsValue) : JsValue = {
+        val bank_name = (data \ "bank_name").asOpt[String].map (x => x).getOrElse("")
+        val bank_account = (data \ "bank_account").asOpt[String].map (x => x).getOrElse("")
+        val account_name = (data \ "account_name").asOpt[String].map (x => x).getOrElse("")
+        
+        if (bank_name.isEmpty || bank_account.isEmpty || account_name.isEmpty) ErrorCode.errorToJson("wrong input")
+        else {
+            val builder = MongoDBObject.newBuilder
+            builder += "bank_name" -> bank_name
+            builder += "bank_account" -> bank_account
+            builder += "account_name" -> account_name
+            builder += "bank_account_id" -> module.sercurity.Sercurity.md5Hash(user_id + bank_account)
+            
+            (from db() in "users" where ("user_id" -> user_id) select (x => x)).toList match {
+              case Nil => ErrorCode.errorToJson("email not exist")
+              case head :: Nil =>  {
+                  val lst = head.getAs[MongoDBList]("bank_accounts").get
+                  lst += builder.result
+                  
+                  _data_connection.getCollection("users").update(DBObject("user_id" -> user_id), head)
+                  toJson(Map("status" -> toJson("ok"), "result" -> toJson("add account success")))
+              }
+              case _ => ErrorCode.errorToJson("email not exist") 
+            }
+        }
+    }
+    
+    def popBankAccount(user_id : String, data : JsValue) : JsValue = {
+        null
+    }
+    
+    def queryBankAccount(user_id : String, data : JsValue) : JsValue = 
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(
           (from db() in "users" where ("user_id" -> user_id) select (x => x.getAs[MongoDBList]("bank_accounts").get)).toList match {
             case Nil => ErrorCode.errorToJson("email not exist")
-            case head :: Nil => toJson(head.toList.asInstanceOf[List[MongoDBObject]] map (account2JsValue(_)))
+            case head :: Nil => toJson(head.toList.asInstanceOf[List[BasicDBObject]] map (account2JsValue(_)))
             case _ => ErrorCode.errorToJson("email not exist")
           })))
     
     def account2JsValue(x : MongoDBObject) : JsValue = 
         toJson(Map("bank_name" -> toJson(x.getAs[String]("bank_name").get),
                    "bank_account" -> toJson(x.getAs[String]("bank_account").get),
+                   "bank_account_id" -> toJson(x.getAs[String]("bank_account_id").get),
                    "account_name" -> toJson(x.getAs[String]("account_name").get)))
     
     def DB2JsValue(x : MongoDBObject) : JsValue = 
@@ -195,6 +227,14 @@ object AuthModule {
         conditionImpl(lst, None) match {
           case None => Nil
           case Some(x) => (from db() in "users" where (x) select (DB2JsValue(_))).toList
+        }
+    }
+    
+    def tradePwdCheck(user_id : String, trade_pwd : String) : Boolean = {
+        (from db() in "users" where ("user_id" -> user_id) select (x => x.getAs[String]("trade_pwd").get)).toList match {
+          case Nil => false
+          case head :: Nil => head.equals(trade_pwd)
+          case _ => false
         }
     }
    

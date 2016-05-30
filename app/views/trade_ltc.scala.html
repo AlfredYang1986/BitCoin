@@ -197,11 +197,14 @@
             return
         };
 
+        var trade_pwd = $("input[name='buy-pwd']").val();
+
         var query_object = new Object();
         query_object['amount'] = amount;
         query_object['price'] = price;
         query_object['coin'] = 1;
         query_object['type'] = 0;
+        query_object['trade_pwd'] = trade_pwd;
 
         $.ajax({
             url: "/order/push",
@@ -240,11 +243,14 @@
             return
         };
 
+        var trade_pwd = $("input[name='sell-pwd']").val();
+
         var query_object = new Object();
         query_object['amount'] = amount;
         query_object['price'] = price;
         query_object['coin'] = 1;
         query_object['type'] = 1;
+        query_object['trade_pwd'] = trade_pwd;
 
         $.ajax({
             url: "/order/push",

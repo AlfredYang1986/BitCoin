@@ -1,4 +1,4 @@
-@(token: String)(profile: play.api.libs.json.JsValue)
+@(token: String)(profile: play.api.libs.json.JsValue)(accounts: List[play.api.libs.json.JsValue])
 
 @main("修改密码")(token) {
 
@@ -24,11 +24,11 @@
                     <li id="nav_phone">
                         <a href="/profile/changeTradePwd"><i class="coin_menu_op_11"></i><span class="pl10">修改交易密码</span></a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="/profile/checkEmail"><i class="coin_menu_op_10"></i><span class="pl10">验证邮箱</span></a>
                     </li>
-                    <li>
-                        <a href="/profile/bankaccounts"><i class="coin_menu_op_7"></i><span class="pl10">银行账户管理</span></a>
+                    <li class="active">
+                        <a href="/profile/bankaccount"><i class="coin_menu_op_7"></i><span class="pl10">银行账户管理</span></a>
                     </li>
                 </ul>
             </div>
@@ -47,9 +47,45 @@
                                 <th>开户人姓名</th>
                             </tr>
                         </thead>
-                        <tfoot>      
+                        <tfoot> 
+                        @{accounts map { iter =>
+                            <tr>
+                                <th>{(iter \ "bank_name").asOpt[String].get}</th>
+                                <th>{(iter \ "bank_account").asOpt[String].get}</th>
+                                <th>{(iter \ "account_name").asOpt[String].get}</th>
+                            </tr>
+                        }}     
                         </tfoot>
                     </table>
+                </div>
+                <div class="cont-detail">
+                    <div class="pwtrade">
+                        <dl>
+                            <dt>银行名：</dt>
+                            <dd>
+                                <input type="text" name="bank-name"> <span>请输入银行名字并支行信息</span>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>银行帐号：</dt>
+                            <dd>
+                                <input type="text" name="bank-account">
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>开户人姓名：</dt>
+                            <dd>
+                                <input type="text" name="account-name">
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt></dt>
+                            <dd>
+                                <!-- <input type="submit" value="保存"> -->
+                                <button class='btn btn-primary' onclick="updateBankAccount()">保存</button>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
             <!--/右边内容区域-->
@@ -58,6 +94,41 @@
     <!-- /主体内容 -->
 } {
     <script type="text/javascript">
+
+    function updateBankAccount() {
+        var bank_name = $('input[name="bank-name"').val();
+        var bank_account = $('input[name="bank-account"').val();
+        var account_name = $('input[name="account-name"').val();
+
+        var query_object = new Object();
+        query_object['bank_name'] = bank_name;
+        query_object['bank_account'] = bank_account;
+        query_object['account_name'] = account_name;
+
+        $.ajax({
+            url: "/auth/bankaccount/push",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json, charset=utf-8',
+            data: JSON.stringify(query_object),
+            cache: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + '@token');
+            },
+            success: function (data) {
+                if (data.status == "ok") {
+                    alert("添加成功");
+                    location.reload();
+                } else {
+                    alert(data.error.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("请检查您的输入");
+            }
+        });
+    }
+
     $('#save_btn').click(function(){
         var oldpw = $('input[name="oldpw"]').val();
         var pw = $('input[name="pw"]').val();

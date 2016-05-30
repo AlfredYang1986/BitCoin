@@ -75,31 +75,31 @@
                             <td>
                                 <div class="charge_title">购买价格：</div>
                                     <div class="charge_text">
-                                        <input type="text" class="form-control" name="buy-price" /> &nbsp;&nbsp;
+                                        <input type="text" class="form-control" name="buy-price" onchange="buyPriceChange()" /> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
-                                <div class="charge_title">最大可买：</div>
+                                <!-- <div class="charge_title">最大可买：</div>
                                     <div class="charge_text">
                                         <span class="form-control"></span> &nbsp;&nbsp;
                                     </div>
-                                </div>
+                                </div> -->
                                 <br/>
                                 <div class="charge_title">购买数量：</div>
                                     <div class="charge_text">
-                                        <input type="text" class="form-control" name="buy" id="buy"> &nbsp;&nbsp;
+                                        <input type="text" class="form-control" name="buy" id="buy" onchange="buyPriceChange()"> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
                                 <div class="charge_title">总价：</div>
                                     <div class="charge_text">
-                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
+                                        <span class="form-control" name="buy-total"> CNY</span> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
                                 <div class="charge_title">手续费：</div>
                                     <div class="charge_text">
-                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
+                                        <span class="form-control" name="buy-commition"> CNY</span> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
@@ -120,31 +120,31 @@
                             <td>
                                 <div class="charge_title">卖出价格：</div>
                                     <div class="charge_text">
-                                        <input type="text" class="form-control" name="sell-price" /> &nbsp;&nbsp;
+                                        <input type="text" class="form-control" name="sell-price" onchange="sellPriceChange()" /> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
-                                <div class="charge_title">最大可卖：</div>
+                                <!-- <div class="charge_title">最大可卖：</div>
                                     <div class="charge_text">
                                         <span class="form-control"></span> &nbsp;&nbsp;
                                     </div>
-                                </div>
+                                </div> -->
                                 <br/>
                                 <div class="charge_title">卖出数量：</div>
                                     <div class="charge_text">
-                                        <input type="text" class="form-control" name="sell" id="sell"> &nbsp;&nbsp;
+                                        <input type="text" class="form-control" name="sell" id="sell" onchange="sellPriceChange()"> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
                                 <div class="charge_title">总价：</div>
                                     <div class="charge_text">
-                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
+                                        <span name="sell-total" class="form-control"> CNY</span> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
-                                <div class="charge_title">手术费：</div>
+                                <div class="charge_title">手续费：</div>
                                     <div class="charge_text">
-                                        <span class="form-control"> CNY</span> &nbsp;&nbsp;
+                                        <span name="sell-commition" class="form-control"> CNY</span> &nbsp;&nbsp;
                                     </div>
                                 </div>
                                 <br/>
@@ -184,6 +184,46 @@
     </script>
     <script type="text/javascript">
 
+    function buyPriceChange() {
+        var amount = Number($("input[name='buy']").val());
+        if (!amount) {
+            // alert('请填写正确的数额');
+            return;
+        }
+
+        var price = Number($("input[name='buy-price']").val());
+        if (!price) {
+            // alert('请填写正确的数额');
+            return
+        };
+
+        var total = amount * price;
+        var commition = 0.01 * total;
+
+        $("span[name='buy-total']").html(total + ' CNY');
+        $("span[name='buy-commition']").html(commition + ' CNY');
+    }
+
+    function sellPriceChange() {
+        var amount = Number($("input[name='sell']").val());
+        if (!amount) {
+            // alert('请填写正确的数额');
+            return;
+        }
+
+        var price = Number($("input[name='sell-price']").val());
+        if (!price) {
+            // alert('请填写正确的数额');
+            return
+        };
+
+        var total = amount * price;
+        var commition = 0.01 * total;
+
+        $("span[name='sell-total']").html(total + ' CNY');
+        $("span[name='sell-commition']").html(commition + ' CNY');
+    }
+
     function buybtc() {
         var amount = Number($("input[name='buy']").val());
         if (!amount) {
@@ -197,11 +237,14 @@
             return
         };
 
+        var trade_pwd = $('input[name="buy-pwd"]').val();
+
         var query_object = new Object();
         query_object['amount'] = amount;
         query_object['price'] = price;
         query_object['coin'] = 0;
         query_object['type'] = 0;
+        query_object['trade_pwd'] = trade_pwd;
 
         $.ajax({
             url: "/order/push",
@@ -240,11 +283,14 @@
             return
         };
 
+        var trade_pwd = $('input[name="sell-pwd"]').val();
+
         var query_object = new Object();
         query_object['amount'] = amount;
         query_object['price'] = price;
         query_object['coin'] = 0;
         query_object['type'] = 1;
+        query_object['trade_pwd'] = trade_pwd;
 
         $.ajax({
             // url: "/trade/sell",

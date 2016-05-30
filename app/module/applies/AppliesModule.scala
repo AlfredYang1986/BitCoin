@@ -39,41 +39,45 @@ object AppliesModule {
         val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.floatValue)
         val message = (data \ "message").asOpt[String].map (x => x).getOrElse("")
         val apply_id = Sercurity.md5Hash(user_id + Sercurity.getTimeSpanWithMillSeconds)
-        
-        val builder = MongoDBObject.newBuilder
-        builder += "message" -> message
-        builder += "amount" -> amount
-        builder += "type" -> app_type
-        builder += "status" -> ApplyStatus.add.s
-        builder += "apply_user_id" -> user_id
-        builder += "date" -> new Date().getTime
-        builder += "apply_id" -> apply_id
-        
-        val result = builder.result
-        
-        import module.applies.ApplyTypes._
-        if (app_type == accountApp.t) {
-            module.auth.AuthModule.updateProfile(user_id, toJson(Map("status" -> 2)))
-        }
-       
-        val limit = currentLimit
-        import module.account.AccountModule.queryAccount
-     
-        val reVal = 
-            if (app_type == popMoney.t) {
-                if ((queryAccount(user_id, toJson("")) \ "result" \ "balance").asOpt[Float].get < amount ) ErrorCode.errorToJson("not enough money")
-                else if (amount > limit) ErrorCode.errorToJson("up to limit")
-                else {
-                    AccountModule.freezeMoney(user_id, 
-                        toJson(Map("amount" -> toJson(result.getAs[Number]("amount").get.floatValue),
-                                   "owner_id" -> toJson(result.getAs[String]("apply_user_id").get))))
-                }
-            } else null
-       
-        if (reVal != null && ((reVal \ "status").asOpt[String].get != "ok")) reVal
+        val trade_pwd = (data \ "trade_pwd").asOpt[String].map (x => x).getOrElse("")
+
+        if (!AuthModule.tradePwdCheck(user_id, trade_pwd)) ErrorCode.errorToJson("wrong trade pwd")
         else {
-            _data_connection.getCollection("apply") += result
-            toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
+            val builder = MongoDBObject.newBuilder
+            builder += "message" -> message
+            builder += "amount" -> amount
+            builder += "type" -> app_type
+            builder += "status" -> ApplyStatus.add.s
+            builder += "apply_user_id" -> user_id
+            builder += "date" -> new Date().getTime
+            builder += "apply_id" -> apply_id
+            
+            val result = builder.result
+            
+            import module.applies.ApplyTypes._
+            if (app_type == accountApp.t) {
+                module.auth.AuthModule.updateProfile(user_id, toJson(Map("status" -> 2)))
+            }
+           
+            val limit = currentLimit
+            import module.account.AccountModule.queryAccount
+         
+            val reVal = 
+                if (app_type == popMoney.t) {
+                    if ((queryAccount(user_id, toJson("")) \ "result" \ "balance").asOpt[Float].get < amount ) ErrorCode.errorToJson("not enough money")
+                    else if (amount > limit) ErrorCode.errorToJson("up to limit")
+                    else {
+                        AccountModule.freezeMoney(user_id, 
+                            toJson(Map("amount" -> toJson(result.getAs[Number]("amount").get.floatValue),
+                                       "owner_id" -> toJson(result.getAs[String]("apply_user_id").get))))
+                    }
+                } else null
+           
+            if (reVal != null && ((reVal \ "status").asOpt[String].get != "ok")) reVal
+            else {
+                _data_connection.getCollection("apply") += result
+                toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("apply_id" -> toJson(apply_id)))))
+            }
         }
     }
     

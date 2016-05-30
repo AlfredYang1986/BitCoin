@@ -41,6 +41,7 @@ object Global extends GlobalSettings {
            builder += "register_id" -> ""
            builder += "approved_date" -> 0
            builder += "status" -> approved.s
+           builder += "bank_accounts" -> MongoDBList.newBuilder.result
                   
            _data_connection.getCollection("users") += builder.result 
         }

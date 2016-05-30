@@ -36,45 +36,51 @@ object OrderModule {
     import OrderTypes._
     import OrderStatus._
     def pushOrder(user_id : String, data : JsValue) : JsValue = {
-        val order_type = (data \ "type").asOpt[Int].map (x => x).getOrElse(purchase.t)
-        val coin_type = (data \ "coin").asOpt[Int].map (x => x).getOrElse(BTC.s)
-        val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.floatValue)
-        val price = (data \ "price").asOpt[Float].map (x => x).getOrElse(0.floatValue)
-        val order_id = Sercurity.md5Hash(user_id + Sercurity.getTimeSpanWithMillSeconds)
-        
-        val builder = MongoDBObject.newBuilder
-        builder += "amount" -> amount
-        builder += "price" -> price 
-        builder += "coin_type" -> BTC.s
-        builder += "type" -> order_type
-        builder += "status" -> waiting.t
-        builder += "order_user_id" -> user_id
-        builder += "date" -> new Date().getTime
-        builder += "order_id" -> order_id
-        
-        val result = builder.result
-        
-        val reVal : JsValue = 
-            if (order_type == purchase.t) {
-                if ((queryAccount(user_id, toJson("")) \ "result" \ "balance").asOpt[Float].get < amount * price ) ErrorCode.errorToJson("not enough money")
-                else {
-                    freezeMoney(user_id, 
-                        toJson(Map("amount" -> toJson(result.getAs[Number]("amount").get.floatValue * result.getAs[Number]("price").get.floatValue),
-                                   "owner_id" -> toJson(result.getAs[String]("order_user_id").get))))
-                }
-            } else if (order_type == sell.t) {
-               val owns = if (coin_type == BTC.s) (queryAccount(user_id, toJson("")) \ "result" \ "btc").asOpt[Float].get 
-                          else if (coin_type == LTC.s) (queryAccount(user_id, toJson("")) \ "result" \ "ltc").asOpt[Float].get 
-                          else 0.toFloat
-                          
-               if (owns < amount) ErrorCode.errorToJson("not enough coin")
-               else null
-            } else null
-        
-        if (reVal != null && ((reVal \ "status").asOpt[String].get != "ok")) reVal
+        val trade_pwd = (data \ "trade_pwd").asOpt[String].map (x => x).getOrElse("")
+
+        import module.auth.AuthModule
+        if (!AuthModule.tradePwdCheck(user_id, trade_pwd)) ErrorCode.errorToJson("wrong trade pwd")
         else {
-            _data_connection.getCollection("order") += result
-            toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("order_id" -> toJson(order_id)))))
+            val order_type = (data \ "type").asOpt[Int].map (x => x).getOrElse(purchase.t)
+            val coin_type = (data \ "coin").asOpt[Int].map (x => x).getOrElse(BTC.s)
+            val amount = (data \ "amount").asOpt[Float].map (x => x).getOrElse(0.floatValue)
+            val price = (data \ "price").asOpt[Float].map (x => x).getOrElse(0.floatValue)
+            val order_id = Sercurity.md5Hash(user_id + Sercurity.getTimeSpanWithMillSeconds)
+            
+            val builder = MongoDBObject.newBuilder
+            builder += "amount" -> amount
+            builder += "price" -> price 
+            builder += "coin_type" -> BTC.s
+            builder += "type" -> order_type
+            builder += "status" -> waiting.t
+            builder += "order_user_id" -> user_id
+            builder += "date" -> new Date().getTime
+            builder += "order_id" -> order_id
+            
+            val result = builder.result
+            
+            val reVal : JsValue = 
+                if (order_type == purchase.t) {
+                    if ((queryAccount(user_id, toJson("")) \ "result" \ "balance").asOpt[Float].get < amount * price ) ErrorCode.errorToJson("not enough money")
+                    else {
+                        freezeMoney(user_id, 
+                            toJson(Map("amount" -> toJson(result.getAs[Number]("amount").get.floatValue * result.getAs[Number]("price").get.floatValue),
+                                       "owner_id" -> toJson(result.getAs[String]("order_user_id").get))))
+                    }
+                } else if (order_type == sell.t) {
+                   val owns = if (coin_type == BTC.s) (queryAccount(user_id, toJson("")) \ "result" \ "btc").asOpt[Float].get 
+                              else if (coin_type == LTC.s) (queryAccount(user_id, toJson("")) \ "result" \ "ltc").asOpt[Float].get 
+                              else 0.toFloat
+                              
+                   if (owns < amount) ErrorCode.errorToJson("not enough coin")
+                   else null
+                } else null
+            
+            if (reVal != null && ((reVal \ "status").asOpt[String].get != "ok")) reVal
+            else {
+                _data_connection.getCollection("order") += result
+                toJson(Map("status" -> toJson("ok"), "result" -> toJson(Map("order_id" -> toJson(order_id)))))
+            }
         }
     }
    

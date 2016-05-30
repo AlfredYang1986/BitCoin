@@ -134,6 +134,12 @@
                                 </div>
                                 <div class="form_explain" id="money-msg">每次最低充值100元<em></em></div>
                             </div>
+                            <div class="charge_input">
+                                <div class="charge_title">交易密码：</div>
+                                <div class="charge_text">
+                                    <input type="password" class="form-control" name="trade-pwd" >
+                                </div>
+                            </div>
                             <ul style="clear:both;">
                                 <div class="cnyin_btn">
                                     <input style="margin:30px 0 30px 30px;" type="button" value="充值申请" onclick="subfrm()">
@@ -183,10 +189,13 @@
             return;
         }
 
+        var trade_pwd = $("input[name='trade-pwd']").val();
+
         var query_object = new Object();
         query_object['amount'] = money;
         query_object['type'] = 0;
         query_object['message'] = "充值";
+        query_object['trade_pwd'] = trade_pwd;
 
         $.ajax({
             url: "/apply/pushapp",

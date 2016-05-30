@@ -39,6 +39,11 @@ GET		/vote								controllers.BitCode.vote(t="")
 GET		/store/:t							controllers.BitCode.store(t)
 GET		/store								controllers.BitCode.store(t="")
 GET		/help								controllers.BitCode.help
+GET		/help/index							controllers.BitCode.help
+GET		/help/contact						controllers.BitCode.helpContact
+GET		/help/law							controllers.BitCode.helpLaw
+GET		/help/description					controllers.BitCode.helpDescription
+GET		/help/privacy						controllers.BitCode.helpPrivacy
 
 GET		/admin/login/:t						controllers.Admin.adminLogin(t)
 GET		/admin/login						controllers.Admin.adminLogin(t="")
@@ -69,10 +74,14 @@ POST	/auth/login							controllers.AuthController.login
 POST	/auth/admain/login					controllers.AuthController.admainLogin
 POST	/auth/changePwd		 				controllers.AuthController.changePwd
 POST	/auth/changeTradePwd		 		controllers.AuthController.changeTradePwd
+POST	/auth/bankaccount/push			 	controllers.AuthController.pushBankAccount
 
 # Profile
 POST	/profile/query						controllers.ProfileController.queryProfile
 POST	/profile/update				 		controllers.ProfileController.updateProfile
+
+# Email
+POST 	/email/send							controllers.EmailController.send
 
 # Market Data
 POST	/market/btc							controllers.MarketController.BTCMarket

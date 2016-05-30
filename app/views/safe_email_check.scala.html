@@ -27,6 +27,9 @@
                     <li class="active">
                         <a href="/profile/checkEmail"><i class="coin_menu_op_10"></i><span class="pl10">验证邮箱</span></a>
                     </li>
+                    <li>
+                        <a href="/profile/bankaccount"><i class="coin_menu_op_7"></i><span class="pl10">银行账户管理</span></a>
+                    </li>
                 </ul>
             </div>
             <!--/左边导航区域-->
@@ -64,27 +67,16 @@
 } {
     <script type="text/javascript">
     $('#save_btn').click(function(){
-        var oldpw = $('input[name="oldpw"]').val();
-        var pw = $('input[name="pw"]').val();
-        var repw = $('input[name="repw"]').val();
-
-        if (!oldpw || !pw) {
-            alert("必填项不能为空");
-            return;
-        }
-
-        if (pw != repw) {
-            alert(pw);
-            alert(repw);
-            alert('密码两次输入不一致');
-            return;
-        }
 
         var query_object = new Object();
-        query_object['pwd'] = pw;
+        query_object['token'] = '@{token}';
+        query_object['email'] = '@{(profile \ "email").asOpt[String].get}'
+
+        alert(query_object.token);
+        alert(query_object.email);
 
         $.ajax({
-            url: "/auth/changePwd",
+            url: "/email/send",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json, charset=utf-8',
@@ -95,10 +87,8 @@
             },
             success: function (data) {
                 if (data.status == "ok") {
-                     setCookie('user_id', data.result.user_id, 1);
-                     setCookie('token', data.result.token, 1);
-                     alert("修改密码成功");
-                     location.href = "/profile/index"
+                     alert("发送邮件成功");
+                     location.reload(); 
                 } else {
                     alert(data.error.message);
                 }

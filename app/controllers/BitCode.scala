@@ -114,7 +114,10 @@ object BitCode extends Controller {
         if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
         else {
             val profile = (queryProfileWithToken(token) \ "result")
-            Ok(views.html.safe_bank_accounts(token)(profile))
+            val user_id = (profile \ "user_id").asOpt[String].get
+            import module.auth.AuthModule
+            val accounts = (AuthModule.queryBankAccount(user_id, toJson("")) \ "result").asOpt[List[JsValue]].map (x => x).getOrElse(Nil)
+            Ok(views.html.safe_bank_accounts(token)(profile)(accounts))
         }
     }
     /******************************************************/
@@ -165,7 +168,10 @@ object BitCode extends Controller {
         if (token == "") Ok(views.html.not_auth("请先登陆在进行有效操作"))
         else {
             val profile = (queryProfileWithToken(token) \ "result")
-            Ok(views.html.finance_people_withdraw(token)(profile))
+            val user_id = (profile \ "user_id").asOpt[String].get
+            import module.auth.AuthModule
+            val accounts = (AuthModule.queryBankAccount(user_id, toJson("")) \ "result").asOpt[List[JsValue]].map (x => x).getOrElse(Nil)
+            Ok(views.html.finance_people_withdraw(token)(profile)(accounts))
         }
     }
     
@@ -265,7 +271,7 @@ object BitCode extends Controller {
     
     /******************************************************/
     /**
-     * 商城界面
+     * 帮助界面
      */
     def help = Action { request =>
         val token = request.cookies.get("token").map (x => x.value).getOrElse("")
@@ -274,6 +280,46 @@ object BitCode extends Controller {
         else {
             val profile = (queryProfileWithToken(token) \ "result")
             Ok(views.html.help_index(token)(profile))
+        }
+    }
+    
+    def helpContact = Action { request =>
+        val token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        
+        if (token == "") Ok(views.html.help_index("")(null))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.help_contact(token)(profile))
+        }
+    }
+    
+    def helpDescription = Action { request =>
+        val token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        
+        if (token == "") Ok(views.html.help_index("")(null))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.help_charge_description(token)(profile))
+        }
+    }
+    
+    def helpLaw = Action { request =>
+        val token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        
+        if (token == "") Ok(views.html.help_index("")(null))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.help_law(token)(profile))
+        }
+    }
+    
+    def helpPrivacy = Action { request =>
+        val token = request.cookies.get("token").map (x => x.value).getOrElse("")
+        
+        if (token == "") Ok(views.html.help_index("")(null))
+        else {
+            val profile = (queryProfileWithToken(token) \ "result")
+            Ok(views.html.help_privacy(token)(profile))
         }
     }
     /******************************************************/

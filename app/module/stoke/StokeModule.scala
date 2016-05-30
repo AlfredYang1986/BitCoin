@@ -126,7 +126,6 @@ object StokeModule {
         toJson(Map("status" -> toJson("ok"), "result" -> toJson(
             ((from db() in "stoke" select (x => DB2JsValue(x))).toList) match { 
                 case Nil => {
-                  
                    (queryStoke(BTC.s) :: queryStoke(LTC.s) :: Nil) flatMap (x => x.map(DB2JsValue(_)))
                 }
                 case xls : List[JsValue] => xls

@@ -31,6 +31,8 @@ import play.api.libs.json.JsValue
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.FileInputStream
+import play.core.Router
+import play.api.Play
 
 /**
  * Smtp config
@@ -82,81 +84,33 @@ object EmailModule {
     ), name = "emailService"
   )
  
- 
   /**
    * public interface to send out emails that dispatch the message to the listening actors
    * @param emailMessage the email message
    */
   def sendEmail(data : JsValue) : JsValue = {
 	  val user_email = (data \ "email").asOpt[String].get
-	  
-//	  this.send(new EmailMessage("Dongda Privacy", "", "yangyuanpig@163.com", "resource/email_content", "", null, 60.second, 1))
-    emailServiceActor ! user_email
+	  val token = (data \ "token").asOpt[String].map (x => x).getOrElse("")
+	 
+    emailServiceActor ! (user_email, "")
 	  Json.toJson(Map("status" -> toJson("ok"), "result" -> toJson("send email success")))
   }
   
   def send(emailMessage: EmailMessage) {
     emailServiceActor ! emailMessage
   }
- 
-  /**
-   * Private helper invoked by the actors that sends the email
-   * @param emailMessage the email message
-   */
-  private def sendEmailSync(emailMessage: EmailMessage) {
-
-	val br = new BufferedReader(new InputStreamReader(new FileInputStream("resource/email_content"), "utf8"))
-
-	var content = ""
-	var line : String = br.readLine
-	while (line != null) {
-		content += "\n" + line
-		line = br.readLine
-	}
-    
-    val email = new SimpleEmail
-// for gmail
-//    email.setHostName("smtp.googlemail.com")
-//    	   .setSmtpPort(465);
-   
-// for 163    
-    	email.setHostName("smtp.163.com")
-    	email.setSmtpPort(25)
-    	email.setAuthenticator(new DefaultAuthenticator("yangyuanpig", "Abcde196125"))
-    	email.setSSLOnConnect(true)
-    	email.setFrom("yangyuanpig@163.com")
-    	email.setSubject("Dongda Privacy")
-    	email.setMsg(content)
-    	email.addTo("alfredyang@altlys.com")
-    	email.addTo("alfredyang@blackmirror.tech")
-    	email.send
-  }
   
-  private def sendEmailToSync(to : String) {
-    	val br = new BufferedReader(new InputStreamReader(new FileInputStream("resource/email_content"), "utf8"))
-    	var content = ""
-    	var line : String = br.readLine
-    	while (line != null) {
-    		content += "\n" + line
-    		line = br.readLine
-    	}
-        
-        val email = new SimpleEmail
-    // for gmail
-    //    email.setHostName("smtp.googlemail.com")
-    //    	   .setSmtpPort(465);
-       
-    // for 163    
-        	email.setHostName("smtp.163.com")
-        	email.setSmtpPort(25)
-        	email.setAuthenticator(new DefaultAuthenticator("yangyuanpig", "Abcde196125"))
-        	email.setSSLOnConnect(true)
-        	email.setFrom("yangyuanpig@163.com")
-        	email.setSubject("Dongda Privacy")
-        	email.setMsg(content)
-    //    	email.addTo("alfredyang@altlys.com")
-        	email.addTo(to)
-        	email.send
+  private def sendEmailToSync(to : String, content: String) {
+      val email = new SimpleEmail
+    	email.setHostName("smtp.qq.com")
+    	email.setSmtpPort(25)
+    	email.setAuthenticator(new DefaultAuthenticator("1919310800", ""))
+    	email.setSSLOnConnect(true)
+    	email.setFrom("1919310800@qq.com")
+    	email.setSubject("邮件验证")
+    	email.setMsg(content)
+      email.addTo(to)
+    	email.send
   }
  
   /**
@@ -208,16 +162,14 @@ object EmailModule {
      * Delivers a message
      */
     def receive = {
-      case email: EmailMessage => {
-        emailMessage = Option(email)
-        email.deliveryAttempts = email.deliveryAttempts + 1
-        log.debug("Atempting to deliver message")
-        sendEmailSync(email)
-        log.debug("Message delivered")
-      }
       case to : String => {
         log.debug("Atempting to deliver message")
-        sendEmailToSync(to)
+        sendEmailToSync(to, "")
+        log.debug("Message delivered")
+      }
+      case (to, content) => {
+        log.debug("Atempting to deliver message")
+        sendEmailToSync(to.asInstanceOf[String], content.asInstanceOf[String])
         log.debug("Message delivered")
       }
       case unexpectedMessage: Any => {
